@@ -3,109 +3,193 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ProductFarma · Merchandising para farmacias</title>
-<meta name="description" content="Merchandising personalizado para farmacias: pastilleros, neceseres, botiquines, bolsas y más con el logo de tu farmacia. Precio al instante y stock real.">
+<title>ProductFarma · Merchandising para farmacias y congresos</title>
+<meta name="description" content="Merchandising personalizado para farmacias, laboratorios, ferias y congresos del sector salud. Pastilleros, totebags, agendas, kits de congresista y stands. Precio al instante y stock real.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* VOICE: proveedor serio para farmacias; precios claros, limpio como una rebotica ordenada.
-   IDEA: la prueba de imprenta de un pastillero o neceser con la cruz y el logo de la farmacia ya estampados.
-   PICTURE: el producto dibujado grande con el logo del cliente aplicado en su área de marcaje.
-   COLOUR and TYPE: blanco, tinta negra, verde cruz de farmacia dominante, cian y magenta solo en la tira de imprenta; Archivo.
-   LAYOUT: barra superior, banda de cabecera con prueba, filtros, rejilla; ficha con configurador a la derecha. */
-:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1113);--paper:light-dark(#f4f4f1,#181b1e);--ink:light-dark(#111,#f2f2ee);--mute:light-dark(#5b5f63,#a3a8ad);--line:light-dark(#dcdcd6,#2c3034);--m:light-dark(#00843d,#2fc06a);--m2:#d6006f;--c:light-dark(#0087c4,#38b6f0);--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d)}
+/* VOICE: proveedor serio del sector salud; directo, ordenado, con oficio de imprenta.
+   IDEA: la feria del sector — un stand montado con la cruz verde, mostrador, roll-up y los regalos con logo sobre la mesa.
+   PICTURE: escena de stand grande en la portada; cada producto se ve con el logo del cliente ya estampado.
+   COLOUR and TYPE: verde farmacia profundo como campo dominante, blanco, tinta; menta clara de apoyo; tira CMYK como firma de imprenta; Archivo 400–900.
+   LAYOUT: portada verde a sangre, dos entradas (farmacia / eventos), packs, banda oscura de stands, pasos, catálogo, preguntas, pie. */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0e1211);--paper:light-dark(#f3f6f4,#161c1a);--mint:light-dark(#e3f2ea,#13261d);--ink:light-dark(#0f1714,#eef3f0);--mute:light-dark(#56615c,#a2ada8);--line:light-dark(#d9e2dd,#2a3430);--g:light-dark(#00843d,#35c272);--gd:#00502a;--gdd:#003a1f;--c:#0087c4;--m2:#d6006f;--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d);--warn:light-dark(#b4232f,#ff7a84)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
 a{color:inherit}button,input,select,textarea{font:inherit;font-size:16px;color:inherit}
-.band{padding:clamp(24px,4vw,56px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
-header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
-.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo i{width:22px;height:22px;border-radius:3px;background:linear-gradient(var(--m) 0 0) center/34% 100% no-repeat,linear-gradient(var(--m) 0 0) center/100% 34% no-repeat}
-.search{flex:1 1 220px;display:flex}.search input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:var(--paper)}
-.cartbtn{height:44px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px}
-.cartbtn b{background:var(--m);color:#fff;border-radius:99px;padding:0 8px;font-size:13px}
-.strip{height:6px;background:linear-gradient(90deg,var(--m) 0 70%,var(--c) 0 80%,var(--m2) 0 90%,var(--y) 0)}
-.hero{background:var(--paper)}.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
-h1{font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;text-wrap:balance;font-weight:800}
-h2{font-size:clamp(24px,3vw,32px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
-.lead{font-size:17px;color:var(--mute);max-width:56ch;margin:0 0 20px}
-.facts{display:flex;flex-wrap:wrap;gap:8px 20px;padding:0;margin:0;list-style:none;font-weight:500}
-.facts li::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;background:var(--m);border-radius:2px}
-.proof{position:relative;aspect-ratio:5/4;background:var(--bg);border:1px solid var(--line);border-radius:6px}
-.proof svg{position:absolute;inset:0;width:100%;height:100%}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px}
-.chip{flex:none;height:40px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-weight:500}
+html{scroll-padding-top:80px}
+.band{padding:clamp(36px,6vw,88px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+
+/* cabecera */
+header.top{position:sticky;top:0;z-index:9;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px 22px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.logo{font-weight:900;font-size:22px;letter-spacing:-.03em;text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo i{width:22px;height:22px;background:linear-gradient(var(--g) 0 0) center/34% 100% no-repeat,linear-gradient(var(--g) 0 0) center/100% 34% no-repeat}
+nav.main{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+nav.main a{text-decoration:none;font-weight:500;padding:10px 12px;border-radius:8px;min-height:44px;display:flex;align-items:center}
+nav.main a:hover,nav.main a[aria-current=page]{background:var(--paper)}
+.cartbtn{height:44px;padding:0 16px;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:700;text-decoration:none;display:flex;align-items:center;gap:8px;margin-left:auto}
+.cartbtn b{background:var(--g);color:#fff;border-radius:99px;padding:0 8px;font-size:13px;min-width:24px;text-align:center}
+.strip{height:5px;background:linear-gradient(90deg,var(--g) 0 70%,var(--c) 0 80%,var(--m2) 0 90%,var(--y) 0)}
+
+/* tipografía */
+h1,h2,h3{margin:0;letter-spacing:-.03em;text-wrap:balance}
+h1{font-size:clamp(36px,5.6vw,64px);line-height:1;font-weight:900}
+h2{font-size:clamp(28px,3.6vw,44px);line-height:1.05;font-weight:800;margin-bottom:12px}
+h3{font-size:22px;line-height:1.15;font-weight:800}
+.lead{font-size:clamp(17px,1.6vw,19px);max-width:58ch;margin:16px 0 26px}
+.kicker{font-weight:700;font-size:15px;color:var(--g);margin:0 0 10px}
+.note{font-size:14px;color:var(--mute)}.demo{font-size:13px;opacity:.8;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:12px;border:0;font-weight:700;cursor:pointer;font-size:16px;text-decoration:none}
+.btn.p{background:var(--g);color:#fff}.btn.w{background:#fff;color:var(--gdd)}.btn.s{background:transparent;border:2px solid currentColor}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+/* portada */
+.hero{background:var(--gd);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,#0002)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,56px);align-items:center;position:relative;z-index:1}
+.hero .kicker{color:#9ff0c2}.hero .lead{color:#d8f3e4}
+.sectors{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0;list-style:none}
+.sectors li{border:1px solid #ffffff40;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.scene{position:relative;aspect-ratio:6/5}.scene svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* cifras */
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.facts div{background:var(--bg);padding:22px max(2vw,14px)}.facts b{display:block;font-size:clamp(22px,2.6vw,30px);letter-spacing:-.02em;font-weight:800}
+.facts span{color:var(--mute);font-size:15px}
+
+/* dos entradas */
+.aud{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.acard{border-radius:20px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:#fff;transition:transform .25s}
+.acard:hover{transform:translateY(-4px)}
+.acard svg{display:block;width:100%;height:auto}
+.acard .tx{padding:22px 26px 26px}
+.acard p{margin:8px 0 16px;max-width:42ch;color:#eef}
+.acard .go{font-weight:700;display:inline-flex;gap:8px;align-items:center}
+.acard:hover .go{text-decoration:underline}
+
+/* packs */
+.packs-band{background:var(--mint)}
+.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:26px}
+.pack{background:var(--bg);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;border:1px solid var(--line)}
+.pack .imgs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;background:var(--paper);border-radius:12px;padding:10px}
+.pack .imgs div{aspect-ratio:1;position:relative}.pack .imgs svg,.pack .imgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.pack ul{margin:0;padding-left:18px;color:var(--mute);font-size:15px}
+.pack .pr{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
+.pack .pr b{font-size:28px;letter-spacing:-.02em;white-space:nowrap}
+.qrow{display:flex;gap:8px;align-items:center}.qrow select{height:48px;border-radius:10px;border:1px solid var(--line);background:var(--paper);padding:0 10px;flex:1}
+
+/* stands */
+.stands{background:var(--gdd);color:#eaf5ef}
+.stands .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.stands .kicker{color:#9ff0c2}
+.svc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px;margin:18px 0 26px;padding:0;list-style:none}
+.svc li{padding-left:22px;position:relative}.svc li::before{content:"";position:absolute;left:0;top:.55em;width:12px;height:12px;background:linear-gradient(#35c272 0 0) center/34% 100% no-repeat,linear-gradient(#35c272 0 0) center/100% 34% no-repeat}
+.standpic{aspect-ratio:5/4;position:relative}.standpic svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:26px;counter-reset:s}
+.steps li{list-style:none;border-top:3px solid var(--g);padding-top:14px}
+.steps b{display:block;font-size:19px;margin-bottom:4px}.steps p{margin:0;color:var(--mute)}
+
+/* catálogo */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}
+.chip{flex:none;min-height:42px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-weight:500}
 .chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-.card{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);transition:transform .2s}
-.card:hover{transform:translateY(-3px)}.card .ph{aspect-ratio:1;background:var(--paper);position:relative}.card .ph svg,.card .ph img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
-.card .bd{padding:12px 14px 14px;display:grid;gap:4px}.ref{font-size:13px;color:var(--mute)}.nm{font-weight:700;line-height:1.25}
-.from{font-size:14px;color:var(--mute)}.from b{color:var(--ink);font-size:18px;white-space:nowrap}
+.chip.aud[aria-pressed=true]{background:var(--g);border-color:var(--g);color:#fff}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:6px}
+.search{display:flex;flex:1 1 260px;max-width:420px}.search input{width:100%;height:46px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:var(--paper)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px -18px #0006}
+.card .ph{aspect-ratio:1;background:var(--paper);position:relative}.card .ph svg,.card .ph img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.badge{position:absolute;top:10px;left:10px;background:var(--bg);border-radius:99px;padding:3px 10px;font-size:13px;font-weight:700;color:var(--g)}
+.card .bd{padding:12px 14px 16px;display:grid;gap:5px}.ref{font-size:13px;color:var(--mute)}.nm{font-weight:700;line-height:1.25}
+.from{font-size:14px;color:var(--mute)}.from b{color:var(--ink);font-size:19px;white-space:nowrap}
 .dots{display:flex;gap:4px}.dots i{width:14px;height:14px;border-radius:50%;border:1px solid var(--line)}
-.empty{padding:40px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:12px}
+.empty{padding:40px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:14px}
+
+/* ficha */
 .pd{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
-.stage{position:sticky;top:84px}.stage .proof{aspect-ratio:1}
-.back{display:inline-flex;align-items:center;height:44px;text-decoration:none;color:var(--mute);font-weight:500}
+.stage{position:sticky;top:90px}.proof{position:relative;aspect-ratio:1;background:var(--paper);border-radius:18px}.proof svg,.proof img{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain}
+.back{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:var(--mute);font-weight:500}
 fieldset{border:0;padding:0;margin:0 0 18px}legend{font-weight:700;margin-bottom:8px}
 .sw{display:flex;flex-wrap:wrap;gap:8px}.sw label{position:relative;cursor:pointer}.sw input{position:absolute;opacity:0}
-.sw span{display:block;width:40px;height:40px;border-radius:50%;border:2px solid var(--line)}.sw input:checked+span{outline:3px solid var(--m);outline-offset:2px}.sw input:focus-visible+span{outline:3px solid var(--c);outline-offset:2px}
+.sw span{display:block;width:40px;height:40px;border-radius:50%;border:2px solid var(--line)}.sw input:checked+span{outline:3px solid var(--g);outline-offset:2px}.sw input:focus-visible+span{outline:3px solid var(--c);outline-offset:2px}
 .seg{display:flex;flex-wrap:wrap;gap:8px}.seg label{cursor:pointer}.seg input{position:absolute;opacity:0}
 .seg span{display:flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px}.seg input:checked+span{border-color:var(--ink);background:var(--ink);color:var(--bg)}.seg input:focus-visible+span{outline:3px solid var(--c)}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .qty{height:48px;width:140px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);font-weight:700}
 select,.in{height:48px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);width:100%}
-textarea.in{height:96px;padding:10px 12px}
-:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+textarea.in{height:100px;padding:10px 12px}
 table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
-tr.on td{background:color-mix(in srgb,var(--m) 10%,transparent);font-weight:700}
-.total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-top:2px solid var(--ink);margin-top:10px}
+tr.on td{background:var(--mint);font-weight:700}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;border-top:2px solid var(--ink);margin-top:10px}
 .total b{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;white-space:nowrap}
-.btn{height:52px;padding:0 22px;border-radius:12px;border:0;font-weight:700;cursor:pointer;font-size:16px}
-.btn.p{background:var(--m);color:#fff}.btn.s{background:transparent;border:2px solid var(--ink)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.note{font-size:14px;color:var(--mute)}.stock{font-weight:700;color:var(--ok)}.stock.low{color:var(--m)}
+.stock{font-weight:700;color:var(--ok)}.stock.low{color:var(--warn)}
 .drop{display:flex;align-items:center;gap:12px;border:2px dashed var(--line);border-radius:12px;padding:12px;cursor:pointer}
 .drop img{width:48px;height:48px;object-fit:contain;background:var(--paper);border-radius:6px}
+
+/* carrito y formularios */
 .cart{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
 .line{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
-.line .ph{width:72px;height:72px;background:var(--paper);border-radius:8px;position:relative}.line .ph svg{position:absolute;inset:6px;width:60px;height:60px}
-.x{background:none;border:0;color:var(--mute);cursor:pointer;height:44px;padding:0 6px;text-decoration:underline}
-.box{background:var(--paper);border-radius:14px;padding:20px}.form{display:grid;gap:10px}.form label{font-size:14px;font-weight:500}
-.msg{padding:12px 14px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,transparent);margin-top:12px}
-.msg.err{background:color-mix(in srgb,var(--m) 14%,transparent)}
-footer{border-top:1px solid var(--line);color:var(--mute);font-size:14px}footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
-.demo{font-size:13px;color:var(--mute);margin-top:8px}
-@media(max-width:820px){.hero .wrap,.pd,.cart{grid-template-columns:minmax(0,1fr)}.stage{position:static}}
-@media(max-width:600px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card .bd{padding:10px}.nm{font-size:15px}table{font-size:13px}}
-@media(prefers-reduced-motion:reduce){.card{transition:none}}
+.line .ph{width:72px;height:72px;background:var(--paper);border-radius:10px;position:relative}.line .ph svg,.line .ph img{position:absolute;inset:6px;width:60px;height:60px;object-fit:contain}
+.x{background:none;border:0;color:var(--mute);cursor:pointer;min-height:44px;padding:0 6px;text-decoration:underline}
+.box{background:var(--paper);border-radius:18px;padding:22px}.form{display:grid;gap:10px}.form label{font-size:14px;font-weight:500}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.msg{padding:12px 14px;border-radius:10px;background:var(--mint);margin-top:12px;color:var(--ink)}.msg.err{background:color-mix(in srgb,var(--warn) 16%,transparent)}
+.stands .box{background:#ffffff0f;color:#fff}.stands .in{background:#ffffff14;border-color:#ffffff30;color:#fff}.stands .in::placeholder{color:#cde}
+
+/* preguntas */
+.faq{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(20px,4vw,56px)}
+details{border-bottom:1px solid var(--line);padding:6px 0}summary{cursor:pointer;font-weight:700;font-size:18px;min-height:48px;display:flex;align-items:center;list-style:none}
+summary::after{content:"+";margin-left:auto;font-size:24px;color:var(--g)}details[open] summary::after{content:"–"}
+details p{margin:0 0 14px;color:var(--mute);max-width:65ch}
+
+/* cierre y pie */
+.cta{background:var(--g);color:#fff;text-align:center}.cta p{margin:10px auto 24px;max-width:52ch;color:#e8fff1}
+footer{background:var(--gdd);color:#cfe3d8;font-size:15px}
+footer .wrap{display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:24px}
+footer b{color:#fff;display:block;margin-bottom:6px}footer a{display:block;text-decoration:none;padding:3px 0}footer a:hover{text-decoration:underline}
+
+@media(max-width:900px){.hero .wrap,.stands .wrap,.pd,.cart,.faq{grid-template-columns:minmax(0,1fr)}.stage{position:static}.packs{grid-template-columns:minmax(0,1fr)}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}footer .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){nav.main{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap}nav.main a{flex:none}.aud{grid-template-columns:minmax(0,1fr)}.acard .tx{padding:18px 20px 22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card .bd{padding:10px}.nm{font-size:15px}.svc{grid-template-columns:minmax(0,1fr)}table{font-size:13px}.two{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:no-preference){.scene .float{animation:fl 6s ease-in-out infinite}@keyframes fl{50%{transform:translateY(-6px)}}}
+@media(prefers-reduced-motion:reduce){.card,.acard{transition:none}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="logo" href="#catalogo"><i></i>ProductFarma</a>
-  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: pastillero, totebag, agenda…" aria-label="Buscar productos"></form>
+  <a class="logo" href="#inicio" aria-label="ProductFarma, inicio"><i></i>ProductFarma</a>
+  <nav class="main" aria-label="Principal">
+    <a href="#farmacia">Farmacias</a><a href="#congresos">Ferias y congresos</a><a href="#stands">Stands</a><a href="#catalogo">Catálogo</a>
+  </nav>
   <a class="cartbtn" href="#carrito">Carrito <b id="cc">0</b></a>
 </div><div class="strip"></div></header>
 
 <main id="app"></main>
 
 <footer class="band"><div class="wrap">
-  <div><b style="color:var(--ink)">ProductFarma</b><br>Merchandising personalizado para farmacias y parafarmacias.</div>
-  <div>Precios sin IVA salvo en el total.<br>Envío a toda España peninsular.</div>
-  <div>Presupuestos en 24 h laborables.<br>Pago seguro con tarjeta.</div>
+  <div><b style="font-size:22px">ProductFarma</b>Merchandising personalizado y stands para farmacias, laboratorios, ferias y congresos del sector salud.</div>
+  <div><b>Productos</b><a href="#farmacia">Para farmacias</a><a href="#congresos">Para congresos</a><a href="#packs">Packs</a><a href="#catalogo">Catálogo completo</a></div>
+  <div><b>Eventos</b><a href="#stands">Stands y gran formato</a><a href="#congresos">Kits de congresista</a><a href="#preguntas">Preguntas frecuentes</a></div>
+  <div><b>Compra</b><span>Pago seguro con tarjeta</span><br><span>Presupuesto en 24 h laborables</span><br><span>Envío a toda España</span></div>
 </div></footer>
 
 <script>
 {
 const CFG = { api: '/api', vat: 0.21, quoteOver: 1500 };
 const eur = (n) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+const eur0 = (n) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const $ = (s, r = document) => r.querySelector(s);
+const nrm = (t) => String(t ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
-/* ---------- Ilustraciones de producto (si no hay foto de Makito) ---------- */
 const SHAPES = {
+  lanyard: (c) => `<path d="M80 20 L112 150 M160 20 L128 150" stroke="${c}" stroke-width="16" fill="none" stroke-linecap="round"/><rect x="108" y="140" width="24" height="20" rx="4" fill="#999"/><rect x="80" y="160" width="80" height="62" rx="8" fill="#fff" stroke="#0003" stroke-width="2"/><rect x="92" y="200" width="56" height="6" rx="3" fill="#0002"/>`,
+  acreditacion: (c) => `<rect x="112" y="30" width="16" height="30" rx="4" fill="#999"/><rect x="60" y="55" width="120" height="160" rx="12" fill="${c}" opacity=".35" stroke="${c}" stroke-width="4"/><rect x="74" y="72" width="92" height="126" rx="6" fill="#fff"/><rect x="88" y="160" width="64" height="8" rx="4" fill="#0002"/><rect x="96" y="176" width="48" height="6" rx="3" fill="#0002"/>`,
   pastillero: (c) => `<rect x="30" y="85" width="180" height="80" rx="12" fill="${c}"/>${[0,1,2,3,4,5,6].map((i) => `<rect x="${36 + i * 25}" y="92" width="21" height="66" rx="5" fill="#fff6"/><text x="${46.5 + i * 25}" y="150" font-size="11" font-family="Arial" font-weight="700" text-anchor="middle" fill="#0007">${'LMXJVSD'[i]}</text>`).join('')}<rect x="30" y="85" width="180" height="8" rx="4" fill="#0002"/>`,
   pastillero3: (c) => `<rect x="55" y="70" width="130" height="110" rx="22" fill="${c}"/><rect x="55" y="70" width="130" height="10" rx="5" fill="#0002"/><path d="M98 80v100M142 80v100" stroke="#0002" stroke-width="3"/>`,
   botiquin: (c) => `<rect x="95" y="45" width="50" height="22" rx="6" fill="none" stroke="${c}" stroke-width="9"/><rect x="40" y="62" width="160" height="130" rx="14" fill="${c}"/><rect x="40" y="62" width="160" height="14" rx="7" fill="#0002"/>`,
@@ -126,7 +210,7 @@ const SHAPES = {
   libreta: (c) => `<rect x="65" y="35" width="120" height="170" rx="8" fill="${c}"/><rect x="65" y="35" width="14" height="170" fill="#0003"/><rect x="160" y="35" width="6" height="170" fill="#fff5"/>`,
   powerbank: (c) => `<rect x="80" y="40" width="80" height="160" rx="14" fill="${c}"/><rect x="108" y="48" width="24" height="5" rx="2" fill="#0004"/><circle cx="120" cy="180" r="4" fill="#4ccb7d"/>`,
 };
-const AREA = { pastillero: [80, 166, 80, 22], pastillero3: [80, 105, 80, 50], botiquin: [70, 95, 100, 70], gel: [96, 110, 48, 60], toallitas: [70, 120, 100, 45], neceser: [70, 110, 100, 60], balsamo: [104, 115, 32, 70], antifaz: [85, 95, 70, 30], bolsapapel: [70, 105, 100, 80], gelfrio: [75, 100, 90, 60], pulsera: [100, 62, 40, 14], taza: [85, 105, 70, 50], bolsa: [80, 105, 80, 70], gorra: [95, 100, 50, 32], boligrafo: [112, 120, 16, 50], botella: [100, 105, 40, 60], camiseta: [95, 85, 50, 50], libreta: [95, 85, 70, 60], powerbank: [92, 80, 56, 56] };
+const AREA = { lanyard: [85, 170, 70, 26], acreditacion: [82, 82, 76, 64], pastillero: [80, 166, 80, 22], pastillero3: [80, 105, 80, 50], botiquin: [70, 95, 100, 70], gel: [96, 110, 48, 60], toallitas: [70, 120, 100, 45], neceser: [70, 110, 100, 60], balsamo: [104, 115, 32, 70], antifaz: [85, 95, 70, 30], bolsapapel: [70, 105, 100, 80], gelfrio: [75, 100, 90, 60], pulsera: [100, 62, 40, 14], taza: [85, 105, 70, 50], bolsa: [80, 105, 80, 70], gorra: [95, 100, 50, 32], boligrafo: [112, 120, 16, 50], botella: [100, 105, 40, 60], camiseta: [95, 85, 50, 50], libreta: [95, 85, 70, 60], powerbank: [92, 80, 56, 56] };
 function art(p, color, logo, big) {
   const c = color?.hex || '#ccc', k = shapeOf(p), [x, y, w, h] = AREA[k] || AREA.neceser;
   const mark = logo ? `<image href="${logo}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>`
@@ -134,9 +218,11 @@ function art(p, color, logo, big) {
   const reg = big ? [[14, 14], [226, 14], [14, 226], [226, 226]].map(([a, b]) => `<g stroke="currentColor" stroke-width="1" opacity=".5"><circle cx="${a}" cy="${b}" r="6" fill="none"/><path d="M${a - 10} ${b}h20M${a} ${b - 10}v20"/></g>`).join('') : '';
   return `<svg viewBox="0 0 240 240" role="img" aria-label="${esc(p.name)}">${reg}<ellipse cx="120" cy="222" rx="70" ry="7" fill="#0001"/>${SHAPES[k] ? SHAPES[k](c) : ''}${mark}</svg>`;
 }
+
+const SHAPE_WORDS = [['lanyard', 'lanyard'], ['cinta', 'lanyard'], ['acreditac', 'acreditacion'], ['identificador', 'acreditacion'], ['camiseta', 'camiseta'], ['boligrafo', 'boligrafo'], ['agenda', 'libreta'], ['libreta', 'libreta'], ['cuaderno', 'libreta'], ['tote', 'bolsa'], ['pastillero', 'pastillero'], ['pildor', 'pastillero3'], ['botiqu', 'botiquin'], ['auxilio', 'botiquin'], ['gel hidro', 'gel'], ['higieniz', 'gel'], ['spray', 'gel'], ['toallit', 'toallitas'], ['neceser', 'neceser'], ['cosmet', 'neceser'], ['labial', 'balsamo'], ['balsamo', 'balsamo'], ['antifaz', 'antifaz'], ['bolsa de papel', 'bolsapapel'], ['papel', 'bolsapapel'], ['frio', 'gelfrio'], ['pulsera', 'pulsera'], ['bolsa', 'bolsa']];
+const shapeOf = (p) => { if (p.shape) return p.shape; const t = (p.name + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); return (SHAPE_WORDS.find(([w]) => t.includes(w)) || [, 'neceser'])[1]; };
 const pic = (p, v, logo, big) => (!logo && (v?.image || p.images?.[0])) ? `<img src="${esc(v?.image || p.images[0])}" alt="${esc(p.name)}" loading="lazy">` : art(p, v, logo, big);
 
-/* ---------- Catálogo de muestra (se sustituye por /api/catalog) ---------- */
 const T = (a) => a.map(([min, price]) => ({ min, price }));
 const SER = (s, u, n = 4) => ({ technique: 'Serigrafía', maxColors: n, setup: s, addSetup: s * .5, tiers: [{ min: 1, price: u }, { min: 500, price: u * .8 }] });
 const TAMPO = (s, u, n = 2) => ({ id: 'tampo', technique: 'Tampografía', maxColors: n, setup: s, addSetup: s * .5, tiers: [{ min: 1, price: u }, { min: 500, price: u * .8 }] });
@@ -157,18 +243,33 @@ const DEMO = [
   { ref: 'PF-5530', name: 'Agenda A5 2027 tapa flexible', category: 'Escritura y oficina', shape: 'libreta', dims: '14,8 × 21 cm', material: 'Tapa símil piel', variants: [['Verde', '#2e8b57', 1900], ['Azul', '#1f4fbf', 2400], ['Negro', '#1b1b1b', 3100]], tiers: T([[25, 3.9], [100, 3.4], [250, 3.05]]), print: [{ id: 'laser', technique: 'Grabado láser', maxColors: 1, setup: 25, tiers: [{ min: 1, price: .45 }] }, TAMPO(30, .3, 2)] },
   { ref: 'PF-5540', name: 'Libreta A5 cartón reciclado', category: 'Escritura y oficina', shape: 'libreta', dims: '14,8 × 21 cm · 80 hojas', material: 'Cartón reciclado', variants: [['Natural', '#c9a77a', 3800], ['Negro', '#1b1b1b', 900]], tiers: T([[50, 1.75], [250, 1.45], [500, 1.3]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 2, setup: 30, addSetup: 15, tiers: [{ min: 1, price: .3 }] }] },
   { ref: 'PF-2210', name: 'Bolígrafo pulsador antideslizante', category: 'Escritura y oficina', shape: 'boligrafo', dims: '14 cm', material: 'Plástico', variants: [['Verde', '#2e8b57', 18000], ['Azul', '#1f4fbf', 52000], ['Blanco', '#f2f2f2', 41000], ['Negro', '#1b1b1b', 30000]], tiers: T([[250, .21], [500, .18], [1000, .15], [5000, .12]]), print: [TAMPO(30, .08, 3)] },
+  { ref: 'PF-9010', name: 'Lanyard poliéster 20 mm con mosquetón', category: 'Congresos', shape: 'lanyard', dims: '90 × 2 cm', material: 'Poliéster', variants: [['Verde', '#00843d', 12000], ['Azul', '#1f4fbf', 9000], ['Negro', '#1b1b1b', 7000], ['Blanco', '#f2f2f2', 5000]], tiers: T([[100, .42], [250, .36], [500, .31], [1000, .27]]), print: [{ id: 'subli', technique: 'Sublimación', maxColors: 1, fullColor: true, setup: 0, tiers: [{ min: 1, price: .28 }, { min: 500, price: .22 }] }, { id: 'seri', technique: 'Serigrafía', maxColors: 2, setup: 30, addSetup: 15, tiers: [{ min: 1, price: .12 }] }] },
+  { ref: 'PF-9020', name: 'Porta-acreditaciones con pinza', category: 'Congresos', shape: 'acreditacion', dims: '11 × 15 cm', material: 'PVC rígido', variants: [['Transparente', '#9cc8ef', 8000], ['Verde', '#2fae66', 2000]], tiers: T([[100, .38], [250, .32], [500, .27]]), print: [TAMPO(28, .14, 1)] },
   { ref: 'PF-8030', name: 'Pulsera repelente antimosquitos', category: 'Verano', shape: 'pulsera', dims: 'Ø7 cm', material: 'Silicona con citronela', variants: [['Verde', '#2fae66', 7600], ['Azul', '#2f7fd1', 6100], ['Rosa', '#f2a7c3', 5300]], tiers: T([[250, .44], [500, .38], [1000, .32]]), print: [TAMPO(28, .11, 1)] },
 ].map((p) => ({ ...p, variants: p.variants.map(([color, hex, stock]) => ({ sku: `${p.ref}-${color.slice(0, 3).toUpperCase()}`, color, hex, stock })) }));
 
+
+
+/* ---------- Públicos ---------- */
+const AUD = {
+  farmacia: { name: 'Farmacias', cats: ['Botiquín y salud', 'Higiene', 'Cuidado personal', 'Bienestar', 'Verano', 'Bolsas'] },
+  congresos: { name: 'Ferias y congresos', cats: ['Congresos', 'Escritura y oficina', 'Bolsas', 'Textil', 'Higiene'] },
+};
+const PACKS = [
+  { id: 'congresista', name: 'Kit congresista', aud: 'congresos', text: 'Lo que recibe cada asistente al acreditarse.', items: ['tote|bolsa algodon', 'libreta|cuaderno', 'boligrafo', 'lanyard|cinta'], tech: true },
+  { id: 'farmacia', name: 'Kit fidelización farmacia', aud: 'farmacia', text: 'Detalles de mostrador para regalar con la compra.', items: ['bolsa de papel|kraft', 'pastillero', 'labial|balsamo', 'gel'], tech: true },
+  { id: 'stand', name: 'Kit de stand', aud: 'congresos', text: 'Para repartir en el stand y captar contactos.', items: ['camiseta', 'boligrafo', 'gel', 'acreditac|identificador'], tech: true },
+];
+
 /* ---------- Estado ---------- */
-let CAT = DEMO, demo = true, cat = 'Todo', q = '';
-const S = { cart: [], logos: {} };           // logos: dataURL por línea (no se guardan en el navegador)
+let CAT = DEMO, demo = true, cat = 'Todo', aud = '', q = '';
+const S = { cart: [], logos: {} };
 try { S.cart = JSON.parse(localStorage.getItem('pf-cart') || '[]'); } catch {}
 const save = () => { try { localStorage.setItem('pf-cart', JSON.stringify(S.cart)); } catch {} $('#cc').textContent = S.cart.length; };
-const SHAPE_WORDS = [['pastillero', 'pastillero'], ['pildor', 'pastillero3'], ['botiqu', 'botiquin'], ['auxilio', 'botiquin'], ['gel hidro', 'gel'], ['higieniz', 'gel'], ['spray', 'gel'], ['toallit', 'toallitas'], ['neceser', 'neceser'], ['cosmet', 'neceser'], ['labial', 'balsamo'], ['balsamo', 'balsamo'], ['antifaz', 'antifaz'], ['bolsa de papel', 'bolsapapel'], ['papel', 'bolsapapel'], ['frio', 'gelfrio'], ['pulsera', 'pulsera'], ['bolsa', 'bolsa']];
-const shapeOf = (p) => { if (p.shape) return p.shape; const t = (p.name + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); return (SHAPE_WORDS.find(([w]) => t.includes(w)) || [, 'neceser'])[1]; };
+const byRef = (r) => CAT.find((p) => p.ref === r);
+const audOf = (p) => Object.keys(AUD).filter((k) => AUD[k].cats.includes(p.category));
 
-/* ---------- Precio (espejo del cálculo del servidor; el servidor manda) ---------- */
+/* ---------- Precio (espejo del servidor; el servidor manda) ---------- */
 const tierFor = (tiers, qty) => { const t = [...(tiers || [])].sort((a, b) => a.min - b.min); return t.filter((x) => qty >= x.min).pop() || t[0]; };
 const optId = (o) => String(o.id ?? o.technique);
 const findOpt = (p, id) => (p.print || []).find((o) => optId(o) === String(id));
@@ -181,34 +282,170 @@ function price(p, qty, tech, colors) {
   const unit = Math.round((tier.price + pu) * 100) / 100;
   return { tier, unit, pu, n, o, setup, total: unit * qty + setup, min: tiers[0].min };
 }
+const byKey = (k) => CAT.find((p) => k.split('|').some((w) => nrm(p.name).includes(nrm(w))));
+function packPrice(pk, qty) {
+  const ps = pk.items.map(byKey).filter(Boolean);
+  const lines = ps.map((p) => { const q = Math.max(qty, price(p, 1, null).min); return { p, q, r: price(p, q, pk.tech && p.print?.[0] ? optId(p.print[0]) : null, 1) }; });
+  return { ps, lines, total: lines.reduce((s, l) => s + l.r.total, 0) };
+}
+
+/* ---------- Ilustraciones grandes ---------- */
+const CROSS = (x, y, s, f = '#00843d') => `<path d="M${x - s / 6} ${y - s / 2}h${s / 3}v${s / 3}h${s / 3}v${s / 3}h-${s / 3}v${s / 3}h-${s / 3}v-${s / 3}h-${s / 3}v-${s / 3}h${s / 3}Z" fill="${f}"/>`;
+const mini = (k, c, x, y, sz, logo = true) => { const p = { shape: k, name: k }; return `<g transform="translate(${x} ${y}) scale(${sz / 240})">${art(p, { hex: c }, logo ? LOGO_DEMO : null, false).replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g>`; };
+function standScene(dark) {
+  const wall = dark ? '#0d4d2c' : '#f4faf6';
+  return `<svg viewBox="0 0 600 500" role="img" aria-label="Stand de feria con la marca de la farmacia, mostrador, roll-up y productos personalizados">
+  <defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00000030"/><stop offset="1" stop-color="#00000000"/></linearGradient>
+  <linearGradient id="wl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${wall}"/><stop offset="1" stop-color="${dark ? '#0a3f24' : '#e3f2ea'}"/></linearGradient></defs>
+  <path d="M0 420 L600 420 L600 500 L0 500Z" fill="#00000026"/>
+  <path d="M40 430 L560 430 L600 480 L0 480Z" fill="${dark ? '#062f19' : '#cfe8da'}"/>
+  <rect x="70" y="60" width="460" height="300" rx="6" fill="url(#wl)"/>
+  <rect x="70" y="60" width="460" height="54" fill="#00843d"/>
+  ${CROSS(110, 87, 34, '#fff')}<text x="138" y="98" font-family="Archivo,Arial" font-weight="900" font-size="30" fill="#fff">TU MARCA</text>
+  <text x="510" y="98" text-anchor="end" font-family="Archivo,Arial" font-weight="700" font-size="16" fill="#cfeedd">Congreso 2027</text>
+  <rect x="96" y="140" width="190" height="150" rx="8" fill="${dark ? '#0f5a35' : '#fff'}" stroke="#00843d33"/>
+  <text x="112" y="176" font-family="Archivo,Arial" font-weight="800" font-size="20" fill="${dark ? '#fff' : '#0f1714'}">Cuidamos</text>
+  <text x="112" y="200" font-family="Archivo,Arial" font-weight="800" font-size="20" fill="${dark ? '#fff' : '#0f1714'}">de ti</text>
+  <rect x="112" y="222" width="70" height="10" rx="5" fill="#00843d"/><rect x="112" y="240" width="140" height="6" rx="3" fill="#00843d40"/><rect x="112" y="254" width="120" height="6" rx="3" fill="#00843d40"/>
+  <g class="float">${CROSS(410, 215, 110)}</g>
+  <rect x="436" y="120" width="76" height="300" rx="4" fill="#fff" stroke="#0002"/><rect x="436" y="120" width="76" height="70" fill="#00843d"/>${CROSS(474, 155, 34, '#fff')}
+  <rect x="446" y="210" width="56" height="8" rx="4" fill="#00843d"/><rect x="446" y="226" width="44" height="6" rx="3" fill="#0002"/><rect x="430" y="418" width="88" height="10" rx="3" fill="#999"/>
+  <path d="M150 330 h270 l-10 100 h-250Z" fill="#00843d"/><rect x="140" y="318" width="290" height="16" rx="4" fill="#006b31"/>
+  ${CROSS(285, 382, 40, '#fff')}
+  ${mini('bolsa', '#e9dfc7', 156, 248, 78)}${mini('pastillero3', '#9cc8ef', 238, 282, 46)}${mini('gel', '#bfe6f5', 285, 262, 62)}${mini('libreta', '#2e8b57', 330, 270, 58, false)}${mini('boligrafo', '#2e8b57', 375, 268, 54, false)}
+  <ellipse cx="300" cy="438" rx="160" ry="10" fill="url(#fl)"/>
+</svg>`;
+}
+function audScene(kind) {
+  if (kind === 'farmacia') return `<svg viewBox="0 0 600 240" aria-hidden="true">
+    <rect width="600" height="240" fill="#0a9a4c"/>${[0, 1].map((r) => `<rect x="30" y="${108 + r * 100}" width="540" height="10" rx="3" fill="#ffffff45"/>`).join('')}
+    ${mini('pastillero3', '#9cc8ef', 40, 30, 80)}${mini('balsamo', '#f2f2f2', 130, 30, 80)}${mini('gel', '#bfe6f5', 215, 26, 84)}${mini('neceser', '#d9eef5', 305, 30, 84)}${mini('toallitas', '#f2f2f2', 400, 30, 84)}${CROSS(530, 66, 60, '#fff')}
+    ${mini('botiquin', '#d23a3a', 50, 130, 80)}${mini('antifaz', '#1d2b4f', 150, 134, 80)}${mini('gelfrio', '#4aa3e0', 250, 130, 80)}${mini('pulsera', '#2fae66', 345, 132, 78)}${mini('bolsapapel', '#c9a77a', 445, 122, 90)}</svg>`;
+  return `<svg viewBox="0 0 600 240" aria-hidden="true">
+    <rect width="600" height="240" fill="#1b4f7a"/><rect x="150" y="22" width="300" height="82" rx="6" fill="#ffffff1a"/>
+    <text x="300" y="64" text-anchor="middle" font-family="Archivo,Arial" font-weight="900" font-size="28" fill="#fff">CONGRESO</text><text x="300" y="90" text-anchor="middle" font-family="Archivo,Arial" font-weight="500" font-size="15" fill="#cfe3f2">del sector salud</text>
+    <rect x="30" y="218" width="540" height="10" rx="3" fill="#ffffff30"/>
+    ${mini('bolsa', '#e9dfc7', 40, 118, 104)}${mini('lanyard', '#00843d', 150, 112, 104)}${mini('acreditacion', '#9cc8ef', 255, 116, 100)}${mini('libreta', '#2e8b57', 355, 118, 98, false)}${mini('boligrafo', '#00843d', 445, 118, 98, false)}</svg>`;
+}
 
 /* ---------- Vistas ---------- */
-function vCatalog() {
-  const cats = ['Todo', ...new Set(CAT.map((p) => p.category).filter(Boolean))];
-  const list = CAT.filter((p) => (cat === 'Todo' || p.category === cat) && (!q || (p.name + ' ' + p.ref + ' ' + p.category).toLowerCase().includes(q.toLowerCase())));
-  const hp = CAT.find((p) => shapeOf(p) === 'pastillero3') || CAT[0];
+const card = (p) => { const t = [...p.tiers].sort((a, b) => a.price - b.price)[0];
+  return `<a class="card" href="#p-${encodeURIComponent(p.ref)}"><div class="ph">${pic(p, p.variants?.[0])}${p.isNew ? '<span class="badge">Novedad</span>' : ''}</div><div class="bd">
+    <span class="ref">${esc(p.ref)} · ${esc(p.category)}</span><span class="nm">${esc(p.name)}</span>
+    <div class="dots">${(p.variants || []).slice(0, 8).map((v) => `<i style="background:${esc(v.hex || '#ccc')}" title="${esc(v.color)}"></i>`).join('')}</div>
+    <span class="from">desde <b>${eur(t.price)}</b>/ud</span></div></a>`; };
+
+function packsHTML(only) {
+  return PACKS.filter((pk) => (!only || pk.aud === only) && packPrice(pk, 100).ps.length >= 2).map((pk) => { const pp = packPrice(pk, 100);
+    return `<article class="pack" data-pack="${pk.id}"><h3>${esc(pk.name)}</h3><p class="note" style="margin:0">${esc(pk.text)}</p>
+      <div class="imgs">${pp.ps.map((p) => `<div>${art(p, p.variants[0], LOGO_DEMO)}</div>`).join('')}</div>
+      <ul>${pp.ps.map((p) => `<li>${esc(p.name)}</li>`).join('')}</ul>
+      <div class="qrow"><label class="note" for="pq-${pk.id}">Unidades</label><select id="pq-${pk.id}" data-pq="${pk.id}">${[100, 250, 500, 1000].map((n) => `<option>${n}</option>`).join('')}</select></div>
+      <div class="pr"><span class="note" data-pu="${pk.id}">${eur(pp.total / 100)} por kit</span><b data-pt="${pk.id}">${eur0(pp.total)}</b></div>
+      <button class="btn p" data-addpack="${pk.id}">Añadir pack con mi logo</button></article>`; }).join('');
+}
+
+function vHome() {
+  const feat = ['pastillero', 'tote', 'lanyard', 'neceser', 'agenda', 'botiquin', 'camiseta', 'gel'].map(byKey).filter((p, i, a) => p && a.indexOf(p) === i);
+  const show = feat.length >= 4 ? feat : CAT.slice(0, 8);
   return `<section class="band hero"><div class="wrap">
-    <div><h1>Merchandising para tu farmacia, con tu logo y precio al instante</h1>
-      <p class="lead">Pastilleros, neceseres y botiquines para tus clientes, y los básicos de siempre: totebags, camisetas, agendas y bolígrafos. Elige técnica y cantidad, mira el precio por tramos y el stock real, y paga online o pide presupuesto.</p>
-      <ul class="facts"><li>Seleccionado para farmacia</li><li>Stock real sincronizado</li><li>Boceto antes de producir</li></ul>
-      ${demo ? '<p class="demo">Catálogo y precios de muestra: con la API de Makito conectada aparecen los productos reales, con su foto, precio y stock.</p>' : ''}</div>
-    <div class="proof">${art({ ...hp, shape: 'pastillero3' }, { hex: '#9cc8ef' }, LOGO_DEMO, true)}</div>
+    <div><p class="kicker">Merchandising y stands para el sector salud</p>
+      <h1>Tu marca, en el mostrador y en cada congreso</h1>
+      <p class="lead">Pastilleros, totebags, agendas y kits de congresista con tu logo, y el stand completo para la feria. Precio al instante, stock real y boceto antes de producir.</p>
+      <div class="row"><a class="btn w" href="#catalogo">Ver catálogo</a><a class="btn s" href="#stands">Presupuesto de stand</a></div>
+      <ul class="sectors"><li>Farmacias</li><li>Laboratorios</li><li>Congresos médicos</li><li>Ferias del sector</li><li>Colegios profesionales</li></ul>
+      ${demo ? '<p class="demo">Productos y precios de muestra hasta conectar el catálogo de Makito.</p>' : ''}</div>
+    <div class="scene">${standScene(false)}</div>
   </div></section>
-  <section class="band"><div class="wrap">
+  <section class="facts" aria-label="Datos clave"><div><b>Stock real</b><span>sincronizado cada hora</span></div><div><b>24 h</b><span>presupuesto laborable</span></div><div><b>Boceto</b><span>antes de producir</span></div><div><b>Desde 25 uds</b><span>según producto</span></div></section>
+
+  <section class="band"><div class="wrap"><p class="kicker">Para quién trabajamos</p><h2>Dos mundos, un mismo proveedor</h2>
+    <div class="aud" style="margin-top:24px">
+      <a class="acard" href="#farmacia" style="background:#006b31">${audScene('farmacia')}<div class="tx"><h3 style="font-size:30px">Farmacias</h3><p>Regalos de mostrador, bolsas, pastilleros, neceseres y campañas de temporada que tus clientes usan a diario.</p><span class="go">Ver productos para farmacia →</span></div></a>
+      <a class="acard" href="#congresos" style="background:#0d2a43">${audScene('congresos')}<div class="tx"><h3 style="font-size:30px">Ferias y congresos</h3><p>Kits de congresista, acreditaciones, totebags, agendas y todo lo que se reparte en el stand.</p><span class="go">Ver productos para eventos →</span></div></a>
+    </div></div></section>
+
+  <section class="band packs-band" id="packs"><div class="wrap"><p class="kicker">Packs listos</p><h2>Combina, personaliza y listo</h2>
+    <p class="lead" style="margin-bottom:0">Elige unidades y añade el pack: cada producto va con tu logo en su técnica recomendada. Luego puedes cambiar colores y técnicas en el carrito.</p>
+    <div class="packs">${packsHTML()}</div></div></section>
+
+  ${standsHTML()}
+
+  <section class="band"><div class="wrap"><p class="kicker">Cómo funciona</p><h2>Del logo a la entrega, sin sorpresas</h2>
+    <ol class="steps" style="padding:0"><li><b>Elige y configura</b><p>Producto, color, técnica y cantidad. El precio se calcula al momento.</p></li>
+    <li><b>Sube tu logo</b><p>Lo ves aplicado sobre el producto. Si lo tienes en vector, mejor.</p></li>
+    <li><b>Aprueba el boceto</b><p>Te enviamos la prueba con medidas y Pantones antes de producir.</p></li>
+    <li><b>Recíbelo</b><p>En tu farmacia o directamente en la sede del congreso.</p></li></ol></div></section>
+
+  <section class="band" style="padding-top:0"><div class="wrap"><div class="tools"><div><p class="kicker">Lo más pedido</p><h2 style="margin:0">Productos destacados</h2></div><a class="btn s" href="#catalogo">Ver todo el catálogo</a></div>
+    <div class="grid" style="margin-top:20px">${show.map(card).join('')}</div></div></section>
+
+  ${faqHTML()}
+  <section class="band cta"><div class="wrap"><h2>¿Tienes un congreso en el calendario?</h2><p>Cuéntanos fecha, sede y número de asistentes y te preparamos kits y stand en un solo presupuesto.</p>
+    <a class="btn w" href="#stands">Pedir presupuesto del evento</a></div></section>`;
+}
+
+function standsHTML() {
+  return `<section class="band stands" id="stands-sec"><div class="wrap">
+    <div><p class="kicker">Stands y gran formato</p><h2>El stand completo, diseñado, impreso y montado</h2>
+      <p class="lead" style="color:#cfe3d8">Diseñamos y producimos la imagen de tu stand para ferias y congresos del sector salud, y lo coordinamos con los regalos de tu marca.</p>
+      <ul class="svc"><li>Stands modulares y de diseño</li><li>Roll-ups y banners</li><li>Photocalls y fondos</li><li>Mostradores personalizados</li><li>Lonas, vinilos y moqueta</li><li>Señalética y acreditaciones</li></ul>
+      <form class="box form" id="stf">
+        <h3>Presupuesto de stand o evento</h3>
+        <div class="two"><div><label for="s-name">Nombre *</label><input class="in" id="s-name" name="name" required autocomplete="name"></div>
+        <div><label for="s-em">Email *</label><input class="in" id="s-em" name="email" type="email" required autocomplete="email"></div></div>
+        <div class="two"><div><label for="s-co">Empresa / laboratorio</label><input class="in" id="s-co" name="company" autocomplete="organization"></div>
+        <div><label for="s-ph">Teléfono</label><input class="in" id="s-ph" name="phone" type="tel" autocomplete="tel"></div></div>
+        <div class="two"><div><label for="s-ev">Feria o congreso</label><input class="in" id="s-ev" name="event" placeholder="Nombre y ciudad"></div>
+        <div><label for="s-dt">Fecha</label><input class="in" id="s-dt" name="date" type="date"></div></div>
+        <div class="two"><div><label for="s-m2">Superficie</label><select class="in" id="s-m2" name="size"><option>Solo gran formato (roll-up, photocall…)</option><option>Hasta 9 m²</option><option>9–18 m²</option><option>18–36 m²</option><option>Más de 36 m²</option></select></div>
+        <div><label for="s-pax">Asistentes (para kits)</label><input class="in" id="s-pax" name="pax" type="number" inputmode="numeric" min="0" placeholder="p. ej. 800"></div></div>
+        <label for="s-nt">Qué necesitas</label><textarea class="in" id="s-nt" name="notes" placeholder="Stand, mostrador, roll-ups, kits de congresista…"></textarea>
+        <button class="btn w" type="submit">Pedir presupuesto</button><div id="stmsg" aria-live="polite"></div>
+      </form></div>
+    <div class="standpic">${standScene(true)}</div>
+  </div></section>`;
+}
+
+const FAQ = [
+  ['¿Cuál es el pedido mínimo?', 'Depende del producto: desde 25 unidades en textil y agendas, y desde 100–250 en artículos pequeños como bolígrafos o pastilleros. Lo ves en cada ficha.'],
+  ['¿Cuánto tarda la producción?', 'Normalmente entre 7 y 12 días laborables desde que apruebas el boceto. Para congresos con fecha fija, indícala al pedir y la tenemos en cuenta.'],
+  ['¿Puedo enviar los kits a la sede del congreso?', 'Sí. Indica la dirección de la sede y la persona de contacto en el pedido o en el presupuesto.'],
+  ['¿Qué formato necesita mi logo?', 'Para ver la prueba vale PNG o JPG. Para producir, mejor en vector (AI, PDF o SVG). Si no lo tienes, lo preparamos.'],
+  ['¿Hacéis el stand completo?', 'Sí: diseño, impresión, montaje y desmontaje. Pide presupuesto con la fecha, la feria y la superficie.'],
+  ['¿Los precios llevan IVA?', 'Los precios por unidad son sin IVA. El total del carrito muestra el IVA del 21 % aparte.'],
+];
+const faqHTML = () => `<section class="band" id="preguntas" style="background:var(--paper)"><div class="wrap faq"><div><p class="kicker">Preguntas frecuentes</p><h2>Lo que nos preguntan antes de pedir</h2></div>
+  <div>${FAQ.map(([q, a], i) => `<details ${i ? '' : 'open'}><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div></div></section>`;
+
+function vAudience(k) {
+  const A = AUD[k], list = CAT.filter((p) => A.cats.includes(p.category));
+  const intro = k === 'farmacia'
+    ? ['Merchandising para farmacias', 'Productos útiles que tus clientes se llevan a casa y vuelven a ver cada día: pastilleros, neceseres, bálsamos, gel, bolsas de mostrador y campañas de verano.']
+    : ['Merchandising para ferias y congresos', 'Kits de congresista, lanyards, acreditaciones, agendas, totebags y regalos de stand para laboratorios, sociedades científicas y organizadores.'];
+  return `<section class="band hero" style="padding-block:clamp(32px,5vw,64px)"><div class="wrap"><div><p class="kicker">${esc(A.name)}</p><h1 style="font-size:clamp(34px,5vw,56px)">${intro[0]}</h1><p class="lead">${intro[1]}</p>
+    <div class="row"><a class="btn w" href="#packs-${k}">Ver packs</a>${k === 'congresos' ? '<a class="btn s" href="#stands">Presupuesto de stand</a>' : ''}</div></div>
+    <div style="border-radius:20px;overflow:hidden;align-self:center">${audScene(k)}</div></div></section>
+  <section class="band packs-band" id="packs-${k}"><div class="wrap"><h2>Packs para ${k === 'farmacia' ? 'tu farmacia' : 'tu evento'}</h2><div class="packs">${packsHTML(k)}</div></div></section>
+  <section class="band"><div class="wrap"><h2>${list.length} productos</h2><div class="grid" style="margin-top:18px">${list.map(card).join('')}</div></div></section>`;
+}
+
+function vCatalog() {
+  const base = CAT.filter((p) => !aud || AUD[aud].cats.includes(p.category));
+  const cats = ['Todo', ...new Set(base.map((p) => p.category).filter(Boolean))];
+  if (!cats.includes(cat)) cat = 'Todo';
+  const list = base.filter((p) => (cat === 'Todo' || p.category === cat) && (!q || nrm(p.name + ' ' + p.ref + ' ' + p.category).includes(nrm(q))));
+  return `<section class="band"><div class="wrap">
+    <div class="tools"><h2 style="margin:0">Catálogo</h2><form class="search" role="search" id="sf"><input id="q" type="search" value="${esc(q)}" placeholder="Buscar: pastillero, totebag, lanyard…" aria-label="Buscar productos"></form></div>
+    <div class="chips" role="toolbar" aria-label="Público"><button class="chip aud" data-aud="" aria-pressed="${!aud}">Todos</button>${Object.entries(AUD).map(([k, a]) => `<button class="chip aud" data-aud="${k}" aria-pressed="${aud === k}">${esc(a.name)}</button>`).join('')}</div>
     <div class="chips" role="toolbar" aria-label="Categorías">${cats.map((c) => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === cat}">${esc(c)}</button>`).join('')}</div>
-    <p class="note" style="margin:0 0 12px">${list.length} productos${q ? ` para «${esc(q)}»` : ''}</p>
-    ${list.length ? `<div class="grid">${list.map((p) => {
-      const t = [...p.tiers].sort((a, b) => a.price - b.price)[0];
-      return `<a class="card" href="#p-${encodeURIComponent(p.ref)}"><div class="ph">${pic(p, p.variants?.[0])}</div><div class="bd">
-        <span class="ref">${esc(p.ref)}</span><span class="nm">${esc(p.name)}</span>
-        <div class="dots">${(p.variants || []).slice(0, 8).map((v) => `<i style="background:${esc(v.hex || '#ccc')}" title="${esc(v.color)}"></i>`).join('')}</div>
-        <span class="from">desde <b>${eur(t.price)}</b>/ud</span></div></a>`;
-    }).join('')}</div>` : `<div class="empty">No hay productos con ese filtro. <button class="x" data-cat="Todo">Ver todo</button></div>`}
+    <p class="note" style="margin:4px 0 14px">${list.length} productos${q ? ` para «${esc(q)}»` : ''}</p>
+    ${list.length ? `<div class="grid">${list.map(card).join('')}</div>` : `<div class="empty">No hay productos con ese filtro. <button class="x" data-cat="Todo" data-aud="">Ver todo</button></div>`}
   </div></section>`;
 }
 
 function vProduct(ref) {
-  const p = CAT.find((x) => x.ref === ref);
+  const p = byRef(ref);
   if (!p) return `<section class="band"><div class="wrap empty">Producto no encontrado. <a href="#catalogo">Volver al catálogo</a></div></section>`;
   const t0 = [...p.tiers].sort((a, b) => a.min - b.min);
   return `<section class="band"><div class="wrap">
@@ -216,29 +453,29 @@ function vProduct(ref) {
     <div class="pd">
       <div class="stage"><div class="proof" id="stage"></div><p class="note">Vista orientativa. Antes de producir te enviamos boceto para aprobar.</p></div>
       <form id="cfg">
-        <span class="ref">${esc(p.ref)}</span><h2>${esc(p.name)}</h2>
+        <span class="ref">${esc(p.ref)} · ${esc(p.category)}</span><h2>${esc(p.name)}</h2>
         <p class="note">${[p.dims, p.material].filter(Boolean).map(esc).join(' · ')}</p>
-        ${p.description ? `<p>${esc(p.description)}</p>` : ''}
+        ${p.description ? `<p>${esc(String(p.description).replace(/<[^>]+>/g, ' '))}</p>` : ''}
         <fieldset><legend>Color</legend><div class="sw">${p.variants.map((v, i) => `<label title="${esc(v.color)}"><input type="radio" name="sku" value="${esc(v.sku)}" ${i ? '' : 'checked'}><span style="background:${esc(v.hex || '#ccc')}"></span></label>`).join('')}</div>
           <p class="note" id="vinfo"></p></fieldset>
         <fieldset><legend>Marcaje</legend><div class="seg">
           <label><input type="radio" name="tech" value="none"><span>Sin marcar</span></label>
           ${(p.print || []).map((o, i) => `<label><input type="radio" name="tech" value="${esc(optId(o))}" ${i ? '' : 'checked'}><span>${esc(o.technique)}${o.area ? ` · ${esc(o.area)}` : ''}</span></label>`).join('')}</div></fieldset>
         <fieldset id="colfs"><legend>Colores del logo</legend><select name="colors" id="colors" aria-label="Número de colores"></select>
-          <input class="in" name="pantones" id="pantones" placeholder="Pantones (opcional), p. ej. 485 C, Black C" style="margin-top:8px" maxlength="60"></fieldset>
+          <input class="in" name="pantones" id="pantones" placeholder="Pantones (opcional), p. ej. 356 C, Black C" style="margin-top:8px" maxlength="60"></fieldset>
         <fieldset><legend>Tu logo</legend><label class="drop"><img id="lgprev" alt="" hidden><span id="lgname">Sube PNG, JPG o SVG para verlo aplicado (AI/PDF en el presupuesto)</span>
           <input type="file" id="lg" accept="image/png,image/jpeg,image/svg+xml" hidden></label></fieldset>
         <fieldset><legend><label for="qty">Cantidad</label></legend><div class="row"><input class="qty" id="qty" type="number" inputmode="numeric" min="${t0[0].min}" step="1" value="${Math.max(t0[0].min, 100)}"><span class="note">Mínimo ${t0[0].min} uds</span></div></fieldset>
         <table><thead><tr><th>Cantidad</th><th class="n">Producto/ud</th></tr></thead><tbody id="tiers"></tbody></table>
         <div id="sum"></div>
-        <div class="row" style="margin-top:8px"><button class="btn p" type="submit" id="add">Añadir al carrito</button><a class="btn s" href="#carrito" style="display:flex;align-items:center;text-decoration:none">Ver carrito</a></div>
+        <div class="row" style="margin-top:8px"><button class="btn p" type="submit" id="add">Añadir al carrito</button><a class="btn s" href="#carrito">Ver carrito</a></div>
         <div id="pmsg"></div>
       </form>
     </div></div></section>`;
 }
 
 function bindProduct(ref) {
-  const p = CAT.find((x) => x.ref === ref); if (!p) return;
+  const p = byRef(ref); if (!p) return;
   const f = $('#cfg'); let logo = null;
   const val = () => {
     const sku = f.elements.sku.value, v = p.variants.find((x) => x.sku === sku), tech = f.elements.tech.value;
@@ -248,7 +485,7 @@ function bindProduct(ref) {
     cs.hidden = !o || o.maxColors < 2;
     if (o) cs.innerHTML = Array.from({ length: o.maxColors }, (_, i) => `<option value="${i + 1}" ${i + 1 === Math.min(cur, o.maxColors) ? 'selected' : ''}>${i + 1} color${i ? 'es' : ''}</option>`).join('');
     const qty = Math.floor(+$('#qty').value || 0), r = price(p, Math.max(qty, 1), tech === 'none' ? null : tech, +cs.value || 1);
-    $('#stage').innerHTML = art({ ...p, shape: shapeOf(p) }, v, tech === 'none' ? null : (logo || LOGO_DEMO), true);
+    $('#stage').innerHTML = pic(p, v, o ? (logo || LOGO_DEMO) : null, true);
     $('#vinfo').innerHTML = `${esc(v.color)} · <span class="stock ${v.stock < qty ? 'low' : ''}">${v.stock.toLocaleString('es-ES')} uds en stock</span>${v.stock < qty ? (v.next ? ` — reposición prevista ${new Date(v.next).toLocaleDateString('es-ES')}` : ' — consulta plazo') : ''}`;
     $('#tiers').innerHTML = [...p.tiers].sort((a, b) => a.min - b.min).map((t) => `<tr class="${t === r.tier ? 'on' : ''}"><td>desde ${t.min.toLocaleString('es-ES')}</td><td class="n">${eur(t.price)}</td></tr>`).join('');
     const ok = qty >= r.min;
@@ -256,7 +493,7 @@ function bindProduct(ref) {
       <div class="total"><span>${ok ? `${qty.toLocaleString('es-ES')} uds · ${eur(r.unit)}/ud` : `Mínimo ${r.min} uds`}</span><b>${ok ? eur(r.total) : '—'}</b></div>
       <p class="note" style="margin:0">Sin IVA. ${ok && r.total > CFG.quoteOver ? 'Para este importe te recomendamos pedir presupuesto: suele salir mejor.' : ''}</p>`;
     $('#add').disabled = !ok;
-    return { sku, tech, colors: o ? (o.fullColor ? 1 : +cs.value || 1) : 0, qty, pantones: $('#pantones').value.trim(), area: o?.area };
+    return { sku, tech, colors: o ? (o.fullColor ? 1 : +cs.value || 1) : 0, qty, pantones: $('#pantones').value.trim() };
   };
   f.addEventListener('input', val); f.addEventListener('change', val);
   $('#lg').addEventListener('change', (e) => {
@@ -267,7 +504,7 @@ function bindProduct(ref) {
     rd.readAsDataURL(file);
   });
   f.addEventListener('submit', (e) => {
-    e.preventDefault(); const c = val(); if (c.qty < price(p, 1, 'none', 0).min) return;
+    e.preventDefault(); const c = val(); if (c.qty < price(p, 1, null).min) return;
     const id = Date.now().toString(36);
     S.cart.push({ id, ref: p.ref, sku: c.sku, qty: c.qty, technique: c.tech === 'none' ? null : c.tech, colors: c.colors, pantones: c.pantones });
     if (logo) S.logos[id] = logo;
@@ -278,32 +515,29 @@ function bindProduct(ref) {
 }
 
 function cartCalc() {
-  return S.cart.map((l) => { const p = CAT.find((x) => x.ref === l.ref); if (!p) return null;
+  return S.cart.map((l) => { const p = byRef(l.ref); if (!p) return null;
     const r = price(p, l.qty, l.technique, l.colors); return { l, p, v: p.variants.find((v) => v.sku === l.sku), r }; }).filter(Boolean);
 }
 function vCart() {
   const rows = cartCalc(), sub = rows.reduce((s, x) => s + x.r.total, 0), vat = sub * CFG.vat;
-  if (!rows.length) return `<section class="band"><div class="wrap empty"><h2>Tu carrito está vacío</h2><a class="btn p" href="#catalogo" style="display:inline-flex;align-items:center;text-decoration:none">Ver productos</a></div></section>`;
+  if (!rows.length) return `<section class="band"><div class="wrap empty"><h2>Tu carrito está vacío</h2><p>Empieza por un pack o explora el catálogo.</p><div class="row" style="justify-content:center"><a class="btn p" href="#packs">Ver packs</a><a class="btn s" href="#catalogo">Catálogo</a></div></div></section>`;
   const big = sub > CFG.quoteOver;
   return `<section class="band"><div class="wrap"><h2>Carrito</h2><div class="cart">
-    <div>${rows.map(({ l, p, v, r }) => `<div class="line"><div class="ph">${art({ ...p, shape: shapeOf(p) }, v, S.logos[l.id])}</div>
-      <div><span class="nm">${esc(p.name)}</span><br><span class="note">${esc(v?.color)} · ${r.o ? `${esc(r.o.technique)}${r.n > 1 ? ` ${r.n} col.` : ''}` : 'sin marcar'} · ${l.qty.toLocaleString('es-ES')} uds × ${eur(r.unit)}${r.setup ? ` + ${eur(r.setup)} prep.` : ''}</span>
+    <div>${rows.map(({ l, p, v, r }) => `<div class="line"><div class="ph">${art(p, v, S.logos[l.id] || (l.technique ? LOGO_DEMO : null))}</div>
+      <div><a class="nm" href="#p-${encodeURIComponent(p.ref)}">${esc(p.name)}</a><br><span class="note">${esc(v?.color)} · ${r.o ? `${esc(r.o.technique)}${r.n > 1 ? ` ${r.n} col.` : ''}` : 'sin marcar'} · ${l.qty.toLocaleString('es-ES')} uds × ${eur(r.unit)}${r.setup ? ` + ${eur(r.setup)} prep.` : ''}</span>
       ${l.technique && !S.logos[l.id] ? '<br><span class="note">Logo pendiente: adjúntalo en el formulario.</span>' : ''}</div>
       <div style="text-align:right"><b style="white-space:nowrap">${eur(r.total)}</b><br><button class="x" data-del="${l.id}">Quitar</button></div></div>`).join('')}
       <table style="margin-top:12px"><tbody><tr><td>Subtotal</td><td class="n">${eur(sub)}</td></tr><tr><td>IVA 21 %</td><td class="n">${eur(vat)}</td></tr></tbody></table>
       <div class="total"><span>Total</span><b>${eur(sub + vat)}</b></div>
       <p class="note">El precio final se confirma en servidor con la tarifa y el stock del momento.</p></div>
     <form class="box form" id="co">
-      <h2 style="font-size:24px">Tus datos</h2>
+      <h3>Tus datos</h3>
       <label for="c-name">Nombre y apellidos *</label><input class="in" id="c-name" name="name" required autocomplete="name">
-      <label for="c-co">Empresa</label><input class="in" id="c-co" name="company" autocomplete="organization">
-      <label for="c-vat">CIF / NIF</label><input class="in" id="c-vat" name="vat_id">
-      <label for="c-em">Email *</label><input class="in" id="c-em" name="email" type="email" required autocomplete="email">
-      <label for="c-ph">Teléfono</label><input class="in" id="c-ph" name="phone" type="tel" autocomplete="tel">
-      <label for="c-st">Dirección de entrega</label><input class="in" id="c-st" name="street" autocomplete="street-address" maxlength="60">
-      <div class="row" style="flex-wrap:nowrap"><div style="flex:0 0 38%"><label for="c-cp">Código postal</label><input class="in" id="c-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5"></div>
-      <div style="flex:1"><label for="c-ci">Población</label><input class="in" id="c-ci" name="city" autocomplete="address-level2" maxlength="40"></div></div>
-      <label for="c-nt">Notas (fecha límite, ubicación del logo…)</label><textarea class="in" id="c-nt" name="notes"></textarea>
+      <div class="two"><div><label for="c-co">Farmacia / empresa</label><input class="in" id="c-co" name="company" autocomplete="organization"></div><div><label for="c-vat">CIF / NIF</label><input class="in" id="c-vat" name="vat_id"></div></div>
+      <div class="two"><div><label for="c-em">Email *</label><input class="in" id="c-em" name="email" type="email" required autocomplete="email"></div><div><label for="c-ph">Teléfono</label><input class="in" id="c-ph" name="phone" type="tel" autocomplete="tel"></div></div>
+      <label for="c-st">Dirección de entrega (farmacia o sede del evento)</label><input class="in" id="c-st" name="street" autocomplete="street-address" maxlength="60">
+      <div class="two"><div><label for="c-cp">Código postal</label><input class="in" id="c-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5"></div><div><label for="c-ci">Población</label><input class="in" id="c-ci" name="city" autocomplete="address-level2" maxlength="40"></div></div>
+      <label for="c-nt">Notas (fecha del evento, ubicación del logo…)</label><textarea class="in" id="c-nt" name="notes"></textarea>
       <label for="c-lg">Logos en vector (AI, PDF, SVG)</label><input class="in" id="c-lg" type="file" multiple accept=".ai,.pdf,.svg,.eps,image/*" style="padding-top:10px">
       <button class="btn p" type="submit" name="act" value="pay" ${big ? 'disabled title="Importe alto: pide presupuesto"' : ''}>Pagar con tarjeta ${eur(sub + vat)}</button>
       <button class="btn s" type="submit" name="act" value="quote">Pedir presupuesto</button>
@@ -312,6 +546,12 @@ function vCart() {
     </form></div></div></section>`;
 }
 function dataURLtoBlob(u) { const [h, b] = u.split(','), m = h.match(/:(.*?);/)[1], s = atob(b), a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return new Blob([a], { type: m }); }
+async function sendQuote(customer, items, files = []) {
+  const fd = new FormData(); fd.append('data', JSON.stringify({ items, customer }));
+  S.cart.forEach((l, i) => { if (items.length && S.logos[l.id]) fd.append(`logo_${i}`, dataURLtoBlob(S.logos[l.id]), `logo-${i}`); });
+  files.forEach((file, i) => fd.append(`logo_${items.length + i}`, file));
+  const r = await fetch(CFG.api + '/quote', { method: 'POST', body: fd }); const j = await r.json(); if (!r.ok) throw new Error(j.error);
+}
 function bindCart() {
   const f = $('#co'); if (!f) return;
   f.addEventListener('submit', async (e) => {
@@ -327,41 +567,62 @@ function bindCart() {
         const r = await fetch(CFG.api + '/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items, customer }) });
         const j = await r.json(); if (!r.ok) throw new Error(j.message || j.error);
         location.href = j.url;
-      } else {
-        const fd = new FormData(); fd.append('data', JSON.stringify({ items, customer }));
-        S.cart.forEach((l, i) => { if (S.logos[l.id]) fd.append(`logo_${i}`, dataURLtoBlob(S.logos[l.id]), `logo-${i}`); });
-        [...$('#c-lg').files].forEach((file, i) => fd.append(`logo_${S.cart.length + i}`, file));
-        const r = await fetch(CFG.api + '/quote', { method: 'POST', body: fd }); const j = await r.json(); if (!r.ok) throw new Error(j.error);
-        S.cart = []; S.logos = {}; save(); location.hash = 'gracias';
-      }
+      } else { await sendQuote(customer, items, [...$('#c-lg').files]); S.cart = []; S.logos = {}; save(); location.hash = 'gracias'; }
     } catch (err) { m.innerHTML = `<div class="msg err">${esc(err.message)}</div>`; [...f.querySelectorAll('button')].forEach((b) => (b.disabled = false)); }
   });
 }
-const vThanks = () => `<section class="band"><div class="wrap empty"><h2>¡Recibido!</h2><p>Te escribimos en menos de 24 h laborables con el boceto y la confirmación.</p><a href="#catalogo">Volver al catálogo</a></div></section>`;
+function bindStands() {
+  const f = $('#stf'); if (!f) return;
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault(); const m = $('#stmsg'), g = (k) => f.elements[k].value.trim();
+    const customer = { name: g('name'), email: g('email'), company: g('company'), phone: g('phone'),
+      notes: `[STAND/EVENTO] ${g('event')} · fecha ${g('date') || '—'} · ${g('size')} · asistentes ${g('pax') || '—'}\n${g('notes')}` };
+    if (demo) { m.innerHTML = '<div class="msg">Modo muestra: en la web publicada esto envía tu solicitud y te respondemos en 24 h laborables.</div>'; return; }
+    try { await sendQuote(customer, []); location.hash = 'gracias'; } catch (err) { m.innerHTML = `<div class="msg err">${esc(err.message)}</div>`; }
+  });
+}
+function bindPacks() {
+  document.querySelectorAll('[data-pq]').forEach((s) => s.addEventListener('change', () => {
+    const pk = PACKS.find((x) => x.id === s.dataset.pq), n = +s.value, pp = packPrice(pk, n);
+    $(`[data-pt="${pk.id}"]`).textContent = eur0(pp.total); $(`[data-pu="${pk.id}"]`).textContent = `${eur(pp.total / n)} por kit`;
+  }));
+}
+const vThanks = () => `<section class="band"><div class="wrap empty"><h2>¡Recibido!</h2><p>Te escribimos en menos de 24 h laborables con el boceto y la confirmación.</p><a class="btn p" href="#inicio">Volver al inicio</a></div></section>`;
 
 /* ---------- Router ---------- */
 function render() {
-  const h = location.hash.slice(1) || 'catalogo', app = $('#app');
-  if (h.startsWith('p-')) { app.innerHTML = vProduct(decodeURIComponent(h.slice(2))); bindProduct(decodeURIComponent(h.slice(2))); }
-  else if (h === 'carrito') { app.innerHTML = vCart(); bindCart(); }
-  else if (h === 'gracias') app.innerHTML = vThanks();
-  else app.innerHTML = vCatalog();
-  if (!h.startsWith('p-') || !document.activeElement?.closest?.('#cfg')) window.scrollTo(0, 0);
+  const h = location.hash.slice(1) || 'inicio', app = $('#app');
+  const [view, arg] = h.startsWith('p-') ? ['p', decodeURIComponent(h.slice(2))] : h.startsWith('packs-') ? [h.slice(6), null] : [h, null];
+  document.querySelectorAll('nav.main a').forEach((a) => a.getAttribute('href') === '#' + view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  if (view === 'p') { app.innerHTML = vProduct(arg); bindProduct(arg); }
+  else if (view === 'carrito') { app.innerHTML = vCart(); bindCart(); }
+  else if (view === 'gracias') app.innerHTML = vThanks();
+  else if (view === 'catalogo') app.innerHTML = vCatalog();
+  else if (view === 'farmacia' || view === 'congresos') { app.innerHTML = vAudience(view); bindPacks(); }
+  else if (view === 'stands') { app.innerHTML = standsHTML() + faqHTML(); bindStands(); }
+  else { app.innerHTML = vHome(); bindPacks(); bindStands(); }
+  if (h === 'packs') $('#packs')?.scrollIntoView(); else if (h.startsWith('packs-')) $('#' + h)?.scrollIntoView(); else window.scrollTo(0, 0);
   save();
 }
 document.addEventListener('click', (e) => {
-  const c = e.target.closest('[data-cat]'); if (c) { cat = c.dataset.cat; render(); }
-  const d = e.target.closest('[data-del]'); if (d) { S.cart = S.cart.filter((l) => l.id !== d.dataset.del); delete S.logos[d.dataset.del]; render(); }
+  const c = e.target.closest('[data-cat]'); if (c) { cat = c.dataset.cat; if ('aud' in c.dataset) aud = c.dataset.aud; render(); return; }
+  const a = e.target.closest('[data-aud]'); if (a) { aud = a.dataset.aud; cat = 'Todo'; render(); return; }
+  const d = e.target.closest('[data-del]'); if (d) { S.cart = S.cart.filter((l) => l.id !== d.dataset.del); delete S.logos[d.dataset.del]; render(); return; }
+  const pb = e.target.closest('[data-addpack]'); if (pb) {
+    const pk = PACKS.find((x) => x.id === pb.dataset.addpack), n = +$(`[data-pq="${pk.id}"]`).value, pp = packPrice(pk, n);
+    pp.lines.forEach(({ p, q }, i) => S.cart.push({ id: Date.now().toString(36) + i, ref: p.ref, sku: p.variants[0].sku, qty: q, technique: p.print?.[0] ? optId(p.print[0]) : null, colors: 1, pantones: '' }));
+    save(); location.hash = 'carrito';
+  }
 });
-$('#sf').addEventListener('submit', (e) => { e.preventDefault(); q = $('#q').value.trim(); cat = 'Todo'; location.hash === '#catalogo' ? render() : (location.hash = 'catalogo'); });
-$('#q').addEventListener('input', (e) => { q = e.target.value.trim(); if ((location.hash.slice(1) || 'catalogo') === 'catalogo') { render(); } });
+document.addEventListener('submit', (e) => { if (e.target.id === 'sf') { e.preventDefault(); q = $('#q').value.trim(); render(); } });
+document.addEventListener('input', (e) => { if (e.target.id === 'q') { q = e.target.value.trim(); clearTimeout(window.__qt); window.__qt = setTimeout(() => { render(); const i = $('#q'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }, 250); } });
 window.addEventListener('hashchange', render);
 
-const LOGO_DEMO = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><path d="M50 6h20v20h20v20H70v20H50V46H30V26h20Z" fill="#00843d"/><text x="60" y="78" font-family="Arial" font-weight="700" font-size="10" text-anchor="middle" fill="#111">TU FARMACIA</text></svg>');
+const LOGO_DEMO = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><path d="M50 6h20v20h20v20H70v20H50V46H30V26h20Z" fill="#00843d"/><text x="60" y="78" font-family="Arial" font-weight="700" font-size="10" text-anchor="middle" fill="#111">TU MARCA</text></svg>');
 
 render();
 fetch(CFG.api + '/catalog').then((r) => r.ok ? r.json() : Promise.reject()).then((d) => {
-  if (Array.isArray(d) && d.length) { CAT = d.map((p) => ({ ...p, variants: p.variants || [], tiers: p.tiers || [{ min: 1, price: 0 }], print: p.print || [] })).filter((p) => p.variants.length && p.tiers.length); demo = false; render(); }
+  if (Array.isArray(d) && d.length) { CAT = d.map((p) => ({ ...p, isNew: p.is_new, variants: p.variants || [], tiers: p.tiers || [], print: p.print || [] })).filter((p) => p.variants.length && p.tiers.length); demo = false; render(); }
 }).catch(() => {});
 }
 </script>

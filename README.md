@@ -1,9 +1,14 @@
 # ProductFarma
 
-Tienda B2B de **merchandising personalizado para farmacias**, conectada a la **API B2B de Makito**.
+Tienda B2B de **merchandising personalizado y stands para el sector salud** (farmacias, laboratorios, ferias y
+congresos), conectada a la **API B2B de Makito**.
+
+- Portada con dos entradas: **Farmacias** y **Ferias y congresos**, cada una con su página y sus packs.
+- **Packs** (kit congresista, kit fidelización farmacia, kit de stand) que se arman solos con productos del catálogo.
+- **Stands y gran formato**: formulario de presupuesto de evento (feria, fecha, m², asistentes) que llega como presupuesto.
 
 No se publica todo Makito: solo productos de **farmacia** (pastilleros, botiquines, gel, neceseres, bálsamos,
-bienestar, verano…) y **básicos de merchandising** (totebags y bolsas, camisetas, agendas, libretas, bolígrafos).
+bienestar, verano…) y **básicos de merchandising** (totebags y bolsas, camisetas, agendas, libretas, bolígrafos) y **congresos** (lanyards, porta-acreditaciones, portadocumentos).
 El filtro está en `lib/sync.mjs` y se amplía con
 `PHARMA_INCLUDE`, `PHARMA_EXCLUDE` y `PHARMA_REFS` sin tocar código.
 
