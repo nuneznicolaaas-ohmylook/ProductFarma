@@ -9,6 +9,39 @@ const arr = (x) => (x == null ? [] : Array.isArray(x) ? x : [x]);
 const num = (x) => Number(String(x ?? '').replace(',', '.')) || 0;
 const pick = (o, ks) => { for (const k of ks) if (o?.[k] !== undefined && o[k] !== '' && o[k] !== null) return o[k]; };
 const now = () => new Date().toISOString();
+// ---- Filtro FARMACIA: solo se publican productos que encajan en una farmacia ----
+// Se puede ampliar sin tocar código con PHARMA_INCLUDE / PHARMA_EXCLUDE (palabras separadas por comas)
+// y forzar referencias concretas con PHARMA_REFS (p. ej. "11011,15246").
+const norm = (t) => String(t ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const INCLUDE = [
+  'pastillero', 'pildora', 'botiquin', 'primeros auxilios', 'tirita', 'apósito', 'aposito', 'mascarilla', 'gel hidroalcoholico',
+  'higienizante', 'desinfect', 'antibacteria', 'termometro', 'neceser', 'cosmetic', 'cosmetica', 'aseo', 'manicura',
+  'lima de uñas', 'lima de unas', 'espejo', 'balsamo', 'labial', 'protector solar', 'crema', 'toallita', 'pañuelo', 'panuelo',
+  'cepillo de dientes', 'dental', 'salud', 'bienestar', 'relax', 'masaje', 'antiestres', 'anti estres', 'cuidado personal',
+  'farmacia', 'bolsa papel', 'bolsa de papel', 'bolsa farmacia', 'dispensador', 'pulsera repelente', 'antimosquito',
+  'repelente', 'tapones', 'antifaz', 'bolsa termica', 'gel frio', 'frio-calor', 'frio calor', 'cuentagotas', 'pastilla',
+  'kit de viaje', 'viaje aseo', 'spray', 'atomizador', 'perfumero', 'jabon', 'sanitizer', 'first aid', 'pill',
+];
+const EXCLUDE = ['cerveza', 'vino', 'cocktail', 'coctel', 'cigarr', 'mechero', 'encendedor', 'cuchillo', 'navaja', 'bebida alcoh', 'abrebotellas'];
+const list = (k, d) => (process.env[k] ? process.env[k].split(',').map((x) => norm(x.trim())).filter(Boolean) : []).concat(d.map(norm));
+function isPharma(p, cats) {
+  const forced = (process.env.PHARMA_REFS || '').split(',').map((x) => x.trim()).filter(Boolean);
+  if (forced.includes(String(p.ref))) return true;
+  const txt = norm([p.name, p.description, ...cats].join(' '));
+  if (list('PHARMA_EXCLUDE', EXCLUDE).some((w) => txt.includes(w))) return false;
+  return list('PHARMA_INCLUDE', INCLUDE).some((w) => txt.includes(w));
+}
+// Categoría de la tienda (la de Makito no está pensada para farmacia)
+const SECTIONS = [
+  ['Botiquín y salud', ['botiquin', 'primeros auxilios', 'tirita', 'aposito', 'termometro', 'mascarilla', 'pastillero', 'pildora', 'pill', 'first aid', 'gel frio', 'frio-calor', 'frio calor']],
+  ['Higiene', ['gel hidroalcoholico', 'higienizante', 'desinfect', 'antibacteria', 'toallita', 'panuelo', 'jabon', 'dispensador', 'sanitizer', 'dental', 'cepillo de dientes']],
+  ['Cuidado personal', ['neceser', 'cosmetic', 'manicura', 'lima de', 'espejo', 'balsamo', 'labial', 'protector solar', 'crema', 'atomizador', 'perfumero', 'spray']],
+  ['Bienestar', ['relax', 'masaje', 'antiestres', 'anti estres', 'antifaz', 'tapones', 'bienestar']],
+  ['Verano', ['repelente', 'antimosquito', 'bolsa termica', 'solar']],
+  ['Mostrador y bolsas', ['bolsa', 'farmacia']],
+];
+const sectionOf = (p, cats) => { const t = norm([p.name, ...cats].join(' ')); return (SECTIONS.find(([, ws]) => ws.some((w) => t.includes(w))) || ['Otros'])[0]; };
+
 const mm = (v) => (num(v) ? `${num(v) / 10}` : null); // Makito da medidas en mm -> cm
 
 async function upsert(table, rows, onConflict) {
@@ -26,12 +59,13 @@ export async function syncCatalog() {
     const ref = String(p.ref ?? '').trim(); if (!ref) continue;
     const dims = [p.length, p.width, p.height].map(mm).filter(Boolean);
     const cats = arr(p.categories).map((c) => (typeof c === 'object' ? pick(c, ['name', 'description', 'category_name_1']) : c)).filter(Boolean);
+    const pharma = isPharma(p, cats);
     P.push({ ref, web_ref: p.web_reference ?? null, name: p.name, description: p.description, brand: p.brand ?? null,
-      category: cats[0] ?? null, subcategory: cats[1] ?? null, material: p.material ?? null,
+      category: sectionOf(p, cats), subcategory: cats[0] ?? null, material: p.material ?? null,
       dims: dims.length ? dims.join(' × ') + ' cm' : (num(p.diameter) ? `Ø${mm(p.diameter)} cm` : null),
       print_code: p.printcode ?? null, is_new: !!p.web_new,
       images: [p.image, ...arr(p.images)].filter(Boolean).map((i) => (typeof i === 'object' ? i.url ?? i.image : i)),
-      active: true, updated_at: now() });
+      active: pharma, updated_at: now() });
     // Variantes: la referencia de variante es el "material" de stock (p. ej. 15246003000)
     for (const v of arr(p.variants ?? p.variant ?? p.colors)) {
       const sku = String(pick(v, ['variant', 'variant_ref', 'material', 'ref', 'refct', 'matnr']) ?? '').trim(); if (!sku) continue;
@@ -42,7 +76,7 @@ export async function syncCatalog() {
   }
   await upsert('products', P, 'ref');
   await upsert('variants', V, 'sku');
-  return { products: P.length, variants: V.length };
+  return { products: P.length, pharmaActive: P.filter((x) => x.active).length, variants: V.length };
 }
 
 // /price-list/files -> price_tiers   ({material, baseQuantity, scales:[{quantity, amount}]})

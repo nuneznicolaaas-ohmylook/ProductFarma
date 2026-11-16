@@ -1,4 +1,4 @@
--- ProductFarma · Tienda de productos personalizados conectada a la API B2B de Makito
+-- ProductFarma · Merchandising para farmacias conectada a la API B2B de Makito
 -- Ejecutar en Supabase > SQL Editor (o como migración).
 
 create extension if not exists pgcrypto;

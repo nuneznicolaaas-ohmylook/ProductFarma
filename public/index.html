@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ProductFarma · Productos personalizados</title>
-<meta name="description" content="Productos promocionales personalizados con tu logo. Precio al instante por cantidad, stock real y presupuesto en 24 h.">
+<title>ProductFarma · Merchandising para farmacias</title>
+<meta name="description" content="Merchandising personalizado para farmacias: pastilleros, neceseres, botiquines, bolsas y más con el logo de tu farmacia. Precio al instante y stock real.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-/* VOICE: taller de impresión serio y rápido; precios claros, cero adornos.
-   IDEA: la prueba de imprenta — marcas de registro, tiras CMYK, el logo del cliente ya estampado.
+/* VOICE: proveedor serio para farmacias; precios claros, limpio como una rebotica ordenada.
+   IDEA: la prueba de imprenta de un pastillero o neceser con la cruz y el logo de la farmacia ya estampados.
    PICTURE: el producto dibujado grande con el logo del cliente aplicado en su área de marcaje.
-   COLOUR and TYPE: blanco papel, tinta negra, magenta de cuatricromía como acento, cian de apoyo; Archivo.
+   COLOUR and TYPE: blanco, tinta negra, verde cruz de farmacia dominante, cian y magenta solo en la tira de imprenta; Archivo.
    LAYOUT: barra superior, banda de cabecera con prueba, filtros, rejilla; ficha con configurador a la derecha. */
-:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1113);--paper:light-dark(#f4f4f1,#181b1e);--ink:light-dark(#111,#f2f2ee);--mute:light-dark(#5b5f63,#a3a8ad);--line:light-dark(#dcdcd6,#2c3034);--m:#d6006f;--c:light-dark(#0087c4,#38b6f0);--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d)}
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1113);--paper:light-dark(#f4f4f1,#181b1e);--ink:light-dark(#111,#f2f2ee);--mute:light-dark(#5b5f63,#a3a8ad);--line:light-dark(#dcdcd6,#2c3034);--m:light-dark(#00843d,#2fc06a);--m2:#d6006f;--c:light-dark(#0087c4,#38b6f0);--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
@@ -22,11 +22,11 @@ a{color:inherit}button,input,select,textarea{font:inherit;font-size:16px;color:i
 header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
 .logo{font-weight:800;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo i{width:18px;height:18px;border-radius:50%;background:conic-gradient(var(--c) 0 25%,var(--m) 0 50%,var(--y) 0 75%,var(--ink) 0)}
+.logo i{width:22px;height:22px;border-radius:3px;background:linear-gradient(var(--m) 0 0) center/34% 100% no-repeat,linear-gradient(var(--m) 0 0) center/100% 34% no-repeat}
 .search{flex:1 1 220px;display:flex}.search input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:var(--paper)}
 .cartbtn{height:44px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px}
 .cartbtn b{background:var(--m);color:#fff;border-radius:99px;padding:0 8px;font-size:13px}
-.strip{height:6px;background:linear-gradient(90deg,var(--c) 0 25%,var(--m) 0 50%,var(--y) 0 75%,var(--ink) 0)}
+.strip{height:6px;background:linear-gradient(90deg,var(--m) 0 70%,var(--c) 0 80%,var(--m2) 0 90%,var(--y) 0)}
 .hero{background:var(--paper)}.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
 h1{font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;text-wrap:balance;font-weight:800}
 h2{font-size:clamp(24px,3vw,32px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
@@ -85,14 +85,14 @@ footer{border-top:1px solid var(--line);color:var(--mute);font-size:14px}footer 
 <body>
 <header class="top"><div class="wrap">
   <a class="logo" href="#catalogo"><i></i>ProductFarma</a>
-  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: taza, bolsa, gorra, referencia…" aria-label="Buscar productos"></form>
+  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: pastillero, neceser, botiquín…" aria-label="Buscar productos"></form>
   <a class="cartbtn" href="#carrito">Carrito <b id="cc">0</b></a>
 </div><div class="strip"></div></header>
 
 <main id="app"></main>
 
 <footer class="band"><div class="wrap">
-  <div><b style="color:var(--ink)">ProductFarma</b><br>Productos promocionales personalizados para empresas.</div>
+  <div><b style="color:var(--ink)">ProductFarma</b><br>Merchandising personalizado para farmacias y parafarmacias.</div>
   <div>Precios sin IVA salvo en el total.<br>Envío a toda España peninsular.</div>
   <div>Presupuestos en 24 h laborables.<br>Pago seguro con tarjeta.</div>
 </div></footer>
@@ -106,6 +106,17 @@ const $ = (s, r = document) => r.querySelector(s);
 
 /* ---------- Ilustraciones de producto (si no hay foto de Makito) ---------- */
 const SHAPES = {
+  pastillero: (c) => `<rect x="30" y="85" width="180" height="80" rx="12" fill="${c}"/>${[0,1,2,3,4,5,6].map((i) => `<rect x="${36 + i * 25}" y="92" width="21" height="66" rx="5" fill="#fff6"/><text x="${46.5 + i * 25}" y="150" font-size="11" font-family="Arial" font-weight="700" text-anchor="middle" fill="#0007">${'LMXJVSD'[i]}</text>`).join('')}<rect x="30" y="85" width="180" height="8" rx="4" fill="#0002"/>`,
+  pastillero3: (c) => `<rect x="55" y="70" width="130" height="110" rx="22" fill="${c}"/><rect x="55" y="70" width="130" height="10" rx="5" fill="#0002"/><path d="M98 80v100M142 80v100" stroke="#0002" stroke-width="3"/>`,
+  botiquin: (c) => `<rect x="95" y="45" width="50" height="22" rx="6" fill="none" stroke="${c}" stroke-width="9"/><rect x="40" y="62" width="160" height="130" rx="14" fill="${c}"/><rect x="40" y="62" width="160" height="14" rx="7" fill="#0002"/>`,
+  gel: (c) => `<rect x="108" y="40" width="24" height="16" rx="3" fill="#888"/><path d="M118 40h26v8" fill="none" stroke="#888" stroke-width="5"/><rect x="104" y="54" width="32" height="14" rx="3" fill="#aaa"/><path d="M88 80c0-12 64-12 64 0v115a14 14 0 0 1-14 14h-36a14 14 0 0 1-14-14Z" fill="${c}"/><rect x="94" y="90" width="7" height="100" rx="3" fill="#fff5"/>`,
+  toallitas: (c) => `<rect x="40" y="80" width="160" height="100" rx="18" fill="${c}"/><ellipse cx="120" cy="96" rx="34" ry="9" fill="#0002"/><path d="M100 96c10-12 30-12 40 0" fill="#fff" opacity=".8"/>`,
+  neceser: (c) => `<path d="M40 85h160l-8 105a12 12 0 0 1-12 11H60a12 12 0 0 1-12-11Z" fill="${c}" opacity=".88"/><rect x="40" y="78" width="160" height="12" rx="4" fill="#0003"/><rect x="180" y="70" width="10" height="26" rx="4" fill="#999"/>`,
+  balsamo: (c) => `<rect x="100" y="40" width="40" height="55" rx="8" fill="#ddd"/><rect x="100" y="90" width="40" height="120" rx="8" fill="${c}"/><rect x="104" y="96" width="6" height="108" rx="3" fill="#fff5"/>`,
+  antifaz: (c) => `<path d="M30 120c0-34 40-44 90-30 50-14 90-4 90 30s-30 40-55 34c-15-4-20-16-35-16s-20 12-35 16c-25 6-55 0-55-34Z" fill="${c}"/><path d="M30 118H12M210 118h18" stroke="${c}" stroke-width="5"/>`,
+  bolsapapel: (c) => `<path d="M88 75c0-34 64-34 64 0" fill="none" stroke="#8a6a44" stroke-width="7"/><path d="M50 75h140l8 140H42Z" fill="${c}"/><path d="M50 75h140l1 10H49Z" fill="#0002"/>`,
+  gelfrio: (c) => `<rect x="50" y="60" width="140" height="130" rx="30" fill="${c}"/><rect x="62" y="72" width="116" height="106" rx="22" fill="#fff3"/><circle cx="90" cy="100" r="6" fill="#fff6"/><circle cx="150" cy="150" r="9" fill="#fff6"/><circle cx="135" cy="95" r="4" fill="#fff6"/>`,
+  pulsera: (c) => `<ellipse cx="120" cy="125" rx="85" ry="55" fill="none" stroke="${c}" stroke-width="26"/><ellipse cx="120" cy="125" rx="85" ry="55" fill="none" stroke="#fff3" stroke-width="4" stroke-dasharray="6 10"/>`,
   taza: (c) => `<path d="M60 70h120v110a20 20 0 0 1-20 20H80a20 20 0 0 1-20-20Z" fill="${c}"/><path d="M180 95h18a22 22 0 0 1 0 44h-18" fill="none" stroke="${c}" stroke-width="14"/><ellipse cx="120" cy="70" rx="60" ry="10" fill="#0002"/><rect x="66" y="80" width="10" height="110" rx="5" fill="#fff3"/>`,
   bolsa: (c) => `<path d="M80 70V55a40 40 0 0 1 80 0v15" fill="none" stroke="${c}" stroke-width="8"/><path d="M45 70h150l-10 140H55Z" fill="${c}"/><path d="M45 70h150l-2 18H47Z" fill="#0002"/>`,
   gorra: (c) => `<path d="M50 150a70 70 0 0 1 140 0Z" fill="${c}"/><path d="M40 150h170c10 0 10 18-6 18H40c-12 0-12-18 0-18Z" fill="${c}" opacity=".85"/><circle cx="120" cy="82" r="6" fill="#0003"/><path d="M120 82v68" stroke="#0002" stroke-width="3"/>`,
@@ -115,11 +126,11 @@ const SHAPES = {
   libreta: (c) => `<rect x="65" y="35" width="120" height="170" rx="8" fill="${c}"/><rect x="65" y="35" width="14" height="170" fill="#0003"/><rect x="160" y="35" width="6" height="170" fill="#fff5"/>`,
   powerbank: (c) => `<rect x="80" y="40" width="80" height="160" rx="14" fill="${c}"/><rect x="108" y="48" width="24" height="5" rx="2" fill="#0004"/><circle cx="120" cy="180" r="4" fill="#4ccb7d"/>`,
 };
-const AREA = { taza: [85, 105, 70, 50], bolsa: [80, 105, 80, 70], gorra: [95, 100, 50, 32], boligrafo: [112, 120, 16, 50], botella: [100, 105, 40, 60], camiseta: [95, 85, 50, 50], libreta: [95, 85, 70, 60], powerbank: [92, 80, 56, 56] };
+const AREA = { pastillero: [80, 166, 80, 22], pastillero3: [80, 105, 80, 50], botiquin: [70, 95, 100, 70], gel: [96, 110, 48, 60], toallitas: [70, 120, 100, 45], neceser: [70, 110, 100, 60], balsamo: [104, 115, 32, 70], antifaz: [85, 95, 70, 30], bolsapapel: [70, 105, 100, 80], gelfrio: [75, 100, 90, 60], pulsera: [100, 62, 40, 14], taza: [85, 105, 70, 50], bolsa: [80, 105, 80, 70], gorra: [95, 100, 50, 32], boligrafo: [112, 120, 16, 50], botella: [100, 105, 40, 60], camiseta: [95, 85, 50, 50], libreta: [95, 85, 70, 60], powerbank: [92, 80, 56, 56] };
 function art(p, color, logo, big) {
-  const c = color?.hex || '#ccc', k = p.shape || 'taza', [x, y, w, h] = AREA[k] || AREA.taza;
+  const c = color?.hex || '#ccc', k = shapeOf(p), [x, y, w, h] = AREA[k] || AREA.neceser;
   const mark = logo ? `<image href="${logo}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>`
-    : big ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#d6006f" stroke-dasharray="4 3" stroke-width="1.5"/>` : '';
+    : big ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#00843d" stroke-dasharray="4 3" stroke-width="1.5"/>` : '';
   const reg = big ? [[14, 14], [226, 14], [14, 226], [226, 226]].map(([a, b]) => `<g stroke="currentColor" stroke-width="1" opacity=".5"><circle cx="${a}" cy="${b}" r="6" fill="none"/><path d="M${a - 10} ${b}h20M${a} ${b - 10}v20"/></g>`).join('') : '';
   return `<svg viewBox="0 0 240 240" role="img" aria-label="${esc(p.name)}">${reg}<ellipse cx="120" cy="222" rx="70" ry="7" fill="#0001"/>${SHAPES[k] ? SHAPES[k](c) : ''}${mark}</svg>`;
 }
@@ -128,15 +139,20 @@ const pic = (p, v, logo, big) => (!logo && (v?.image || p.images?.[0])) ? `<img 
 /* ---------- Catálogo de muestra (se sustituye por /api/catalog) ---------- */
 const T = (a) => a.map(([min, price]) => ({ min, price }));
 const SER = (s, u, n = 4) => ({ technique: 'Serigrafía', maxColors: n, setup: s, addSetup: s * .5, tiers: [{ min: 1, price: u }, { min: 500, price: u * .8 }] });
+const TAMPO = (s, u, n = 2) => ({ id: 'tampo', technique: 'Tampografía', maxColors: n, setup: s, addSetup: s * .5, tiers: [{ min: 1, price: u }, { min: 500, price: u * .8 }] });
+const DIGI = (u) => ({ id: 'digital', technique: 'Impresión digital', maxColors: 1, fullColor: true, setup: 0, tiers: [{ min: 1, price: u }, { min: 500, price: u * .85 }] });
 const DEMO = [
-  { ref: 'PF-3000', name: 'Taza cerámica 350 ml', category: 'Hogar', shape: 'taza', dims: 'Ø8 × 9,5 cm', material: 'Cerámica', variants: [['Blanco', '#f5f5f5', 4200], ['Negro', '#1b1b1b', 860], ['Rojo', '#c8102e', 120]], tiers: T([[36, 2.95], [100, 2.45], [250, 2.1], [500, 1.85]]), print: [{ technique: 'Tampografía', maxColors: 2, setup: 35, unit: .32 }, { technique: 'Sublimación', maxColors: 1, setup: 0, unit: .9 }] },
-  { ref: 'PF-4120', name: 'Bolsa algodón 140 g asas largas', category: 'Bolsas', shape: 'bolsa', dims: '38 × 42 cm', material: 'Algodón 140 g/m²', variants: [['Natural', '#e9dfc7', 15000], ['Negro', '#1b1b1b', 5200], ['Azul royal', '#1f4fbf', 2100], ['Verde', '#2e8b57', 640]], tiers: T([[50, 1.45], [250, 1.15], [500, .98], [1000, .86]]), print: [SER(30, .35), { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.2 }] },
-  { ref: 'PF-1066', name: 'Gorra 5 paneles algodón', category: 'Textil', shape: 'gorra', dims: 'Talla única ajustable', material: 'Algodón', variants: [['Negro', '#1b1b1b', 3100], ['Marino', '#1d2b4f', 2200], ['Blanco', '#f5f5f5', 1800], ['Rojo', '#c8102e', 90]], tiers: T([[25, 2.6], [100, 2.2], [250, 1.95]]), print: [{ technique: 'Bordado', maxColors: 6, setup: 45, unit: 1.1 }, { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.3 }] },
-  { ref: 'PF-2210', name: 'Bolígrafo pulsador antideslizante', category: 'Escritura', shape: 'boligrafo', dims: '14 cm', material: 'Plástico', variants: [['Azul', '#1f4fbf', 52000], ['Rojo', '#c8102e', 30000], ['Negro', '#1b1b1b', 41000], ['Verde', '#2e8b57', 18000]], tiers: T([[250, .21], [500, .18], [1000, .15], [5000, .12]]), print: [{ technique: 'Tampografía', maxColors: 3, setup: 30, unit: .08 }] },
-  { ref: 'PF-6045', name: 'Botella acero doble pared 500 ml', category: 'Hogar', shape: 'botella', dims: 'Ø7 × 26 cm', material: 'Acero inoxidable', variants: [['Plata', '#b9bec4', 2400], ['Negro', '#1b1b1b', 1300], ['Blanco', '#f5f5f5', 700]], tiers: T([[25, 7.4], [100, 6.6], [250, 6.1]]), print: [{ technique: 'Grabado láser', maxColors: 1, setup: 25, unit: .55 }, SER(40, .45, 2)] },
-  { ref: 'PF-7300', name: 'Camiseta algodón 150 g', category: 'Textil', shape: 'camiseta', dims: 'Tallas S–XXL', material: 'Algodón 150 g/m²', variants: [['Blanco', '#f5f5f5', 9000], ['Negro', '#1b1b1b', 7400], ['Gris', '#9a9da1', 2600], ['Rojo', '#c8102e', 1500]], tiers: T([[25, 2.35], [100, 1.95], [250, 1.7], [500, 1.55]]), print: [SER(35, .55, 6), { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.9 }, { technique: 'Bordado', maxColors: 6, setup: 45, unit: 1.4 }] },
-  { ref: 'PF-5530', name: 'Libreta A5 tapa cartón reciclado', category: 'Oficina', shape: 'libreta', dims: '14,8 × 21 cm · 80 hojas', material: 'Cartón reciclado', variants: [['Natural', '#c9a77a', 3800], ['Negro', '#1b1b1b', 900]], tiers: T([[50, 1.75], [250, 1.45], [500, 1.3]]), print: [SER(30, .3, 2), { technique: 'Grabado láser', maxColors: 1, setup: 25, unit: .45 }] },
-  { ref: 'PF-8810', name: 'Batería externa 5000 mAh', category: 'Tecnología', shape: 'powerbank', dims: '9,5 × 6 × 1,4 cm', material: 'ABS', variants: [['Blanco', '#f5f5f5', 1600], ['Negro', '#1b1b1b', 1100], ['Azul', '#1f4fbf', 40]], tiers: T([[25, 6.9], [100, 6.2], [250, 5.8]]), print: [{ technique: 'Tampografía', maxColors: 2, setup: 35, unit: .4 }, { technique: 'Impresión digital', maxColors: 1, setup: 0, unit: .85 }] },
+  { ref: 'PF-1007', name: 'Pastillero semanal 7 días', category: 'Botiquín y salud', shape: 'pastillero', dims: '18 × 4 × 2,5 cm', material: 'PP', variants: [['Blanco', '#f2f2f2', 6200], ['Azul', '#2f7fd1', 2300], ['Verde', '#2fae66', 1100]], tiers: T([[100, 1.25], [250, 1.05], [500, .92], [1000, .82]]), print: [TAMPO(32, .22), DIGI(.55)] },
+  { ref: 'PF-1003', name: 'Pastillero de bolsillo 3 compartimentos', category: 'Botiquín y salud', shape: 'pastillero3', dims: '6 × 5 × 1,6 cm', material: 'PP', variants: [['Blanco', '#f2f2f2', 14000], ['Azul translúcido', '#7fb6ea', 5200], ['Rosa', '#f2a7c3', 3100]], tiers: T([[100, .48], [500, .39], [1000, .33]]), print: [TAMPO(30, .14, 1), DIGI(.38)] },
+  { ref: 'PF-2025', name: 'Botiquín de primeros auxilios 25 piezas', category: 'Botiquín y salud', shape: 'botiquin', dims: '14 × 10 × 4 cm', material: 'Nailon', variants: [['Rojo', '#d23a3a', 1800], ['Blanco', '#f2f2f2', 950], ['Verde', '#2fae66', 600]], tiers: T([[50, 4.6], [100, 4.1], [250, 3.75]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 4, setup: 38, addSetup: 19, tiers: [{ min: 1, price: .45 }] }, DIGI(.95)] },
+  { ref: 'PF-3030', name: 'Gel hidroalcohólico 30 ml', category: 'Higiene', shape: 'gel', dims: 'Ø3,5 × 10 cm', material: 'PET + gel 70 %', variants: [['Transparente', '#bfe6f5', 9800], ['Azul', '#2f7fd1', 2600]], tiers: T([[100, .78], [250, .66], [500, .58], [1000, .52]]), print: [DIGI(.32), TAMPO(30, .16, 1)] },
+  { ref: 'PF-3110', name: 'Toallitas higienizantes 10 uds', category: 'Higiene', shape: 'toallitas', dims: '14 × 7 cm', material: 'Viscosa', variants: [['Blanco', '#f2f2f2', 22000]], tiers: T([[250, .39], [500, .33], [1000, .28]]), print: [DIGI(.12)] },
+  { ref: 'PF-4210', name: 'Neceser transparente de viaje', category: 'Cuidado personal', shape: 'neceser', dims: '20 × 13 × 6 cm', material: 'PVC transparente', variants: [['Transparente', '#d9eef5', 4100], ['Blanco', '#f2f2f2', 1700], ['Negro', '#1b1b1b', 1200]], tiers: T([[50, 1.6], [250, 1.32], [500, 1.18]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 4, setup: 35, addSetup: 17.5, tiers: [{ min: 1, price: .38 }, { min: 500, price: .3 }] }, DIGI(.7)] },
+  { ref: 'PF-4410', name: 'Bálsamo labial SPF 15', category: 'Cuidado personal', shape: 'balsamo', dims: 'Ø1,7 × 7 cm', material: 'Barra 4 g', variants: [['Blanco', '#f2f2f2', 8800], ['Verde', '#2fae66', 3000], ['Azul', '#2f7fd1', 2900]], tiers: T([[250, .62], [500, .53], [1000, .46]]), print: [DIGI(.2), TAMPO(28, .12, 1)] },
+  { ref: 'PF-5005', name: 'Antifaz de descanso', category: 'Bienestar', shape: 'antifaz', dims: '20 × 9 cm', material: 'Poliéster', variants: [['Negro', '#1b1b1b', 3900], ['Marino', '#1d2b4f', 1500], ['Gris', '#9a9da1', 800]], tiers: T([[100, .95], [250, .82], [500, .72]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 2, setup: 32, addSetup: 16, tiers: [{ min: 1, price: .3 }] }] },
+  { ref: 'PF-6015', name: 'Bolsa gel frío-calor', category: 'Botiquín y salud', shape: 'gelfrio', dims: '12 × 11 cm', material: 'Nailon + gel', variants: [['Azul', '#4aa3e0', 4400], ['Verde', '#2fae66', 1300]], tiers: T([[100, .89], [250, .76], [500, .67]]), print: [DIGI(.4), TAMPO(30, .18, 2)] },
+  { ref: 'PF-7020', name: 'Bolsa de papel kraft con asas', category: 'Mostrador y bolsas', shape: 'bolsapapel', dims: '22 × 10 × 28 cm', material: 'Papel kraft 100 g', variants: [['Kraft', '#c9a77a', 30000], ['Blanco', '#f2f2f2', 18000]], tiers: T([[250, .34], [500, .29], [1000, .24], [5000, .2]]), print: [{ id: 'flexo', technique: 'Flexografía', maxColors: 2, setup: 60, addSetup: 30, tiers: [{ min: 1, price: .09 }, { min: 1000, price: .06 }] }] },
+  { ref: 'PF-8030', name: 'Pulsera repelente antimosquitos', category: 'Verano', shape: 'pulsera', dims: 'Ø7 cm', material: 'Silicona con citronela', variants: [['Verde', '#2fae66', 7600], ['Azul', '#2f7fd1', 6100], ['Rosa', '#f2a7c3', 5300]], tiers: T([[250, .44], [500, .38], [1000, .32]]), print: [TAMPO(28, .11, 1)] },
 ].map((p) => ({ ...p, variants: p.variants.map(([color, hex, stock]) => ({ sku: `${p.ref}-${color.slice(0, 3).toUpperCase()}`, color, hex, stock })) }));
 
 /* ---------- Estado ---------- */
@@ -144,7 +160,8 @@ let CAT = DEMO, demo = true, cat = 'Todo', q = '';
 const S = { cart: [], logos: {} };           // logos: dataURL por línea (no se guardan en el navegador)
 try { S.cart = JSON.parse(localStorage.getItem('pf-cart') || '[]'); } catch {}
 const save = () => { try { localStorage.setItem('pf-cart', JSON.stringify(S.cart)); } catch {} $('#cc').textContent = S.cart.length; };
-const shapeOf = (p) => p.shape || (Object.keys(SHAPES).find((k) => (p.name + ' ' + p.category).toLowerCase().includes(k.slice(0, 4))) ?? 'taza');
+const SHAPE_WORDS = [['pastillero', 'pastillero'], ['pildor', 'pastillero3'], ['botiqu', 'botiquin'], ['auxilio', 'botiquin'], ['gel hidro', 'gel'], ['higieniz', 'gel'], ['spray', 'gel'], ['toallit', 'toallitas'], ['neceser', 'neceser'], ['cosmet', 'neceser'], ['labial', 'balsamo'], ['balsamo', 'balsamo'], ['antifaz', 'antifaz'], ['bolsa de papel', 'bolsapapel'], ['papel', 'bolsapapel'], ['frio', 'gelfrio'], ['pulsera', 'pulsera'], ['bolsa', 'bolsa']];
+const shapeOf = (p) => { if (p.shape) return p.shape; const t = (p.name + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); return (SHAPE_WORDS.find(([w]) => t.includes(w)) || [, 'neceser'])[1]; };
 
 /* ---------- Precio (espejo del cálculo del servidor; el servidor manda) ---------- */
 const tierFor = (tiers, qty) => { const t = [...(tiers || [])].sort((a, b) => a.min - b.min); return t.filter((x) => qty >= x.min).pop() || t[0]; };
@@ -164,13 +181,13 @@ function price(p, qty, tech, colors) {
 function vCatalog() {
   const cats = ['Todo', ...new Set(CAT.map((p) => p.category).filter(Boolean))];
   const list = CAT.filter((p) => (cat === 'Todo' || p.category === cat) && (!q || (p.name + ' ' + p.ref + ' ' + p.category).toLowerCase().includes(q.toLowerCase())));
-  const hp = CAT.find((p) => p.shape === 'bolsa') || CAT[0];
+  const hp = CAT.find((p) => shapeOf(p) === 'pastillero3') || CAT[0];
   return `<section class="band hero"><div class="wrap">
-    <div><h1>Tu logo en miles de productos, con precio al instante</h1>
-      <p class="lead">Elige el producto, la técnica de marcaje y la cantidad. Ves el precio por tramos y el stock real. Paga online o pide presupuesto para pedidos grandes.</p>
-      <ul class="facts"><li>Stock real sincronizado</li><li>Boceto antes de producir</li><li>Presupuesto en 24 h</li></ul>
-      ${demo ? '<p class="demo">Catálogo de muestra: con la API de Makito conectada aparecen los productos, precios y stock reales.</p>' : ''}</div>
-    <div class="proof">${art({ ...hp, shape: 'bolsa' }, { hex: '#e9dfc7' }, LOGO_DEMO, true)}</div>
+    <div><h1>Merchandising para tu farmacia, con tu logo y precio al instante</h1>
+      <p class="lead">Pastilleros, neceseres, botiquines, gel, bolsas de mostrador y detalles de temporada para fidelizar a tus clientes. Elige técnica y cantidad, mira el precio por tramos y el stock real, y paga online o pide presupuesto.</p>
+      <ul class="facts"><li>Solo productos para farmacia</li><li>Stock real sincronizado</li><li>Boceto antes de producir</li></ul>
+      ${demo ? '<p class="demo">Catálogo y precios de muestra: con la API de Makito conectada aparecen los productos de farmacia reales, con su precio y stock.</p>' : ''}</div>
+    <div class="proof">${art({ ...hp, shape: 'pastillero3' }, { hex: '#9cc8ef' }, LOGO_DEMO, true)}</div>
   </div></section>
   <section class="band"><div class="wrap">
     <div class="chips" role="toolbar" aria-label="Categorías">${cats.map((c) => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === cat}">${esc(c)}</button>`).join('')}</div>
@@ -335,7 +352,7 @@ $('#sf').addEventListener('submit', (e) => { e.preventDefault(); q = $('#q').val
 $('#q').addEventListener('input', (e) => { q = e.target.value.trim(); if ((location.hash.slice(1) || 'catalogo') === 'catalogo') { render(); } });
 window.addEventListener('hashchange', render);
 
-const LOGO_DEMO = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><circle cx="40" cy="40" r="26" fill="#d6006f"/><circle cx="62" cy="40" r="26" fill="#0087c4" opacity=".85"/><text x="60" y="76" font-family="Arial" font-weight="700" font-size="11" text-anchor="middle" fill="#111">TU LOGO</text></svg>');
+const LOGO_DEMO = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><path d="M50 6h20v20h20v20H70v20H50V46H30V26h20Z" fill="#00843d"/><text x="60" y="78" font-family="Arial" font-weight="700" font-size="10" text-anchor="middle" fill="#111">TU FARMACIA</text></svg>');
 
 render();
 fetch(CFG.api + '/catalog').then((r) => r.ok ? r.json() : Promise.reject()).then((d) => {
