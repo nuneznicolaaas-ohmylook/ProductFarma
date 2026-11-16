@@ -3,10 +3,11 @@
 // - Makito no permite mezclar líneas con y sin marcaje: se crean hasta 2 pedidos.
 // - Envío a domicilio del cliente final (dropshipping). Región = provincia (2 primeros dígitos del CP en España).
 // - Con credenciales del modo Sandbox los pedidos NO se procesan: úsalo para probar.
-import { db, json } from '../lib/core.mjs';
-import { createOrder } from '../lib/makito.mjs';
+import { withEnv } from '../../lib/env.mjs';
+import { db, json } from '../../lib/core.mjs';
+import { createOrder } from '../../lib/makito.mjs';
 
-export default async (req) => {
+const handler = async (req) => {
   if (req.method !== 'POST' || !process.env.ADMIN_KEY || req.headers.get('x-admin-key') !== process.env.ADMIN_KEY) return json({ error: 'Forbidden' }, 403);
   const { orderId, express = false } = await req.json();
   const { data: o, error } = await db().from('orders').select('*').eq('id', orderId).single();
@@ -45,4 +46,5 @@ export default async (req) => {
     return json({ error: e.message, partial: results.length }, 502);
   }
 };
-export const config = { path: '/api/makito-order' };
+
+export const onRequest = withEnv(handler);

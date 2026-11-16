@@ -1,0 +1,38 @@
+# Sincroniza Makito -> Supabase gratis con GitHub Actions.
+# Stock: cada hora. Catálogo, precios y marcaje: cada noche a las 03:20 (hora de Madrid en invierno).
+# Secrets necesarios (Settings > Secrets and variables > Actions):
+#   MAKITO_CLIENT_ID, MAKITO_CLIENT_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+# Opcionales (Variables): PHARMA_INCLUDE, PHARMA_EXCLUDE, PHARMA_REFS, MAKITO_PRICE_PER_BASE
+name: Sincronizar Makito
+on:
+  schedule:
+    - cron: "37 * * * *"      # stock cada hora
+    - cron: "20 2 * * *"      # completa cada noche
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "full o stock"
+        default: "full"
+permissions:
+  contents: read
+concurrency: { group: makito-sync, cancel-in-progress: false }
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --omit=dev --ignore-scripts
+      - name: Sincronizar
+        run: node scripts/run-sync.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'stock') && 'stock' || (github.event.schedule == '37 * * * *' && 'stock' || '') }}
+        env:
+          MAKITO_CLIENT_ID: ${{ secrets.MAKITO_CLIENT_ID }}
+          MAKITO_CLIENT_SECRET: ${{ secrets.MAKITO_CLIENT_SECRET }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PHARMA_INCLUDE: ${{ vars.PHARMA_INCLUDE }}
+          PHARMA_EXCLUDE: ${{ vars.PHARMA_EXCLUDE }}
+          PHARMA_REFS: ${{ vars.PHARMA_REFS }}
+          MAKITO_PRICE_PER_BASE: ${{ vars.MAKITO_PRICE_PER_BASE }}

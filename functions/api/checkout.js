@@ -1,8 +1,9 @@
 // POST /api/checkout  { items:[{ref,sku,qty,technique,colors,logo}], customer:{...} }
 // Recalcula precios en servidor, guarda el pedido y abre Stripe Checkout.
+import { withEnv } from '../../lib/env.mjs';
 import Stripe from 'stripe';
-import { db, json, priceCart, cleanCustomer } from '../lib/core.mjs';
-export default async (req) => {
+import { db, json, priceCart, cleanCustomer } from '../../lib/core.mjs';
+const handler = async (req) => {
   if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405);
   try {
     const body = await req.json();
@@ -14,7 +15,7 @@ export default async (req) => {
       .insert({ kind: 'order', customer, items: cart.items, subtotal: cart.subtotal, vat: cart.vat, total: cart.total })
       .select('id').single();
     if (error) throw error;
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { httpClient: Stripe.createFetchHttpClient() });
     const session = await stripe.checkout.sessions.create({
       mode: 'payment', customer_email: customer.email, locale: 'es',
       line_items: [{ quantity: 1, price_data: { currency: 'eur', unit_amount: Math.round(cart.total * 100),
@@ -26,4 +27,5 @@ export default async (req) => {
     return json({ url: session.url });
   } catch (e) { return json({ error: e.message }, 400); }
 };
-export const config = { path: '/api/checkout' };
+
+export const onRequest = withEnv(handler);

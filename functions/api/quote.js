@@ -1,8 +1,9 @@
 // POST /api/quote  multipart: data (JSON {items, customer}) + logo_<n> (archivos)
 // Guarda la solicitud de presupuesto y los logos en Supabase Storage (bucket privado).
-import { db, json, priceCart, cleanCustomer } from '../lib/core.mjs';
+import { withEnv } from '../../lib/env.mjs';
+import { db, json, priceCart, cleanCustomer } from '../../lib/core.mjs';
 const OK = ['image/png', 'image/jpeg', 'image/svg+xml', 'application/pdf', 'application/postscript'];
-export default async (req) => {
+const handler = async (req) => {
   if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405);
   try {
     const form = await req.formData();
@@ -27,4 +28,5 @@ export default async (req) => {
     return json({ ok: true, id: data.id });
   } catch (e) { return json({ error: e.message }, 400); }
 };
-export const config = { path: '/api/quote' };
+
+export const onRequest = withEnv(handler);

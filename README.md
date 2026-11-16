@@ -11,39 +11,47 @@ bálsamos, bolsas de mostrador, bienestar, verano…). El filtro está en `makit
 - **Compra directa** con Stripe (hasta `QUOTE_THRESHOLD_EUR`) o **solicitud de presupuesto** con logos adjuntos.
 - Los pedidos pagados o presupuestos aceptados se envían a Makito con un clic (`/api/makito-order`), nunca solos.
 
-## Arquitectura
+## Arquitectura (todo en planes gratuitos)
 
-| Parte | Tecnología | Archivo |
+| Parte | Dónde | Archivo |
 |---|---|---|
-| Web (frontal) | HTML + JS sin dependencias | `public/index.html` |
-| API y tareas | Netlify Functions | `netlify/functions/*` |
-| Cliente Makito | OAuth2 + límite 25 pet./min | `netlify/lib/makito.mjs` |
+| Web (frontal) | Cloudflare Pages | `public/index.html` |
+| API (`/api/*`) | Cloudflare Pages Functions | `functions/api/*` |
+| Sincronización Makito | GitHub Actions (cada hora + cada noche) | `.github/workflows/makito-sync.yml`, `lib/sync.mjs` |
+| Cliente Makito | JWT + límite 25 pet./min | `lib/makito.mjs` |
 | Base de datos y logos | Supabase (Postgres + Storage) | `supabase/schema.sql` |
-| Pagos | Stripe Checkout | `checkout.mjs`, `stripe-webhook.mjs` |
+| Pagos | Stripe Checkout | `functions/api/checkout.js`, `stripe-webhook.js` |
+
+La sincronización va en GitHub Actions y no en Cloudflare porque el plan gratuito de Workers limita el tiempo de CPU
+por petición (10 ms) y procesar el catálogo completo de Makito lo supera.
 
 ## Seguridad
 
 - Los **costes de Makito nunca llegan al navegador**: la vista `public_catalog` solo expone precios de venta con margen.
 - Todos los precios se **recalculan en el servidor** antes de cobrar o guardar un presupuesto.
-- Credenciales (Makito, Supabase service role, Stripe) **solo como variables de entorno en Netlify**. Nunca en el repositorio.
+- Credenciales (Makito, Supabase service role, Stripe) **solo como variables secretas en Cloudflare y GitHub**. Nunca en el repositorio.
 - RLS activado en todas las tablas; pedidos y logos solo accesibles con service role.
 - Logos en bucket privado, con validación de tipo y tamaño (10 MB).
-- Cabeceras de seguridad (CSP, HSTS, X-Frame-Options) en `netlify.toml`.
+- Cabeceras de seguridad (CSP, HSTS, X-Frame-Options) en `public/_headers`.
 - Envío de pedidos a Makito protegido con `ADMIN_KEY` y solo para pedidos pagados/aceptados.
 
 ## Puesta en marcha
 
-1. **Supabase**: crea un proyecto y ejecuta `supabase/schema.sql` en el SQL Editor.
-2. **Netlify**: importa este repositorio (build: ninguno, publish: `public`).
-3. En Netlify > Site settings > Environment variables, añade las de `.env.example`:
-   - Empieza con las credenciales **Sandbox** de Makito (sus pedidos no se procesan).
-   - Genera `SYNC_SECRET` y `ADMIN_KEY` largas y aleatorias (p. ej. `openssl rand -hex 32`).
-4. Lanza la primera sincronización:
-   `curl -X POST https://TU-WEB/.netlify/functions/makito-sync -H "x-sync-key: $SYNC_SECRET"`
+1. **Supabase** (gratis): crea un proyecto y ejecuta `supabase/schema.sql` en el SQL Editor.
+   Copia la *Project URL* y la clave *service_role* (Project Settings > API).
+2. **GitHub > Settings > Secrets and variables > Actions** — añade los secrets:
+   `MAKITO_CLIENT_ID`, `MAKITO_CLIENT_SECRET` (empieza con los de **Sandbox**), `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+3. **GitHub > Actions > Sincronizar Makito > Run workflow** — primera carga del catálogo de farmacia.
+   El resumen muestra cuántos productos entran (`pharmaActive`).
+4. **Cloudflare** (gratis): Workers & Pages > Create > Pages > *Connect to Git* > este repositorio.
+   - Framework preset: *None*. Build command: `npm install`. Output directory: `public`.
+   - Settings > Variables and Secrets: las de `.env.example` (Makito, Supabase, Stripe, `ADMIN_KEY`, `SITE_URL`).
+   - Settings > Runtime > Compatibility flags: `nodejs_compat`.
 5. **Stripe**: crea el webhook a `https://TU-WEB/api/stripe-webhook` con el evento `checkout.session.completed`.
-6. Margen: cambia `margin` y `print_margin` en la tabla `settings` (0.45 = +45 %).
-7. Envía un pedido de prueba a Makito: `curl -X POST https://TU-WEB/api/makito-order -H "x-admin-key: $ADMIN_KEY" -d '{"orderId":"..."}'`
-8. Cuando todo cuadre, cambia a las credenciales **Reales** de Makito.
+6. **Márgenes**: tabla `settings` en Supabase (`margin` 0.45 = +45 % producto, `print_margin` 0.35 = +35 % marcaje).
+7. **Pedido de prueba a Makito** (Sandbox):
+   `curl -X POST https://TU-WEB/api/makito-order -H "x-admin-key: $ADMIN_KEY" -H "content-type: application/json" -d '{"orderId":"..."}'`
+8. Cuando todo cuadre, cambia a las credenciales **Reales** de Makito (en GitHub y en Cloudflare).
 
 ## Cómo se usa la API de Makito
 
@@ -58,7 +66,7 @@ bálsamos, bolsas de mostrador, bienestar, verano…). El filtro está en `makit
 | Imágenes | `GET /catalog/assets/...` vía `/api/img` (caché CDN 7 días) | bajo demanda |
 | Pedidos | `POST /orders` (separa líneas con y sin marcaje) | manual |
 
-Una sincronización completa son 6 peticiones: muy por debajo del límite (100 de golpe, 25/min).
+Una sincronización completa son 5 peticiones: muy por debajo del límite (100 de golpe, 25/min).
 
 ### A verificar con datos reales (primera sincronización en Sandbox)
 - Nombre exacto del array de variantes dentro de cada producto del catálogo (`makito-sync.mjs` prueba `variants`, `variant`, `colors`).
@@ -70,7 +78,7 @@ Una sincronización completa son 6 peticiones: muy por debajo del límite (100 d
 
 ```bash
 npm install
-cp .env.example .env   # rellenar
-npx netlify dev
-node --env-file=.env scripts/run-sync.mjs   # probar la sincronización
+cp .env.example .dev.vars          # variables para wrangler (no se sube)
+npx wrangler pages dev             # web + API en http://localhost:8788
+node --env-file=.dev.vars scripts/run-sync.mjs   # sincronización completa
 ```
