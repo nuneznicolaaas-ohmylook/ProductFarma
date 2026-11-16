@@ -85,7 +85,7 @@ footer{border-top:1px solid var(--line);color:var(--mute);font-size:14px}footer 
 <body>
 <header class="top"><div class="wrap">
   <a class="logo" href="#catalogo"><i></i>ProductFarma</a>
-  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: pastillero, neceser, botiquín…" aria-label="Buscar productos"></form>
+  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: pastillero, totebag, agenda…" aria-label="Buscar productos"></form>
   <a class="cartbtn" href="#carrito">Carrito <b id="cc">0</b></a>
 </div><div class="strip"></div></header>
 
@@ -151,7 +151,12 @@ const DEMO = [
   { ref: 'PF-4410', name: 'Bálsamo labial SPF 15', category: 'Cuidado personal', shape: 'balsamo', dims: 'Ø1,7 × 7 cm', material: 'Barra 4 g', variants: [['Blanco', '#f2f2f2', 8800], ['Verde', '#2fae66', 3000], ['Azul', '#2f7fd1', 2900]], tiers: T([[250, .62], [500, .53], [1000, .46]]), print: [DIGI(.2), TAMPO(28, .12, 1)] },
   { ref: 'PF-5005', name: 'Antifaz de descanso', category: 'Bienestar', shape: 'antifaz', dims: '20 × 9 cm', material: 'Poliéster', variants: [['Negro', '#1b1b1b', 3900], ['Marino', '#1d2b4f', 1500], ['Gris', '#9a9da1', 800]], tiers: T([[100, .95], [250, .82], [500, .72]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 2, setup: 32, addSetup: 16, tiers: [{ min: 1, price: .3 }] }] },
   { ref: 'PF-6015', name: 'Bolsa gel frío-calor', category: 'Botiquín y salud', shape: 'gelfrio', dims: '12 × 11 cm', material: 'Nailon + gel', variants: [['Azul', '#4aa3e0', 4400], ['Verde', '#2fae66', 1300]], tiers: T([[100, .89], [250, .76], [500, .67]]), print: [DIGI(.4), TAMPO(30, .18, 2)] },
-  { ref: 'PF-7020', name: 'Bolsa de papel kraft con asas', category: 'Mostrador y bolsas', shape: 'bolsapapel', dims: '22 × 10 × 28 cm', material: 'Papel kraft 100 g', variants: [['Kraft', '#c9a77a', 30000], ['Blanco', '#f2f2f2', 18000]], tiers: T([[250, .34], [500, .29], [1000, .24], [5000, .2]]), print: [{ id: 'flexo', technique: 'Flexografía', maxColors: 2, setup: 60, addSetup: 30, tiers: [{ min: 1, price: .09 }, { min: 1000, price: .06 }] }] },
+  { ref: 'PF-7020', name: 'Bolsa de papel kraft con asas', category: 'Bolsas', shape: 'bolsapapel', dims: '22 × 10 × 28 cm', material: 'Papel kraft 100 g', variants: [['Kraft', '#c9a77a', 30000], ['Blanco', '#f2f2f2', 18000]], tiers: T([[250, .34], [500, .29], [1000, .24], [5000, .2]]), print: [{ id: 'flexo', technique: 'Flexografía', maxColors: 2, setup: 60, addSetup: 30, tiers: [{ min: 1, price: .09 }, { min: 1000, price: .06 }] }] },
+  { ref: 'PF-7110', name: 'Totebag algodón 140 g asas largas', category: 'Bolsas', shape: 'bolsa', dims: '38 × 42 cm', material: 'Algodón 140 g/m²', variants: [['Natural', '#e9dfc7', 15000], ['Blanco', '#f2f2f2', 7400], ['Verde', '#2e8b57', 2100], ['Negro', '#1b1b1b', 5200]], tiers: T([[50, 1.45], [250, 1.15], [500, .98], [1000, .86]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 4, setup: 30, addSetup: 15, tiers: [{ min: 1, price: .35 }, { min: 500, price: .28 }] }, DIGI(1.2)] },
+  { ref: 'PF-7300', name: 'Camiseta algodón 150 g', category: 'Textil', shape: 'camiseta', dims: 'Tallas S–XXL', material: 'Algodón 150 g/m²', variants: [['Blanco', '#f2f2f2', 9000], ['Verde', '#2fae66', 2400], ['Negro', '#1b1b1b', 7400], ['Gris', '#9a9da1', 2600]], tiers: T([[25, 2.35], [100, 1.95], [250, 1.7], [500, 1.55]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 6, setup: 35, addSetup: 17.5, tiers: [{ min: 1, price: .55 }] }, { id: 'dtf', technique: 'Transfer DTF', maxColors: 1, fullColor: true, setup: 0, tiers: [{ min: 1, price: 1.9 }] }, { id: 'bord', technique: 'Bordado', maxColors: 6, setup: 45, addSetup: 0, tiers: [{ min: 1, price: 1.4 }] }] },
+  { ref: 'PF-5530', name: 'Agenda A5 2027 tapa flexible', category: 'Escritura y oficina', shape: 'libreta', dims: '14,8 × 21 cm', material: 'Tapa símil piel', variants: [['Verde', '#2e8b57', 1900], ['Azul', '#1f4fbf', 2400], ['Negro', '#1b1b1b', 3100]], tiers: T([[25, 3.9], [100, 3.4], [250, 3.05]]), print: [{ id: 'laser', technique: 'Grabado láser', maxColors: 1, setup: 25, tiers: [{ min: 1, price: .45 }] }, TAMPO(30, .3, 2)] },
+  { ref: 'PF-5540', name: 'Libreta A5 cartón reciclado', category: 'Escritura y oficina', shape: 'libreta', dims: '14,8 × 21 cm · 80 hojas', material: 'Cartón reciclado', variants: [['Natural', '#c9a77a', 3800], ['Negro', '#1b1b1b', 900]], tiers: T([[50, 1.75], [250, 1.45], [500, 1.3]]), print: [{ id: 'seri', technique: 'Serigrafía', maxColors: 2, setup: 30, addSetup: 15, tiers: [{ min: 1, price: .3 }] }] },
+  { ref: 'PF-2210', name: 'Bolígrafo pulsador antideslizante', category: 'Escritura y oficina', shape: 'boligrafo', dims: '14 cm', material: 'Plástico', variants: [['Verde', '#2e8b57', 18000], ['Azul', '#1f4fbf', 52000], ['Blanco', '#f2f2f2', 41000], ['Negro', '#1b1b1b', 30000]], tiers: T([[250, .21], [500, .18], [1000, .15], [5000, .12]]), print: [TAMPO(30, .08, 3)] },
   { ref: 'PF-8030', name: 'Pulsera repelente antimosquitos', category: 'Verano', shape: 'pulsera', dims: 'Ø7 cm', material: 'Silicona con citronela', variants: [['Verde', '#2fae66', 7600], ['Azul', '#2f7fd1', 6100], ['Rosa', '#f2a7c3', 5300]], tiers: T([[250, .44], [500, .38], [1000, .32]]), print: [TAMPO(28, .11, 1)] },
 ].map((p) => ({ ...p, variants: p.variants.map(([color, hex, stock]) => ({ sku: `${p.ref}-${color.slice(0, 3).toUpperCase()}`, color, hex, stock })) }));
 
@@ -184,9 +189,9 @@ function vCatalog() {
   const hp = CAT.find((p) => shapeOf(p) === 'pastillero3') || CAT[0];
   return `<section class="band hero"><div class="wrap">
     <div><h1>Merchandising para tu farmacia, con tu logo y precio al instante</h1>
-      <p class="lead">Pastilleros, neceseres, botiquines, gel, bolsas de mostrador y detalles de temporada para fidelizar a tus clientes. Elige técnica y cantidad, mira el precio por tramos y el stock real, y paga online o pide presupuesto.</p>
-      <ul class="facts"><li>Solo productos para farmacia</li><li>Stock real sincronizado</li><li>Boceto antes de producir</li></ul>
-      ${demo ? '<p class="demo">Catálogo y precios de muestra: con la API de Makito conectada aparecen los productos de farmacia reales, con su precio y stock.</p>' : ''}</div>
+      <p class="lead">Pastilleros, neceseres y botiquines para tus clientes, y los básicos de siempre: totebags, camisetas, agendas y bolígrafos. Elige técnica y cantidad, mira el precio por tramos y el stock real, y paga online o pide presupuesto.</p>
+      <ul class="facts"><li>Seleccionado para farmacia</li><li>Stock real sincronizado</li><li>Boceto antes de producir</li></ul>
+      ${demo ? '<p class="demo">Catálogo y precios de muestra: con la API de Makito conectada aparecen los productos reales, con su foto, precio y stock.</p>' : ''}</div>
     <div class="proof">${art({ ...hp, shape: 'pastillero3' }, { hex: '#9cc8ef' }, LOGO_DEMO, true)}</div>
   </div></section>
   <section class="band"><div class="wrap">

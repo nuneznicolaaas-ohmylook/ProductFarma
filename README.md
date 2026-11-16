@@ -2,8 +2,9 @@
 
 Tienda B2B de **merchandising personalizado para farmacias**, conectada a la **API B2B de Makito**.
 
-Solo se publican los productos de Makito que encajan en una farmacia (pastilleros, botiquines, gel, neceseres,
-bálsamos, bolsas de mostrador, bienestar, verano…). El filtro está en `makito-sync.mjs` y se amplía con
+No se publica todo Makito: solo productos de **farmacia** (pastilleros, botiquines, gel, neceseres, bálsamos,
+bienestar, verano…) y **básicos de merchandising** (totebags y bolsas, camisetas, agendas, libretas, bolígrafos).
+El filtro está en `lib/sync.mjs` y se amplía con
 `PHARMA_INCLUDE`, `PHARMA_EXCLUDE` y `PHARMA_REFS` sin tocar código.
 
 - Catálogo, variantes, stock, precios por tramos y técnicas de marcaje sincronizados desde Makito.
