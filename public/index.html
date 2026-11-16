@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ProductFarma · Productos personalizados</title>
+<meta name="description" content="Productos promocionales personalizados con tu logo. Precio al instante por cantidad, stock real y presupuesto en 24 h.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: taller de impresión serio y rápido; precios claros, cero adornos.
+   IDEA: la prueba de imprenta — marcas de registro, tiras CMYK, el logo del cliente ya estampado.
+   PICTURE: el producto dibujado grande con el logo del cliente aplicado en su área de marcaje.
+   COLOUR and TYPE: blanco papel, tinta negra, magenta de cuatricromía como acento, cian de apoyo; Archivo.
+   LAYOUT: barra superior, banda de cabecera con prueba, filtros, rejilla; ficha con configurador a la derecha. */
+:root{color-scheme:light dark;--bg:light-dark(#fff,#0f1113);--paper:light-dark(#f4f4f1,#181b1e);--ink:light-dark(#111,#f2f2ee);--mute:light-dark(#5b5f63,#a3a8ad);--line:light-dark(#dcdcd6,#2c3034);--m:#d6006f;--c:light-dark(#0087c4,#38b6f0);--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}button,input,select,textarea{font:inherit;font-size:16px;color:inherit}
+.band{padding:clamp(24px,4vw,56px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{width:18px;height:18px;border-radius:50%;background:conic-gradient(var(--c) 0 25%,var(--m) 0 50%,var(--y) 0 75%,var(--ink) 0)}
+.search{flex:1 1 220px;display:flex}.search input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;padding:0 14px;background:var(--paper)}
+.cartbtn{height:44px;padding:0 16px;border-radius:10px;border:0;background:var(--ink);color:var(--bg);font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px}
+.cartbtn b{background:var(--m);color:#fff;border-radius:99px;padding:0 8px;font-size:13px}
+.strip{height:6px;background:linear-gradient(90deg,var(--c) 0 25%,var(--m) 0 50%,var(--y) 0 75%,var(--ink) 0)}
+.hero{background:var(--paper)}.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;text-wrap:balance;font-weight:800}
+h2{font-size:clamp(24px,3vw,32px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance}
+.lead{font-size:17px;color:var(--mute);max-width:56ch;margin:0 0 20px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 20px;padding:0;margin:0;list-style:none;font-weight:500}
+.facts li::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;background:var(--m);border-radius:2px}
+.proof{position:relative;aspect-ratio:5/4;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.proof svg{position:absolute;inset:0;width:100%;height:100%}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px}
+.chip{flex:none;height:40px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-weight:500}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);transition:transform .2s}
+.card:hover{transform:translateY(-3px)}.card .ph{aspect-ratio:1;background:var(--paper);position:relative}.card .ph svg,.card .ph img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.card .bd{padding:12px 14px 14px;display:grid;gap:4px}.ref{font-size:13px;color:var(--mute)}.nm{font-weight:700;line-height:1.25}
+.from{font-size:14px;color:var(--mute)}.from b{color:var(--ink);font-size:18px;white-space:nowrap}
+.dots{display:flex;gap:4px}.dots i{width:14px;height:14px;border-radius:50%;border:1px solid var(--line)}
+.empty{padding:40px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:12px}
+.pd{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.stage{position:sticky;top:84px}.stage .proof{aspect-ratio:1}
+.back{display:inline-flex;align-items:center;height:44px;text-decoration:none;color:var(--mute);font-weight:500}
+fieldset{border:0;padding:0;margin:0 0 18px}legend{font-weight:700;margin-bottom:8px}
+.sw{display:flex;flex-wrap:wrap;gap:8px}.sw label{position:relative;cursor:pointer}.sw input{position:absolute;opacity:0}
+.sw span{display:block;width:40px;height:40px;border-radius:50%;border:2px solid var(--line)}.sw input:checked+span{outline:3px solid var(--m);outline-offset:2px}.sw input:focus-visible+span{outline:3px solid var(--c);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}.seg label{cursor:pointer}.seg input{position:absolute;opacity:0}
+.seg span{display:flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px}.seg input:checked+span{border-color:var(--ink);background:var(--ink);color:var(--bg)}.seg input:focus-visible+span{outline:3px solid var(--c)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.qty{height:48px;width:140px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);font-weight:700}
+select,.in{height:48px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);width:100%}
+textarea.in{height:96px;padding:10px 12px}
+:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+table{width:100%;border-collapse:collapse;font-size:15px}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.on td{background:color-mix(in srgb,var(--m) 10%,transparent);font-weight:700}
+.total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-top:2px solid var(--ink);margin-top:10px}
+.total b{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;white-space:nowrap}
+.btn{height:52px;padding:0 22px;border-radius:12px;border:0;font-weight:700;cursor:pointer;font-size:16px}
+.btn.p{background:var(--m);color:#fff}.btn.s{background:transparent;border:2px solid var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.note{font-size:14px;color:var(--mute)}.stock{font-weight:700;color:var(--ok)}.stock.low{color:var(--m)}
+.drop{display:flex;align-items:center;gap:12px;border:2px dashed var(--line);border-radius:12px;padding:12px;cursor:pointer}
+.drop img{width:48px;height:48px;object-fit:contain;background:var(--paper);border-radius:6px}
+.cart{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.line{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.line .ph{width:72px;height:72px;background:var(--paper);border-radius:8px;position:relative}.line .ph svg{position:absolute;inset:6px;width:60px;height:60px}
+.x{background:none;border:0;color:var(--mute);cursor:pointer;height:44px;padding:0 6px;text-decoration:underline}
+.box{background:var(--paper);border-radius:14px;padding:20px}.form{display:grid;gap:10px}.form label{font-size:14px;font-weight:500}
+.msg{padding:12px 14px;border-radius:10px;background:color-mix(in srgb,var(--c) 14%,transparent);margin-top:12px}
+.msg.err{background:color-mix(in srgb,var(--m) 14%,transparent)}
+footer{border-top:1px solid var(--line);color:var(--mute);font-size:14px}footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+.demo{font-size:13px;color:var(--mute);margin-top:8px}
+@media(max-width:820px){.hero .wrap,.pd,.cart{grid-template-columns:minmax(0,1fr)}.stage{position:static}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card .bd{padding:10px}.nm{font-size:15px}table{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="#catalogo"><i></i>ProductFarma</a>
+  <form class="search" role="search" id="sf"><input id="q" type="search" placeholder="Buscar: taza, bolsa, gorra, referencia…" aria-label="Buscar productos"></form>
+  <a class="cartbtn" href="#carrito">Carrito <b id="cc">0</b></a>
+</div><div class="strip"></div></header>
+
+<main id="app"></main>
+
+<footer class="band"><div class="wrap">
+  <div><b style="color:var(--ink)">ProductFarma</b><br>Productos promocionales personalizados para empresas.</div>
+  <div>Precios sin IVA salvo en el total.<br>Envío a toda España peninsular.</div>
+  <div>Presupuestos en 24 h laborables.<br>Pago seguro con tarjeta.</div>
+</div></footer>
+
+<script>
+{
+const CFG = { api: '/api', vat: 0.21, quoteOver: 1500 };
+const eur = (n) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const $ = (s, r = document) => r.querySelector(s);
+
+/* ---------- Ilustraciones de producto (si no hay foto de Makito) ---------- */
+const SHAPES = {
+  taza: (c) => `<path d="M60 70h120v110a20 20 0 0 1-20 20H80a20 20 0 0 1-20-20Z" fill="${c}"/><path d="M180 95h18a22 22 0 0 1 0 44h-18" fill="none" stroke="${c}" stroke-width="14"/><ellipse cx="120" cy="70" rx="60" ry="10" fill="#0002"/><rect x="66" y="80" width="10" height="110" rx="5" fill="#fff3"/>`,
+  bolsa: (c) => `<path d="M80 70V55a40 40 0 0 1 80 0v15" fill="none" stroke="${c}" stroke-width="8"/><path d="M45 70h150l-10 140H55Z" fill="${c}"/><path d="M45 70h150l-2 18H47Z" fill="#0002"/>`,
+  gorra: (c) => `<path d="M50 150a70 70 0 0 1 140 0Z" fill="${c}"/><path d="M40 150h170c10 0 10 18-6 18H40c-12 0-12-18 0-18Z" fill="${c}" opacity=".85"/><circle cx="120" cy="82" r="6" fill="#0003"/><path d="M120 82v68" stroke="#0002" stroke-width="3"/>`,
+  boligrafo: (c) => `<rect x="108" y="30" width="24" height="170" rx="12" fill="${c}"/><path d="M108 200h24l-12 22Z" fill="#999"/><rect x="128" y="40" width="8" height="70" rx="4" fill="#bbb"/>`,
+  botella: (c) => `<rect x="100" y="28" width="40" height="22" rx="6" fill="#999"/><path d="M90 60c0-10 60-10 60 0v140a14 14 0 0 1-14 14h-32a14 14 0 0 1-14-14Z" fill="${c}"/><rect x="96" y="70" width="8" height="120" rx="4" fill="#fff4"/>`,
+  camiseta: (c) => `<path d="M85 40l-50 25 18 40 22-10v110h90V95l22 10 18-40-50-25c-5 18-55 18-60 0Z" fill="${c}"/>`,
+  libreta: (c) => `<rect x="65" y="35" width="120" height="170" rx="8" fill="${c}"/><rect x="65" y="35" width="14" height="170" fill="#0003"/><rect x="160" y="35" width="6" height="170" fill="#fff5"/>`,
+  powerbank: (c) => `<rect x="80" y="40" width="80" height="160" rx="14" fill="${c}"/><rect x="108" y="48" width="24" height="5" rx="2" fill="#0004"/><circle cx="120" cy="180" r="4" fill="#4ccb7d"/>`,
+};
+const AREA = { taza: [85, 105, 70, 50], bolsa: [80, 105, 80, 70], gorra: [95, 100, 50, 32], boligrafo: [112, 120, 16, 50], botella: [100, 105, 40, 60], camiseta: [95, 85, 50, 50], libreta: [95, 85, 70, 60], powerbank: [92, 80, 56, 56] };
+function art(p, color, logo, big) {
+  const c = color?.hex || '#ccc', k = p.shape || 'taza', [x, y, w, h] = AREA[k] || AREA.taza;
+  const mark = logo ? `<image href="${logo}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>`
+    : big ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#d6006f" stroke-dasharray="4 3" stroke-width="1.5"/>` : '';
+  const reg = big ? [[14, 14], [226, 14], [14, 226], [226, 226]].map(([a, b]) => `<g stroke="currentColor" stroke-width="1" opacity=".5"><circle cx="${a}" cy="${b}" r="6" fill="none"/><path d="M${a - 10} ${b}h20M${a} ${b - 10}v20"/></g>`).join('') : '';
+  return `<svg viewBox="0 0 240 240" role="img" aria-label="${esc(p.name)}">${reg}<ellipse cx="120" cy="222" rx="70" ry="7" fill="#0001"/>${SHAPES[k] ? SHAPES[k](c) : ''}${mark}</svg>`;
+}
+const pic = (p, v, logo, big) => (!logo && (v?.image || p.images?.[0])) ? `<img src="${esc(v?.image || p.images[0])}" alt="${esc(p.name)}" loading="lazy">` : art(p, v, logo, big);
+
+/* ---------- Catálogo de muestra (se sustituye por /api/catalog) ---------- */
+const T = (a) => a.map(([min, price]) => ({ min, price }));
+const SER = (s, u, n = 4) => ({ technique: 'Serigrafía', maxColors: n, setup: s, unit: u });
+const DEMO = [
+  { ref: 'PF-3000', name: 'Taza cerámica 350 ml', category: 'Hogar', shape: 'taza', dims: 'Ø8 × 9,5 cm', material: 'Cerámica', variants: [['Blanco', '#f5f5f5', 4200], ['Negro', '#1b1b1b', 860], ['Rojo', '#c8102e', 120]], tiers: T([[36, 2.95], [100, 2.45], [250, 2.1], [500, 1.85]]), print: [{ technique: 'Tampografía', maxColors: 2, setup: 35, unit: .32 }, { technique: 'Sublimación', maxColors: 1, setup: 0, unit: .9 }] },
+  { ref: 'PF-4120', name: 'Bolsa algodón 140 g asas largas', category: 'Bolsas', shape: 'bolsa', dims: '38 × 42 cm', material: 'Algodón 140 g/m²', variants: [['Natural', '#e9dfc7', 15000], ['Negro', '#1b1b1b', 5200], ['Azul royal', '#1f4fbf', 2100], ['Verde', '#2e8b57', 640]], tiers: T([[50, 1.45], [250, 1.15], [500, .98], [1000, .86]]), print: [SER(30, .35), { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.2 }] },
+  { ref: 'PF-1066', name: 'Gorra 5 paneles algodón', category: 'Textil', shape: 'gorra', dims: 'Talla única ajustable', material: 'Algodón', variants: [['Negro', '#1b1b1b', 3100], ['Marino', '#1d2b4f', 2200], ['Blanco', '#f5f5f5', 1800], ['Rojo', '#c8102e', 90]], tiers: T([[25, 2.6], [100, 2.2], [250, 1.95]]), print: [{ technique: 'Bordado', maxColors: 6, setup: 45, unit: 1.1 }, { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.3 }] },
+  { ref: 'PF-2210', name: 'Bolígrafo pulsador antideslizante', category: 'Escritura', shape: 'boligrafo', dims: '14 cm', material: 'Plástico', variants: [['Azul', '#1f4fbf', 52000], ['Rojo', '#c8102e', 30000], ['Negro', '#1b1b1b', 41000], ['Verde', '#2e8b57', 18000]], tiers: T([[250, .21], [500, .18], [1000, .15], [5000, .12]]), print: [{ technique: 'Tampografía', maxColors: 3, setup: 30, unit: .08 }] },
+  { ref: 'PF-6045', name: 'Botella acero doble pared 500 ml', category: 'Hogar', shape: 'botella', dims: 'Ø7 × 26 cm', material: 'Acero inoxidable', variants: [['Plata', '#b9bec4', 2400], ['Negro', '#1b1b1b', 1300], ['Blanco', '#f5f5f5', 700]], tiers: T([[25, 7.4], [100, 6.6], [250, 6.1]]), print: [{ technique: 'Grabado láser', maxColors: 1, setup: 25, unit: .55 }, SER(40, .45, 2)] },
+  { ref: 'PF-7300', name: 'Camiseta algodón 150 g', category: 'Textil', shape: 'camiseta', dims: 'Tallas S–XXL', material: 'Algodón 150 g/m²', variants: [['Blanco', '#f5f5f5', 9000], ['Negro', '#1b1b1b', 7400], ['Gris', '#9a9da1', 2600], ['Rojo', '#c8102e', 1500]], tiers: T([[25, 2.35], [100, 1.95], [250, 1.7], [500, 1.55]]), print: [SER(35, .55, 6), { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.9 }, { technique: 'Bordado', maxColors: 6, setup: 45, unit: 1.4 }] },
+  { ref: 'PF-5530', name: 'Libreta A5 tapa cartón reciclado', category: 'Oficina', shape: 'libreta', dims: '14,8 × 21 cm · 80 hojas', material: 'Cartón reciclado', variants: [['Natural', '#c9a77a', 3800], ['Negro', '#1b1b1b', 900]], tiers: T([[50, 1.75], [250, 1.45], [500, 1.3]]), print: [SER(30, .3, 2), { technique: 'Grabado láser', maxColors: 1, setup: 25, unit: .45 }] },
+  { ref: 'PF-8810', name: 'Batería externa 5000 mAh', category: 'Tecnología', shape: 'powerbank', dims: '9,5 × 6 × 1,4 cm', material: 'ABS', variants: [['Blanco', '#f5f5f5', 1600], ['Negro', '#1b1b1b', 1100], ['Azul', '#1f4fbf', 40]], tiers: T([[25, 6.9], [100, 6.2], [250, 5.8]]), print: [{ technique: 'Tampografía', maxColors: 2, setup: 35, unit: .4 }, { technique: 'Impresión digital', maxColors: 1, setup: 0, unit: .85 }] },
+].map((p) => ({ ...p, variants: p.variants.map(([color, hex, stock]) => ({ sku: `${p.ref}-${color.slice(0, 3).toUpperCase()}`, color, hex, stock })) }));
+
+/* ---------- Estado ---------- */
+let CAT = DEMO, demo = true, cat = 'Todo', q = '';
+const S = { cart: [], logos: {} };           // logos: dataURL por línea (no se guardan en el navegador)
+try { S.cart = JSON.parse(localStorage.getItem('pf-cart') || '[]'); } catch {}
+const save = () => { try { localStorage.setItem('pf-cart', JSON.stringify(S.cart)); } catch {} $('#cc').textContent = S.cart.length; };
+const shapeOf = (p) => p.shape || (Object.keys(SHAPES).find((k) => (p.name + ' ' + p.category).toLowerCase().includes(k.slice(0, 4))) ?? 'taza');
+
+/* ---------- Precio (espejo del cálculo del servidor; el servidor manda) ---------- */
+function price(p, qty, tech, colors) {
+  const tiers = [...p.tiers].sort((a, b) => a.min - b.min);
+  const tier = tiers.filter((t) => qty >= t.min).pop() || tiers[0];
+  const o = p.print?.find((x) => x.technique === tech);
+  const n = o ? Math.min(Math.max(1, colors), o.maxColors) : 0;
+  const unit = tier.price + (o ? o.unit * n : 0), setup = o ? o.setup * n : 0;
+  return { tier, unit, setup, total: unit * qty + setup, min: tiers[0].min };
+}
+
+/* ---------- Vistas ---------- */
+function vCatalog() {
+  const cats = ['Todo', ...new Set(CAT.map((p) => p.category).filter(Boolean))];
+  const list = CAT.filter((p) => (cat === 'Todo' || p.category === cat) && (!q || (p.name + ' ' + p.ref + ' ' + p.category).toLowerCase().includes(q.toLowerCase())));
+  const hp = CAT.find((p) => p.shape === 'bolsa') || CAT[0];
+  return `<section class="band hero"><div class="wrap">
+    <div><h1>Tu logo en miles de productos, con precio al instante</h1>
+      <p class="lead">Elige el producto, la técnica de marcaje y la cantidad. Ves el precio por tramos y el stock real. Paga online o pide presupuesto para pedidos grandes.</p>
+      <ul class="facts"><li>Stock real sincronizado</li><li>Boceto antes de producir</li><li>Presupuesto en 24 h</li></ul>
+      ${demo ? '<p class="demo">Catálogo de muestra: con la API de Makito conectada aparecen los productos, precios y stock reales.</p>' : ''}</div>
+    <div class="proof">${art({ ...hp, shape: 'bolsa' }, { hex: '#e9dfc7' }, LOGO_DEMO, true)}</div>
+  </div></section>
+  <section class="band"><div class="wrap">
+    <div class="chips" role="toolbar" aria-label="Categorías">${cats.map((c) => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === cat}">${esc(c)}</button>`).join('')}</div>
+    <p class="note" style="margin:0 0 12px">${list.length} productos${q ? ` para «${esc(q)}»` : ''}</p>
+    ${list.length ? `<div class="grid">${list.map((p) => {
+      const t = [...p.tiers].sort((a, b) => a.price - b.price)[0];
+      return `<a class="card" href="#p-${encodeURIComponent(p.ref)}"><div class="ph">${pic(p, p.variants?.[0])}</div><div class="bd">
+        <span class="ref">${esc(p.ref)}</span><span class="nm">${esc(p.name)}</span>
+        <div class="dots">${(p.variants || []).slice(0, 8).map((v) => `<i style="background:${esc(v.hex || '#ccc')}" title="${esc(v.color)}"></i>`).join('')}</div>
+        <span class="from">desde <b>${eur(t.price)}</b>/ud</span></div></a>`;
+    }).join('')}</div>` : `<div class="empty">No hay productos con ese filtro. <button class="x" data-cat="Todo">Ver todo</button></div>`}
+  </div></section>`;
+}
+
+function vProduct(ref) {
+  const p = CAT.find((x) => x.ref === ref);
+  if (!p) return `<section class="band"><div class="wrap empty">Producto no encontrado. <a href="#catalogo">Volver al catálogo</a></div></section>`;
+  const t0 = [...p.tiers].sort((a, b) => a.min - b.min);
+  return `<section class="band"><div class="wrap">
+    <a class="back" href="#catalogo">← Catálogo</a>
+    <div class="pd">
+      <div class="stage"><div class="proof" id="stage"></div><p class="note">Vista orientativa. Antes de producir te enviamos boceto para aprobar.</p></div>
+      <form id="cfg">
+        <span class="ref">${esc(p.ref)}</span><h2>${esc(p.name)}</h2>
+        <p class="note">${[p.dims, p.material].filter(Boolean).map(esc).join(' · ')}</p>
+        ${p.description ? `<p>${esc(p.description)}</p>` : ''}
+        <fieldset><legend>Color</legend><div class="sw">${p.variants.map((v, i) => `<label title="${esc(v.color)}"><input type="radio" name="sku" value="${esc(v.sku)}" ${i ? '' : 'checked'}><span style="background:${esc(v.hex || '#ccc')}"></span></label>`).join('')}</div>
+          <p class="note" id="vinfo"></p></fieldset>
+        <fieldset><legend>Marcaje</legend><div class="seg">
+          <label><input type="radio" name="tech" value="none"><span>Sin marcar</span></label>
+          ${(p.print || []).map((o, i) => `<label><input type="radio" name="tech" value="${esc(o.technique)}" ${i ? '' : 'checked'}><span>${esc(o.technique)}</span></label>`).join('')}</div></fieldset>
+        <fieldset id="colfs"><legend>Colores del logo</legend><select name="colors" id="colors" aria-label="Número de colores"></select></fieldset>
+        <fieldset><legend>Tu logo</legend><label class="drop"><img id="lgprev" alt="" hidden><span id="lgname">Sube PNG, JPG o SVG para verlo aplicado (AI/PDF en el presupuesto)</span>
+          <input type="file" id="lg" accept="image/png,image/jpeg,image/svg+xml" hidden></label></fieldset>
+        <fieldset><legend><label for="qty">Cantidad</label></legend><div class="row"><input class="qty" id="qty" type="number" inputmode="numeric" min="${t0[0].min}" step="1" value="${Math.max(t0[0].min, 100)}"><span class="note">Mínimo ${t0[0].min} uds</span></div></fieldset>
+        <table><thead><tr><th>Cantidad</th><th class="n">Producto/ud</th></tr></thead><tbody id="tiers"></tbody></table>
+        <div id="sum"></div>
+        <div class="row" style="margin-top:8px"><button class="btn p" type="submit" id="add">Añadir al carrito</button><a class="btn s" href="#carrito" style="display:flex;align-items:center;text-decoration:none">Ver carrito</a></div>
+        <div id="pmsg"></div>
+      </form>
+    </div></div></section>`;
+}
+
+function bindProduct(ref) {
+  const p = CAT.find((x) => x.ref === ref); if (!p) return;
+  const f = $('#cfg'); let logo = null;
+  const val = () => {
+    const sku = f.elements.sku.value, v = p.variants.find((x) => x.sku === sku), tech = f.elements.tech.value;
+    const o = p.print?.find((x) => x.technique === tech);
+    $('#colfs').hidden = !o || o.maxColors < 2;
+    const cs = $('#colors'), cur = +cs.value || 1;
+    if (o) cs.innerHTML = Array.from({ length: o.maxColors }, (_, i) => `<option value="${i + 1}" ${i + 1 === Math.min(cur, o.maxColors) ? 'selected' : ''}>${i + 1} color${i ? 'es' : ''}</option>`).join('');
+    const qty = Math.floor(+$('#qty').value || 0), r = price(p, Math.max(qty, 1), tech, +cs.value || 1);
+    $('#stage').innerHTML = art({ ...p, shape: shapeOf(p) }, v, tech === 'none' ? null : (logo || LOGO_DEMO), true);
+    $('#vinfo').innerHTML = `${esc(v.color)} · <span class="stock ${v.stock < qty ? 'low' : ''}">${v.stock.toLocaleString('es-ES')} uds en stock</span>${v.stock < qty ? ' — se pedirá a fábrica, consulta plazo' : ''}`;
+    $('#tiers').innerHTML = [...p.tiers].sort((a, b) => a.min - b.min).map((t) => `<tr class="${t === r.tier ? 'on' : ''}"><td>desde ${t.min.toLocaleString('es-ES')}</td><td class="n">${eur(t.price)}</td></tr>`).join('');
+    const ok = qty >= r.min;
+    $('#sum').innerHTML = `<p class="note" style="margin:12px 0 0">${o ? `Marcaje ${esc(o.technique)}: ${eur(o.unit * (+cs.value || 1))}/ud${r.setup ? ` + ${eur(r.setup)} de preparación (una vez)` : ''}` : 'Producto sin marcar'}</p>
+      <div class="total"><span>${ok ? `${qty.toLocaleString('es-ES')} uds · ${eur(r.unit)}/ud` : `Mínimo ${r.min} uds`}</span><b>${ok ? eur(r.total) : '—'}</b></div>
+      <p class="note" style="margin:0">Sin IVA. ${ok && r.total > CFG.quoteOver ? 'Para este importe te recomendamos pedir presupuesto: suele salir mejor.' : ''}</p>`;
+    $('#add').disabled = !ok;
+    return { sku, tech, colors: o ? +cs.value || 1 : 0, qty };
+  };
+  f.addEventListener('input', val); f.addEventListener('change', val);
+  $('#lg').addEventListener('change', (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { $('#lgname').textContent = 'Máximo 10 MB'; return; }
+    const rd = new FileReader();
+    rd.onload = () => { logo = rd.result; $('#lgprev').src = logo; $('#lgprev').hidden = false; $('#lgname').textContent = file.name; val(); };
+    rd.readAsDataURL(file);
+  });
+  f.addEventListener('submit', (e) => {
+    e.preventDefault(); const c = val(); if (c.qty < price(p, 1, 'none', 0).min) return;
+    const id = Date.now().toString(36);
+    S.cart.push({ id, ref: p.ref, sku: c.sku, qty: c.qty, technique: c.tech === 'none' ? null : c.tech, colors: c.colors });
+    if (logo) S.logos[id] = logo;
+    save();
+    $('#pmsg').innerHTML = `<div class="msg">Añadido al carrito. <a href="#carrito">Ir al carrito</a> o <a href="#catalogo">seguir comprando</a>.</div>`;
+  });
+  val();
+}
+
+function cartCalc() {
+  return S.cart.map((l) => { const p = CAT.find((x) => x.ref === l.ref); if (!p) return null;
+    const r = price(p, l.qty, l.technique, l.colors); return { l, p, v: p.variants.find((v) => v.sku === l.sku), r }; }).filter(Boolean);
+}
+function vCart() {
+  const rows = cartCalc(), sub = rows.reduce((s, x) => s + x.r.total, 0), vat = sub * CFG.vat;
+  if (!rows.length) return `<section class="band"><div class="wrap empty"><h2>Tu carrito está vacío</h2><a class="btn p" href="#catalogo" style="display:inline-flex;align-items:center;text-decoration:none">Ver productos</a></div></section>`;
+  const big = sub > CFG.quoteOver;
+  return `<section class="band"><div class="wrap"><h2>Carrito</h2><div class="cart">
+    <div>${rows.map(({ l, p, v, r }) => `<div class="line"><div class="ph">${art({ ...p, shape: shapeOf(p) }, v, S.logos[l.id])}</div>
+      <div><span class="nm">${esc(p.name)}</span><br><span class="note">${esc(v?.color)} · ${l.technique ? `${esc(l.technique)}${l.colors > 1 ? ` ${l.colors} col.` : ''}` : 'sin marcar'} · ${l.qty.toLocaleString('es-ES')} uds × ${eur(r.unit)}${r.setup ? ` + ${eur(r.setup)} prep.` : ''}</span>
+      ${l.technique && !S.logos[l.id] ? '<br><span class="note">Logo pendiente: adjúntalo en el formulario.</span>' : ''}</div>
+      <div style="text-align:right"><b style="white-space:nowrap">${eur(r.total)}</b><br><button class="x" data-del="${l.id}">Quitar</button></div></div>`).join('')}
+      <table style="margin-top:12px"><tbody><tr><td>Subtotal</td><td class="n">${eur(sub)}</td></tr><tr><td>IVA 21 %</td><td class="n">${eur(vat)}</td></tr></tbody></table>
+      <div class="total"><span>Total</span><b>${eur(sub + vat)}</b></div>
+      <p class="note">El precio final se confirma en servidor con la tarifa y el stock del momento.</p></div>
+    <form class="box form" id="co">
+      <h2 style="font-size:24px">Tus datos</h2>
+      <label for="c-name">Nombre y apellidos *</label><input class="in" id="c-name" name="name" required autocomplete="name">
+      <label for="c-co">Empresa</label><input class="in" id="c-co" name="company" autocomplete="organization">
+      <label for="c-vat">CIF / NIF</label><input class="in" id="c-vat" name="vat_id">
+      <label for="c-em">Email *</label><input class="in" id="c-em" name="email" type="email" required autocomplete="email">
+      <label for="c-ph">Teléfono</label><input class="in" id="c-ph" name="phone" type="tel" autocomplete="tel">
+      <label for="c-ad">Dirección de entrega</label><input class="in" id="c-ad" name="address" autocomplete="street-address">
+      <label for="c-nt">Notas (fecha límite, ubicación del logo…)</label><textarea class="in" id="c-nt" name="notes"></textarea>
+      <label for="c-lg">Logos en vector (AI, PDF, SVG)</label><input class="in" id="c-lg" type="file" multiple accept=".ai,.pdf,.svg,.eps,image/*" style="padding-top:10px">
+      <button class="btn p" type="submit" name="act" value="pay" ${big ? 'disabled title="Importe alto: pide presupuesto"' : ''}>Pagar con tarjeta ${eur(sub + vat)}</button>
+      <button class="btn s" type="submit" name="act" value="quote">Pedir presupuesto</button>
+      <p class="note">${big ? 'Por encima de ' + eur(CFG.quoteOver) + ' preparamos presupuesto con mejor precio.' : 'Te enviamos boceto para aprobar antes de producir.'}</p>
+      <div id="comsg" aria-live="polite"></div>
+    </form></div></div></section>`;
+}
+function dataURLtoBlob(u) { const [h, b] = u.split(','), m = h.match(/:(.*?);/)[1], s = atob(b), a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return new Blob([a], { type: m }); }
+function bindCart() {
+  const f = $('#co'); if (!f) return;
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const act = e.submitter?.value || 'quote', m = $('#comsg');
+    const customer = Object.fromEntries(['name', 'company', 'vat_id', 'email', 'phone', 'address', 'notes'].map((k) => [k, f.elements[k].value]));
+    const items = S.cart.map(({ ref, sku, qty, technique, colors }) => ({ ref, sku, qty, technique, colors }));
+    if (demo) { m.innerHTML = `<div class="msg">Modo muestra: en la web publicada esto ${act === 'pay' ? 'abre el pago seguro con Stripe' : 'envía la solicitud de presupuesto con tus logos'}.</div>`; return; }
+    [...f.querySelectorAll('button')].forEach((b) => (b.disabled = true));
+    try {
+      if (act === 'pay') {
+        const r = await fetch(CFG.api + '/checkout', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ items, customer }) });
+        const j = await r.json(); if (!r.ok) throw new Error(j.message || j.error);
+        location.href = j.url;
+      } else {
+        const fd = new FormData(); fd.append('data', JSON.stringify({ items, customer }));
+        S.cart.forEach((l, i) => { if (S.logos[l.id]) fd.append(`logo_${i}`, dataURLtoBlob(S.logos[l.id]), `logo-${i}`); });
+        [...$('#c-lg').files].forEach((file, i) => fd.append(`logo_${S.cart.length + i}`, file));
+        const r = await fetch(CFG.api + '/quote', { method: 'POST', body: fd }); const j = await r.json(); if (!r.ok) throw new Error(j.error);
+        S.cart = []; S.logos = {}; save(); location.hash = 'gracias';
+      }
+    } catch (err) { m.innerHTML = `<div class="msg err">${esc(err.message)}</div>`; [...f.querySelectorAll('button')].forEach((b) => (b.disabled = false)); }
+  });
+}
+const vThanks = () => `<section class="band"><div class="wrap empty"><h2>¡Recibido!</h2><p>Te escribimos en menos de 24 h laborables con el boceto y la confirmación.</p><a href="#catalogo">Volver al catálogo</a></div></section>`;
+
+/* ---------- Router ---------- */
+function render() {
+  const h = location.hash.slice(1) || 'catalogo', app = $('#app');
+  if (h.startsWith('p-')) { app.innerHTML = vProduct(decodeURIComponent(h.slice(2))); bindProduct(decodeURIComponent(h.slice(2))); }
+  else if (h === 'carrito') { app.innerHTML = vCart(); bindCart(); }
+  else if (h === 'gracias') app.innerHTML = vThanks();
+  else app.innerHTML = vCatalog();
+  if (!h.startsWith('p-') || !document.activeElement?.closest?.('#cfg')) window.scrollTo(0, 0);
+  save();
+}
+document.addEventListener('click', (e) => {
+  const c = e.target.closest('[data-cat]'); if (c) { cat = c.dataset.cat; render(); }
+  const d = e.target.closest('[data-del]'); if (d) { S.cart = S.cart.filter((l) => l.id !== d.dataset.del); delete S.logos[d.dataset.del]; render(); }
+});
+$('#sf').addEventListener('submit', (e) => { e.preventDefault(); q = $('#q').value.trim(); cat = 'Todo'; location.hash === '#catalogo' ? render() : (location.hash = 'catalogo'); });
+$('#q').addEventListener('input', (e) => { q = e.target.value.trim(); if ((location.hash.slice(1) || 'catalogo') === 'catalogo') { render(); } });
+window.addEventListener('hashchange', render);
+
+const LOGO_DEMO = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80"><circle cx="40" cy="40" r="26" fill="#d6006f"/><circle cx="62" cy="40" r="26" fill="#0087c4" opacity=".85"/><text x="60" y="76" font-family="Arial" font-weight="700" font-size="11" text-anchor="middle" fill="#111">TU LOGO</text></svg>');
+
+render();
+fetch(CFG.api + '/catalog').then((r) => r.ok ? r.json() : Promise.reject()).then((d) => {
+  if (Array.isArray(d) && d.length) { CAT = d.map((p) => ({ ...p, variants: p.variants || [], tiers: p.tiers || [{ min: 1, price: 0 }], print: p.print || [] })).filter((p) => p.variants.length && p.tiers.length); demo = false; render(); }
+}).catch(() => {});
+}
+</script>
+</body>
+</html>

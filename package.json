@@ -1,0 +1,14 @@
+{
+  "name": "productfarma",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "sync": "node scripts/run-sync.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "fast-xml-parser": "^4.4.1",
+    "stripe": "^16.0.0"
+  }
+}
