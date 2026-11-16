@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ProductFarma · Merchandising para farmacias y congresos</title>
-<meta name="description" content="Merchandising personalizado para farmacias, laboratorios, ferias y congresos del sector salud. Pastilleros, totebags, agendas, kits de congresista y stands. Precio al instante y stock real.">
+<meta name="description" content="Merchandising personalizado para farmacias, laboratorios, ferias y congresos del sector salud. Pastilleros, totebags, agendas y kits de congresista. Precio al instante y stock real.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* VOICE: proveedor serio del sector salud; directo, ordenado, con oficio de imprenta.
-   IDEA: la feria del sector — un stand montado con la cruz verde, mostrador, roll-up y los regalos con logo sobre la mesa.
-   PICTURE: escena de stand grande en la portada; cada producto se ve con el logo del cliente ya estampado.
+/* VOICE: proveedor de merchandising serio para el sector salud; directo, ordenado, con oficio de imprenta.
+   IDEA: la feria del sector — los regalos con logo sobre el mostrador, listos para repartir.
+   PICTURE: escena de feria con los productos sobre el mostrador; cada producto se ve con el logo del cliente ya estampado.
    COLOUR and TYPE: verde farmacia profundo como campo dominante, blanco, tinta; menta clara de apoyo; tira CMYK como firma de imprenta; Archivo 400–900.
-   LAYOUT: portada verde a sangre, dos entradas (farmacia / eventos), packs, banda oscura de stands, pasos, catálogo, preguntas, pie. */
+   LAYOUT: portada verde a sangre, dos entradas (farmacia / eventos), packs, banda oscura de presupuesto de eventos, pasos, catálogo, preguntas, pie. */
 :root{color-scheme:light dark;--bg:light-dark(#fff,#0e1211);--paper:light-dark(#f3f6f4,#161c1a);--mint:light-dark(#e3f2ea,#13261d);--ink:light-dark(#0f1714,#eef3f0);--mute:light-dark(#56615c,#a2ada8);--line:light-dark(#d9e2dd,#2a3430);--g:light-dark(#00843d,#35c272);--gd:#00502a;--gdd:#003a1f;--c:#0087c4;--m2:#d6006f;--y:#ffd400;--ok:light-dark(#127a3b,#4ccb7d);--warn:light-dark(#b4232f,#ff7a84)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
@@ -164,7 +164,7 @@ footer b{color:#fff;display:block;margin-bottom:6px}footer a{display:block;text-
 <header class="top"><div class="wrap">
   <a class="logo" href="#inicio" aria-label="ProductFarma, inicio"><i></i>ProductFarma</a>
   <nav class="main" aria-label="Principal">
-    <a href="#farmacia">Farmacias</a><a href="#congresos">Ferias y congresos</a><a href="#stands">Stands</a><a href="#catalogo">Catálogo</a>
+    <a href="#farmacia">Farmacias</a><a href="#congresos">Ferias y congresos</a><a href="#packs">Packs</a><a href="#catalogo">Catálogo</a>
   </nav>
   <a class="cartbtn" href="#carrito">Carrito <b id="cc">0</b></a>
 </div><div class="strip"></div></header>
@@ -172,9 +172,9 @@ footer b{color:#fff;display:block;margin-bottom:6px}footer a{display:block;text-
 <main id="app"></main>
 
 <footer class="band"><div class="wrap">
-  <div><b style="font-size:22px">ProductFarma</b>Merchandising personalizado y stands para farmacias, laboratorios, ferias y congresos del sector salud.</div>
+  <div><b style="font-size:22px">ProductFarma</b>Merchandising personalizado para farmacias, laboratorios, ferias y congresos del sector salud.</div>
   <div><b>Productos</b><a href="#farmacia">Para farmacias</a><a href="#congresos">Para congresos</a><a href="#packs">Packs</a><a href="#catalogo">Catálogo completo</a></div>
-  <div><b>Eventos</b><a href="#stands">Stands y gran formato</a><a href="#congresos">Kits de congresista</a><a href="#preguntas">Preguntas frecuentes</a></div>
+  <div><b>Eventos</b><a href="#congresos">Kits de congresista</a><a href="#evento">Presupuesto para eventos</a><a href="#preguntas">Preguntas frecuentes</a></div>
   <div><b>Compra</b><span>Pago seguro con tarjeta</span><br><span>Presupuesto en 24 h laborables</span><br><span>Envío a toda España</span></div>
 </div></footer>
 
@@ -258,7 +258,7 @@ const AUD = {
 const PACKS = [
   { id: 'congresista', name: 'Kit congresista', aud: 'congresos', text: 'Lo que recibe cada asistente al acreditarse.', items: ['tote|bolsa algodon', 'libreta|cuaderno', 'boligrafo', 'lanyard|cinta'], tech: true },
   { id: 'farmacia', name: 'Kit fidelización farmacia', aud: 'farmacia', text: 'Detalles de mostrador para regalar con la compra.', items: ['bolsa de papel|kraft', 'pastillero', 'labial|balsamo', 'gel'], tech: true },
-  { id: 'stand', name: 'Kit de stand', aud: 'congresos', text: 'Para repartir en el stand y captar contactos.', items: ['camiseta', 'boligrafo', 'gel', 'acreditac|identificador'], tech: true },
+  { id: 'feria', name: 'Kit para repartir en feria', aud: 'congresos', text: 'Detalles con tu marca para quien pasa por tu espacio.', items: ['camiseta', 'boligrafo', 'gel', 'acreditac|identificador'], tech: true },
 ];
 
 /* ---------- Estado ---------- */
@@ -294,7 +294,7 @@ const CROSS = (x, y, s, f = '#00843d') => `<path d="M${x - s / 6} ${y - s / 2}h$
 const mini = (k, c, x, y, sz, logo = true) => { const p = { shape: k, name: k }; return `<g transform="translate(${x} ${y}) scale(${sz / 240})">${art(p, { hex: c }, logo ? LOGO_DEMO : null, false).replace(/^<svg[^>]*>|<\/svg>$/g, '')}</g>`; };
 function standScene(dark) {
   const wall = dark ? '#0d4d2c' : '#f4faf6';
-  return `<svg viewBox="0 0 600 500" role="img" aria-label="Stand de feria con la marca de la farmacia, mostrador, roll-up y productos personalizados">
+  return `<svg viewBox="0 0 600 500" role="img" aria-label="Productos personalizados con la marca expuestos en una feria del sector">
   <defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00000030"/><stop offset="1" stop-color="#00000000"/></linearGradient>
   <linearGradient id="wl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${wall}"/><stop offset="1" stop-color="${dark ? '#0a3f24' : '#e3f2ea'}"/></linearGradient></defs>
   <path d="M0 420 L600 420 L600 500 L0 500Z" fill="#00000026"/>
@@ -349,10 +349,10 @@ function vHome() {
   const feat = ['pastillero', 'tote', 'lanyard', 'neceser', 'agenda', 'botiquin', 'camiseta', 'gel'].map(byKey).filter((p, i, a) => p && a.indexOf(p) === i);
   const show = feat.length >= 4 ? feat : CAT.slice(0, 8);
   return `<section class="band hero"><div class="wrap">
-    <div><p class="kicker">Merchandising y stands para el sector salud</p>
+    <div><p class="kicker">Merchandising para el sector salud</p>
       <h1>Tu marca, en el mostrador y en cada congreso</h1>
-      <p class="lead">Pastilleros, totebags, agendas y kits de congresista con tu logo, y el stand completo para la feria. Precio al instante, stock real y boceto antes de producir.</p>
-      <div class="row"><a class="btn w" href="#catalogo">Ver catálogo</a><a class="btn s" href="#stands">Presupuesto de stand</a></div>
+      <p class="lead">Pastilleros, neceseres, totebags, agendas y kits de congresista con tu logo. Precio al instante, stock real y boceto antes de producir.</p>
+      <div class="row"><a class="btn w" href="#catalogo">Ver catálogo</a><a class="btn s" href="#packs">Ver packs</a></div>
       <ul class="sectors"><li>Farmacias</li><li>Laboratorios</li><li>Congresos médicos</li><li>Ferias del sector</li><li>Colegios profesionales</li></ul>
       ${demo ? '<p class="demo">Productos y precios de muestra hasta conectar el catálogo de Makito.</p>' : ''}</div>
     <div class="scene">${standScene(false)}</div>
@@ -362,14 +362,14 @@ function vHome() {
   <section class="band"><div class="wrap"><p class="kicker">Para quién trabajamos</p><h2>Dos mundos, un mismo proveedor</h2>
     <div class="aud" style="margin-top:24px">
       <a class="acard" href="#farmacia" style="background:#006b31">${audScene('farmacia')}<div class="tx"><h3 style="font-size:30px">Farmacias</h3><p>Regalos de mostrador, bolsas, pastilleros, neceseres y campañas de temporada que tus clientes usan a diario.</p><span class="go">Ver productos para farmacia →</span></div></a>
-      <a class="acard" href="#congresos" style="background:#0d2a43">${audScene('congresos')}<div class="tx"><h3 style="font-size:30px">Ferias y congresos</h3><p>Kits de congresista, acreditaciones, totebags, agendas y todo lo que se reparte en el stand.</p><span class="go">Ver productos para eventos →</span></div></a>
+      <a class="acard" href="#congresos" style="background:#0d2a43">${audScene('congresos')}<div class="tx"><h3 style="font-size:30px">Ferias y congresos</h3><p>Kits de congresista, acreditaciones, totebags, agendas y regalos para repartir en tu espacio.</p><span class="go">Ver productos para eventos →</span></div></a>
     </div></div></section>
 
   <section class="band packs-band" id="packs"><div class="wrap"><p class="kicker">Packs listos</p><h2>Combina, personaliza y listo</h2>
     <p class="lead" style="margin-bottom:0">Elige unidades y añade el pack: cada producto va con tu logo en su técnica recomendada. Luego puedes cambiar colores y técnicas en el carrito.</p>
     <div class="packs">${packsHTML()}</div></div></section>
 
-  ${standsHTML()}
+  ${eventHTML()}
 
   <section class="band"><div class="wrap"><p class="kicker">Cómo funciona</p><h2>Del logo a la entrega, sin sorpresas</h2>
     <ol class="steps" style="padding:0"><li><b>Elige y configura</b><p>Producto, color, técnica y cantidad. El precio se calcula al momento.</p></li>
@@ -381,26 +381,26 @@ function vHome() {
     <div class="grid" style="margin-top:20px">${show.map(card).join('')}</div></div></section>
 
   ${faqHTML()}
-  <section class="band cta"><div class="wrap"><h2>¿Tienes un congreso en el calendario?</h2><p>Cuéntanos fecha, sede y número de asistentes y te preparamos kits y stand en un solo presupuesto.</p>
-    <a class="btn w" href="#stands">Pedir presupuesto del evento</a></div></section>`;
+  <section class="band cta"><div class="wrap"><h2>¿Tienes un congreso en el calendario?</h2><p>Cuéntanos fecha, sede y número de asistentes y te preparamos todo el merchandising en un solo presupuesto.</p>
+    <a class="btn w" href="#evento">Pedir presupuesto del evento</a></div></section>`;
 }
 
-function standsHTML() {
-  return `<section class="band stands" id="stands-sec"><div class="wrap">
-    <div><p class="kicker">Stands y gran formato</p><h2>El stand completo, diseñado, impreso y montado</h2>
-      <p class="lead" style="color:#cfe3d8">Diseñamos y producimos la imagen de tu stand para ferias y congresos del sector salud, y lo coordinamos con los regalos de tu marca.</p>
-      <ul class="svc"><li>Stands modulares y de diseño</li><li>Roll-ups y banners</li><li>Photocalls y fondos</li><li>Mostradores personalizados</li><li>Lonas, vinilos y moqueta</li><li>Señalética y acreditaciones</li></ul>
+function eventHTML() {
+  return `<section class="band stands" id="evento"><div class="wrap">
+    <div><p class="kicker">Congresos y ferias</p><h2>Merchandising para todo el evento en un solo presupuesto</h2>
+      <p class="lead" style="color:#cfe3d8">Dinos cuántos asistentes esperas y qué quieres repartir. Te proponemos los productos, la personalización y la entrega en la sede.</p>
+      <ul class="svc"><li>Kits de congresista</li><li>Lanyards y porta-acreditaciones</li><li>Totebags y bolsas</li><li>Agendas, libretas y bolígrafos</li><li>Regalos para ponentes</li><li>Entrega en la sede del evento</li></ul>
       <form class="box form" id="stf">
-        <h3>Presupuesto de stand o evento</h3>
+        <h3>Presupuesto de merchandising para tu evento</h3>
         <div class="two"><div><label for="s-name">Nombre *</label><input class="in" id="s-name" name="name" required autocomplete="name"></div>
         <div><label for="s-em">Email *</label><input class="in" id="s-em" name="email" type="email" required autocomplete="email"></div></div>
         <div class="two"><div><label for="s-co">Empresa / laboratorio</label><input class="in" id="s-co" name="company" autocomplete="organization"></div>
         <div><label for="s-ph">Teléfono</label><input class="in" id="s-ph" name="phone" type="tel" autocomplete="tel"></div></div>
         <div class="two"><div><label for="s-ev">Feria o congreso</label><input class="in" id="s-ev" name="event" placeholder="Nombre y ciudad"></div>
-        <div><label for="s-dt">Fecha</label><input class="in" id="s-dt" name="date" type="date"></div></div>
-        <div class="two"><div><label for="s-m2">Superficie</label><select class="in" id="s-m2" name="size"><option>Solo gran formato (roll-up, photocall…)</option><option>Hasta 9 m²</option><option>9–18 m²</option><option>18–36 m²</option><option>Más de 36 m²</option></select></div>
-        <div><label for="s-pax">Asistentes (para kits)</label><input class="in" id="s-pax" name="pax" type="number" inputmode="numeric" min="0" placeholder="p. ej. 800"></div></div>
-        <label for="s-nt">Qué necesitas</label><textarea class="in" id="s-nt" name="notes" placeholder="Stand, mostrador, roll-ups, kits de congresista…"></textarea>
+        <div><label for="s-dt">Fecha del evento</label><input class="in" id="s-dt" name="date" type="date"></div></div>
+        <div class="two"><div><label for="s-pax">Asistentes</label><input class="in" id="s-pax" name="pax" type="number" inputmode="numeric" min="0" placeholder="p. ej. 800"></div>
+        <div><label for="s-bud">Presupuesto por asistente</label><select class="in" id="s-bud" name="budget"><option>Sin definir</option><option>Hasta 3 €</option><option>3–6 €</option><option>6–12 €</option><option>Más de 12 €</option></select></div></div>
+        <label for="s-nt">Qué quieres repartir</label><textarea class="in" id="s-nt" name="notes" placeholder="Kit congresista, lanyards, totebags, regalos para ponentes…"></textarea>
         <button class="btn w" type="submit">Pedir presupuesto</button><div id="stmsg" aria-live="polite"></div>
       </form></div>
     <div class="standpic">${standScene(true)}</div>
@@ -412,7 +412,7 @@ const FAQ = [
   ['¿Cuánto tarda la producción?', 'Normalmente entre 7 y 12 días laborables desde que apruebas el boceto. Para congresos con fecha fija, indícala al pedir y la tenemos en cuenta.'],
   ['¿Puedo enviar los kits a la sede del congreso?', 'Sí. Indica la dirección de la sede y la persona de contacto en el pedido o en el presupuesto.'],
   ['¿Qué formato necesita mi logo?', 'Para ver la prueba vale PNG o JPG. Para producir, mejor en vector (AI, PDF o SVG). Si no lo tienes, lo preparamos.'],
-  ['¿Hacéis el stand completo?', 'Sí: diseño, impresión, montaje y desmontaje. Pide presupuesto con la fecha, la feria y la superficie.'],
+  ['¿Podéis preparar los kits ya montados?', 'Sí: entregamos cada kit preparado (por ejemplo, la totebag con la libreta, el bolígrafo y el lanyard dentro) listo para repartir en la acreditación.'],
   ['¿Los precios llevan IVA?', 'Los precios por unidad son sin IVA. El total del carrito muestra el IVA del 21 % aparte.'],
 ];
 const faqHTML = () => `<section class="band" id="preguntas" style="background:var(--paper)"><div class="wrap faq"><div><p class="kicker">Preguntas frecuentes</p><h2>Lo que nos preguntan antes de pedir</h2></div>
@@ -422,9 +422,9 @@ function vAudience(k) {
   const A = AUD[k], list = CAT.filter((p) => A.cats.includes(p.category));
   const intro = k === 'farmacia'
     ? ['Merchandising para farmacias', 'Productos útiles que tus clientes se llevan a casa y vuelven a ver cada día: pastilleros, neceseres, bálsamos, gel, bolsas de mostrador y campañas de verano.']
-    : ['Merchandising para ferias y congresos', 'Kits de congresista, lanyards, acreditaciones, agendas, totebags y regalos de stand para laboratorios, sociedades científicas y organizadores.'];
+    : ['Merchandising para ferias y congresos', 'Kits de congresista, lanyards, acreditaciones, agendas, totebags y regalos para ponentes, para laboratorios, sociedades científicas y organizadores.'];
   return `<section class="band hero" style="padding-block:clamp(32px,5vw,64px)"><div class="wrap"><div><p class="kicker">${esc(A.name)}</p><h1 style="font-size:clamp(34px,5vw,56px)">${intro[0]}</h1><p class="lead">${intro[1]}</p>
-    <div class="row"><a class="btn w" href="#packs-${k}">Ver packs</a>${k === 'congresos' ? '<a class="btn s" href="#stands">Presupuesto de stand</a>' : ''}</div></div>
+    <div class="row"><a class="btn w" href="#packs-${k}">Ver packs</a>${k === 'congresos' ? '<a class="btn s" href="#evento">Presupuesto para tu evento</a>' : ''}</div></div>
     <div style="border-radius:20px;overflow:hidden;align-self:center">${audScene(k)}</div></div></section>
   <section class="band packs-band" id="packs-${k}"><div class="wrap"><h2>Packs para ${k === 'farmacia' ? 'tu farmacia' : 'tu evento'}</h2><div class="packs">${packsHTML(k)}</div></div></section>
   <section class="band"><div class="wrap"><h2>${list.length} productos</h2><div class="grid" style="margin-top:18px">${list.map(card).join('')}</div></div></section>`;
@@ -576,7 +576,7 @@ function bindStands() {
   f.addEventListener('submit', async (e) => {
     e.preventDefault(); const m = $('#stmsg'), g = (k) => f.elements[k].value.trim();
     const customer = { name: g('name'), email: g('email'), company: g('company'), phone: g('phone'),
-      notes: `[STAND/EVENTO] ${g('event')} · fecha ${g('date') || '—'} · ${g('size')} · asistentes ${g('pax') || '—'}\n${g('notes')}` };
+      notes: `[EVENTO] ${g('event')} · fecha ${g('date') || '—'} · asistentes ${g('pax') || '—'} · presupuesto/asistente ${g('budget')}\n${g('notes')}` };
     if (demo) { m.innerHTML = '<div class="msg">Modo muestra: en la web publicada esto envía tu solicitud y te respondemos en 24 h laborables.</div>'; return; }
     try { await sendQuote(customer, []); location.hash = 'gracias'; } catch (err) { m.innerHTML = `<div class="msg err">${esc(err.message)}</div>`; }
   });
@@ -591,15 +591,16 @@ const vThanks = () => `<section class="band"><div class="wrap empty"><h2>¡Recib
 
 /* ---------- Router ---------- */
 function render() {
-  const h = location.hash.slice(1) || 'inicio', app = $('#app');
+  let h = location.hash.slice(1) || 'inicio'; if (h === 'stands') h = 'evento'; const app = $('#app');
   const [view, arg] = h.startsWith('p-') ? ['p', decodeURIComponent(h.slice(2))] : h.startsWith('packs-') ? [h.slice(6), null] : [h, null];
   document.querySelectorAll('nav.main a').forEach((a) => a.getAttribute('href') === '#' + view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   if (view === 'p') { app.innerHTML = vProduct(arg); bindProduct(arg); }
   else if (view === 'carrito') { app.innerHTML = vCart(); bindCart(); }
   else if (view === 'gracias') app.innerHTML = vThanks();
   else if (view === 'catalogo') app.innerHTML = vCatalog();
-  else if (view === 'farmacia' || view === 'congresos') { app.innerHTML = vAudience(view); bindPacks(); }
-  else if (view === 'stands') { app.innerHTML = standsHTML() + faqHTML(); bindStands(); }
+  else if (view === 'farmacia') { app.innerHTML = vAudience(view); bindPacks(); }
+  else if (view === 'congresos') { app.innerHTML = vAudience(view) + eventHTML(); bindPacks(); bindStands(); }
+  else if (view === 'evento') { app.innerHTML = eventHTML() + faqHTML(); bindStands(); }
   else { app.innerHTML = vHome(); bindPacks(); bindStands(); }
   if (h === 'packs') $('#packs')?.scrollIntoView(); else if (h.startsWith('packs-')) $('#' + h)?.scrollIntoView(); else window.scrollTo(0, 0);
   save();
