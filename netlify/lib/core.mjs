@@ -10,29 +10,38 @@ export const json = (body, status = 200, extra = {}) =>
 
 const r2 = (n) => Math.round(n * 100) / 100;
 
+/** Tramo aplicable: el de mayor mínimo <= qty (o el primero). */
+export const tierFor = (tiers, qty) => { const t = [...(tiers || [])].sort((a, b) => a.min - b.min); return t.filter((x) => qty >= x.min).pop() || t[0]; };
+
 /**
- * Precio de una línea, SIEMPRE calculado en servidor a partir del catálogo.
- * product: fila de public_catalog. line: { ref, sku, qty, technique, colors }
+ * Coste de marcaje de venta (misma fórmula en el navegador):
+ *  unidad = precio del tramo × nº colores (1 si es cuatricromía/full color)
+ *  preparación = setup + addSetup × (colores - 1)
  */
+export function printCost(opt, qty, colors) {
+  const n = opt.fullColor ? 1 : Math.min(Math.max(1, Number(colors) || 1), opt.maxColors || 1);
+  const unit = (opt.tiers?.length ? tierFor(opt.tiers, qty).price : opt.unit || 0) * n;
+  const setup = (opt.setup || 0) + (opt.addSetup ?? opt.setup ?? 0) * (n - 1);
+  return { n, unit, setup };
+}
+
+/** Precio de una línea, SIEMPRE calculado en servidor a partir del catálogo. */
 export function priceLine(product, line) {
   const qty = Math.max(1, Math.floor(Number(line.qty) || 0));
   const tiers = [...(product.tiers || [])].sort((a, b) => a.min - b.min);
   if (!tiers.length) throw new Error(`Sin precio para ${product.ref}`);
-  const tier = tiers.filter((t) => qty >= t.min).pop() || tiers[0];
-  const minQty = tiers[0].min;
-  if (qty < minQty) throw new Error(`Mínimo ${minQty} uds para ${product.ref}`);
-
-  let printUnit = 0, setup = 0, opt = null;
-  if (line.technique && line.technique !== 'none') {
-    opt = (product.print || []).find((o) => o.technique === line.technique);
+  if (qty < tiers[0].min) throw new Error(`Mínimo ${tiers[0].min} uds para ${product.ref}`);
+  const base = tierFor(tiers, qty).price;
+  let pc = { n: 0, unit: 0, setup: 0 }, opt = null;
+  if (line.technique) {
+    opt = (product.print || []).find((o) => String(o.id) === String(line.technique) || o.technique === line.technique);
     if (!opt) throw new Error(`Técnica no disponible: ${line.technique}`);
-    const colors = Math.min(Math.max(1, Number(line.colors) || 1), opt.maxColors || 1);
-    printUnit = opt.unit * colors;
-    setup = opt.setup * colors;
+    pc = printCost(opt, qty, line.colors);
   }
-  const unit = r2(tier.price + printUnit);
-  return { ref: product.ref, sku: line.sku, name: product.name, qty, technique: opt?.technique || null,
-    colors: line.colors || 0, unit, setup: r2(setup), total: r2(unit * qty + setup), logo: line.logo || null };
+  const unit = r2(base + pc.unit);
+  return { ref: product.ref, sku: line.sku, name: product.name, qty, technique: opt ? String(opt.id ?? opt.technique) : null,
+    technique_name: opt?.technique || null, area: line.area || opt?.area || null, colors: pc.n,
+    pantones: String(line.pantones || '').slice(0, 60), unit, setup: r2(pc.setup), total: r2(unit * qty + pc.setup), logo: line.logo || null };
 }
 
 export async function priceCart(lines) {
@@ -55,8 +64,9 @@ export async function priceCart(lines) {
 // Validación básica de datos de cliente
 export function cleanCustomer(c = {}) {
   const s = (v, n = 200) => String(v ?? '').trim().slice(0, n);
-  const out = { name: s(c.name), company: s(c.company), vat_id: s(c.vat_id, 20), email: s(c.email, 120).toLowerCase(),
-    phone: s(c.phone, 30), address: s(c.address, 300), notes: s(c.notes, 2000) };
+  const out = { name: s(c.name, 35), company: s(c.company, 35), vat_id: s(c.vat_id, 20), email: s(c.email, 120).toLowerCase(),
+    phone: s(c.phone, 16), street: s(c.street, 60), postalCode: s(c.postalCode, 10), city: s(c.city, 40),
+    country: s(c.country || 'ES', 2).toUpperCase(), notes: s(c.notes, 2000) };
   if (!out.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(out.email)) throw new Error('Nombre y email válidos son obligatorios');
   return out;
 }

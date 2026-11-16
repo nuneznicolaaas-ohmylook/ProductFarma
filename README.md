@@ -32,19 +32,35 @@ Tienda B2B de productos promocionales personalizados, conectada a la **API B2B d
 1. **Supabase**: crea un proyecto y ejecuta `supabase/schema.sql` en el SQL Editor.
 2. **Netlify**: importa este repositorio (build: ninguno, publish: `public`).
 3. En Netlify > Site settings > Environment variables, añade las de `.env.example`:
-   - Empieza con las credenciales del **entorno de pruebas** de Makito (sus pedidos no se procesan).
-   - Ajusta `MAKITO_API_BASE` y las rutas `MAKITO_PATH_*` según https://data.makito.es/apis_b2b/index.html
+   - Empieza con las credenciales **Sandbox** de Makito (sus pedidos no se procesan).
+   - Genera `SYNC_SECRET` y `ADMIN_KEY` largas y aleatorias (p. ej. `openssl rand -hex 32`).
 4. Lanza la primera sincronización:
    `curl -X POST https://TU-WEB/.netlify/functions/makito-sync -H "x-sync-key: $SYNC_SECRET"`
 5. **Stripe**: crea el webhook a `https://TU-WEB/api/stripe-webhook` con el evento `checkout.session.completed`.
 6. Margen: cambia `margin` y `print_margin` en la tabla `settings` (0.45 = +45 %).
-7. Cuando todo cuadre, cambia a las credenciales de **producción** de Makito.
+7. Envía un pedido de prueba a Makito: `curl -X POST https://TU-WEB/api/makito-order -H "x-admin-key: $ADMIN_KEY" -d '{"orderId":"..."}'`
+8. Cuando todo cuadre, cambia a las credenciales **Reales** de Makito.
 
-## Pendiente de ajustar con la documentación de Makito
+## Cómo se usa la API de Makito
 
-`netlify/lib/makito.mjs` y `makito-sync.mjs` están preparados para JSON paginado y prueban varios nombres de campo
-(lista `F`). Con la referencia oficial hay que confirmar: URL base, ruta del token, rutas de productos/precios/stock/marcaje
-y el formato de creación de pedidos (`makito-order.mjs`).
+| Dato | Endpoint | Frecuencia |
+|---|---|---|
+| Login (JWT) | `POST /access/auth/login` | se reutiliza hasta caducar |
+| Catálogo y variantes | `GET /catalog/files?format=JSON&lang=es` | diaria |
+| Precios producto | `GET /price-list/files` | diaria |
+| Precios marcaje | `GET /print-price-list/files` | diaria |
+| Configuración marcaje | `GET /print-config/files` | diaria |
+| Stock | `GET /stock/files` | cada hora |
+| Imágenes | `GET /catalog/assets/...` vía `/api/img` (caché CDN 7 días) | bajo demanda |
+| Pedidos | `POST /orders` (separa líneas con y sin marcaje) | manual |
+
+Una sincronización completa son 6 peticiones: muy por debajo del límite (100 de golpe, 25/min).
+
+### A verificar con datos reales (primera sincronización en Sandbox)
+- Nombre exacto del array de variantes dentro de cada producto del catálogo (`makito-sync.mjs` prueba `variants`, `variant`, `colors`).
+- Campo de referencia de producto en `/print-config/files` y cómo se relacionan áreas y técnicas.
+- Si `amount` de `/price-list` es por unidad o por `baseQuantity` (`MAKITO_PRICE_PER_BASE`).
+- Cómo se sube el archivo de diseño (`attachment`) en pedidos con marcaje: mientras tanto el pedido queda en `PENDING_DESIGN` y se envía el arte a Makito por su canal habitual.
 
 ## Desarrollo local
 

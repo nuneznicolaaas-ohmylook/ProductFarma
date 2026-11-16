@@ -1,142 +1,122 @@
-// Sincroniza el catálogo de Makito (webservice XML) con Supabase.
-// Programada en netlify.toml: stock cada hora; catálogo, precios y marcaje una vez al día (a las 03:15).
-// Ejecutar a mano: POST /.netlify/functions/makito-sync  con cabecera  x-sync-key: <SYNC_SECRET>
-// Fuente: API B2B de Makito (JSON, OAuth). Se conserva el lector de XML por si se usan los feeds clásicos.
-import { XMLParser } from 'fast-xml-parser';
+// Sincroniza Makito -> Supabase usando los "files" de la API B2B.
+// Programada (netlify.toml): stock en cada ejecución (cada hora); catálogo, precios y marcaje una vez al día.
+// Manual: POST /.netlify/functions/makito-sync  cabecera  x-sync-key: <SYNC_SECRET>  (hace sincronización completa)
+// Son solo 5 peticiones por sincronización completa: muy por debajo del límite de 25/min.
 import { db } from '../lib/core.mjs';
-import { makitoAll, paths } from '../lib/makito.mjs';
+import { getCatalog, getStock, getPriceList, getPrintPrices, getPrintConfig } from '../lib/makito.mjs';
 
-const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '', parseTagValue: true, trimValues: true });
-const USE_API = () => !!process.env.MAKITO_CLIENT_ID;
-
-// Los nombres de campo de Makito pueden variar según el feed: se prueban varios.
-// Si alguno no cuadra, ajusta SOLO estas listas tras ver un XML real.
-const F = {
-  ref:      ['ref', 'reftc', 'reference', 'id'],
-  sku:      ['matnr', 'refct', 'sku', 'ean'],
-  name:     ['name', 'nombre', 'title'],
-  desc:     ['extendedinfo', 'description', 'descripcion', 'otherinfo'],
-  category: ['category_name_1', 'category', 'categoria'],
-  subcat:   ['category_name_2', 'subcategory'],
-  material: ['composition', 'material'],
-  dims:     ['item_long', 'dimensions', 'medidas'],
-  color:    ['colour', 'color', 'colorname'],
-  hex:      ['hex', 'colour_hex', 'rgb'],
-  size:     ['size', 'talla'],
-  image:    ['imagemain', 'image', 'img', 'image500px'],
-  stock:    ['stock', 'quantity', 'qty'],
-  arrival:  ['available', 'date', 'nextarrival'],
-};
-const pick = (o, keys) => { for (const k of keys) if (o?.[k] !== undefined && o[k] !== '') return o[k]; return undefined; };
-const arr = (x) => (x === undefined ? [] : Array.isArray(x) ? x : [x]);
+const arr = (x) => (x == null ? [] : Array.isArray(x) ? x : [x]);
 const num = (x) => Number(String(x ?? '').replace(',', '.')) || 0;
+const pick = (o, ks) => { for (const k of ks) if (o?.[k] !== undefined && o[k] !== '' && o[k] !== null) return o[k]; };
+const now = () => new Date().toISOString();
+const mm = (v) => (num(v) ? `${num(v) / 10}` : null); // Makito da medidas en mm -> cm
 
-// Encuentra la lista de registros dentro del XML sea cual sea el envoltorio
-function records(xml, names) {
-  const doc = parser.parse(xml);
-  const walk = (o) => {
-    if (!o || typeof o !== 'object') return null;
-    for (const n of names) if (o[n]) return arr(o[n]);
-    for (const v of Object.values(o)) { const r = walk(v); if (r) return r; }
-    return null;
-  };
-  return walk(doc) || [];
-}
-
-async function feed(pathVar) {
-  const key = process.env.MAKITO_API_KEY;
-  const url = process.env.MAKITO_BASE_URL + process.env[pathVar].replace('{key}', encodeURIComponent(key));
-  const res = await fetch(url, { headers: { 'user-agent': 'ProductFarma-sync/1.0' } });
-  if (!res.ok) throw new Error(`${pathVar}: HTTP ${res.status}`);
-  return res.text();
-}
-
-async function upsert(table, rows, conflict) {
-  const sb = db();
+async function upsert(table, rows, onConflict) {
   for (let i = 0; i < rows.length; i += 500) {
-    const { error } = await sb.from(table).upsert(rows.slice(i, i + 500), { onConflict: conflict });
+    const { error } = await db().from(table).upsert(rows.slice(i, i + 500), { onConflict });
     if (error) throw new Error(`${table}: ${error.message}`);
   }
 }
 
+// /catalog/files -> products + variants
 export async function syncCatalog() {
-  const items = USE_API() ? await makitoAll(paths().products) : records(await feed('MAKITO_PRODUCTS_PATH'), ['product', 'item', 'producto']);
-  const products = [], variants = [];
-  for (const p of items) {
-    const ref = String(pick(p, F.ref) ?? '').trim();
-    if (!ref) continue;
-    const imgs = arr(p.images?.image ?? p.images ?? p.pictures).map((i) => (typeof i === 'object' ? pick(i, F.image) : i)).filter(Boolean);
-    products.push({ ref, name: pick(p, F.name), description: pick(p, F.desc), category: pick(p, F.category),
-      subcategory: pick(p, F.subcat), material: pick(p, F.material), dims: pick(p, F.dims),
-      images: imgs.length ? imgs : [pick(p, F.image)].filter(Boolean), active: true, updated_at: new Date().toISOString() });
-    for (const v of arr(p.variants?.variant ?? p.variants ?? p.colors ?? p.colours)) {
-      const sku = String(pick(v, F.sku) ?? '').trim();
-      if (sku) variants.push({ sku, ref, color: pick(v, F.color), color_hex: pick(v, F.hex), size: pick(v, F.size), image: pick(v, F.image) });
+  const { products = [] } = await getCatalog();
+  const P = [], V = [];
+  for (const p of products) {
+    const ref = String(p.ref ?? '').trim(); if (!ref) continue;
+    const dims = [p.length, p.width, p.height].map(mm).filter(Boolean);
+    const cats = arr(p.categories).map((c) => (typeof c === 'object' ? pick(c, ['name', 'description', 'category_name_1']) : c)).filter(Boolean);
+    P.push({ ref, web_ref: p.web_reference ?? null, name: p.name, description: p.description, brand: p.brand ?? null,
+      category: cats[0] ?? null, subcategory: cats[1] ?? null, material: p.material ?? null,
+      dims: dims.length ? dims.join(' × ') + ' cm' : (num(p.diameter) ? `Ø${mm(p.diameter)} cm` : null),
+      print_code: p.printcode ?? null, is_new: !!p.web_new,
+      images: [p.image, ...arr(p.images)].filter(Boolean).map((i) => (typeof i === 'object' ? i.url ?? i.image : i)),
+      active: true, updated_at: now() });
+    // Variantes: la referencia de variante es el "material" de stock (p. ej. 15246003000)
+    for (const v of arr(p.variants ?? p.variant ?? p.colors)) {
+      const sku = String(pick(v, ['variant', 'variant_ref', 'material', 'ref', 'refct', 'matnr']) ?? '').trim(); if (!sku) continue;
+      V.push({ sku, ref, color: pick(v, ['colour_name', 'color_name', 'colour', 'color', 'description']) ?? null,
+        color_hex: pick(v, ['hex', 'colour_hex', 'color_hex']) ?? null, size: pick(v, ['size', 'talla']) ?? null,
+        image: pick(v, ['variant_image', 'image']) ?? null, updated_at: now() });
     }
   }
-  await upsert('products', products, 'ref');
-  await upsert('variants', variants, 'sku');
-  return { products: products.length, variants: variants.length };
+  await upsert('products', P, 'ref');
+  await upsert('variants', V, 'sku');
+  return { products: P.length, variants: V.length };
 }
 
+// /price-list/files -> price_tiers   ({material, baseQuantity, scales:[{quantity, amount}]})
+// amount es el importe por "baseQuantity" unidades (verificar con un producto real; ver MAKITO_PRICE_PER_BASE).
 export async function syncPrices() {
-  const items = USE_API() ? await makitoAll(paths().prices) : records(await feed('MAKITO_PRICES_PATH'), ['product', 'item']);
-  const tiers = [];
-  for (const p of items) {
-    const ref = String(pick(p, F.ref) ?? '').trim();
-    // Makito publica tramos como section1/price1, section2/price2... o como <price min="" value="">
-    for (let i = 1; i <= 8; i++) {
-      const min = p[`section${i}`] ?? p[`min${i}`], price = p[`price${i}`];
-      if (min !== undefined && price !== undefined && num(price) > 0) tiers.push({ ref, min_qty: Math.max(1, num(min)), unit_cost: num(price) });
-    }
-    for (const t of arr(p.prices?.price ?? p.prices ?? p.priceRanges)) tiers.push({ ref, min_qty: num(t.min ?? t.qty), unit_cost: num(t.value ?? t['#text']) });
+  const { priceList = [] } = await getPriceList();
+  const perBase = process.env.MAKITO_PRICE_PER_BASE !== 'false';
+  const T = [];
+  for (const p of priceList) {
+    const ref = String(p.material ?? '').trim(); if (!ref) continue;
+    const base = perBase ? num(p.baseQuantity) || 1 : 1;
+    for (const s of arr(p.scales)) T.push({ ref, min_qty: Math.max(1, num(s.quantity)), unit_cost: num(s.amount) / base });
   }
-  await upsert('price_tiers', tiers.filter((t) => t.ref && t.unit_cost > 0), 'ref,min_qty');
-  return { tiers: tiers.length };
+  const { data: known } = await db().from('products').select('ref');
+  const ok = new Set((known || []).map((r) => r.ref));
+  await upsert('price_tiers', T.filter((t) => ok.has(t.ref) && t.unit_cost > 0), 'ref,min_qty');
+  return { tiers: T.length };
 }
 
-export async function syncStock() {
-  const items = USE_API() ? await makitoAll(paths().stock) : records(await feed('MAKITO_STOCK_PATH'), ['product', 'item', 'stock']);
-  const rows = items.map((s) => ({ sku: String(pick(s, F.sku) ?? '').trim(), stock: num(pick(s, F.stock)),
-    next_arrival: pick(s, F.arrival) || null, updated_at: new Date().toISOString() })).filter((r) => r.sku);
-  const { data: known } = await db().from('variants').select('sku');
-  const ok = new Set((known || []).map((v) => v.sku));
-  const upd = rows.filter((r) => ok.has(r.sku));
-  for (const r of upd) await db().from('variants').update(r).eq('sku', r.sku);
-  return { stock: upd.length };
-}
-
+// /print-price-list/files -> print_techniques   y   /print-config/files -> product_print
 export async function syncPrint() {
-  const items = USE_API() ? await makitoAll(paths().print) : records(await feed('MAKITO_PRINT_PATH'), ['product', 'item']);
+  const { printPriceList = [] } = await getPrintPrices();
+  const tech = printPriceList.map((t) => ({ id: String(t.id), code: t.code, name: t.name, category: t.category,
+    setup: num(t.prices?.setupPrice), additional_setup: num(t.prices?.additionalSetupPrice),
+    tiers: arr(t.prices?.items).map((i) => ({ min: num(i.threshold), price: num(i.price), type: i.type })).sort((a, b) => a.min - b.min),
+    updated_at: now() }));
+  await upsert('print_techniques', tech, 'id');
+
+  const { products = [] } = await getPrintConfig();
   const rows = [];
-  for (const p of items) {
-    const ref = String(pick(p, F.ref) ?? '').trim();
-    for (const t of arr(p.printjobs?.printjob ?? p.techniques?.technique ?? p.techniques ?? p.printing)) {
-      rows.push({ ref, technique: t.name ?? t.technique ?? t.teccode, area: t.area ?? t.areaname,
-        max_w_mm: num(t.maxwidth ?? t.width) || null, max_h_mm: num(t.maxheight ?? t.height) || null,
-        max_colors: num(t.maxcolour ?? t.maxcolors) || 1, setup_cost: num(t.cliche ?? t.setup), unit_cost: num(t.price ?? t.unitprice) });
+  for (const p of products) {
+    const ref = String(pick(p, ['ref', 'reference', 'prodReference', 'product']) ?? '').trim(); if (!ref) continue;
+    const areas = arr(p.areas);
+    for (const t of arr(p.techniques)) {
+      const area = areas.find((a) => arr(a.techniques).some((x) => String(x.id ?? x) === String(t.id))) || areas[0] || {};
+      rows.push({ ref, technique_id: String(t.id), label: t.category || t.description, description: t.description,
+        area: area.code ?? area.id ?? null, area_name: area.description ?? area.name ?? null,
+        max_w_mm: num(area.width ?? area.maxWidth) || null, max_h_mm: num(area.height ?? area.maxHeight) || null,
+        max_colors: num(t.maximumColors) || 1, full_color: !!t.fullColor });
     }
   }
-  const sb = db();
   const refs = [...new Set(rows.map((r) => r.ref))];
-  if (refs.length) await sb.from('print_options').delete().in('ref', refs);
-  await upsert('print_options', rows, 'id');
-  return { print: rows.length };
+  for (let i = 0; i < refs.length; i += 300) await db().from('product_print').delete().in('ref', refs.slice(i, i + 300));
+  await upsert('product_print', rows.filter((r, i, a) => a.findIndex((x) => x.ref === r.ref && x.technique_id === r.technique_id) === i), 'ref,technique_id');
+  return { techniques: tech.length, productPrint: rows.length };
+}
+
+// /stock/files -> variants.stock   ({material, quantity, availableDate})
+export async function syncStock() {
+  const { stocks = [] } = await getStock();
+  const agg = new Map();
+  for (const s of stocks) {
+    const sku = String(s.material ?? '').trim(); if (!sku) continue;
+    const cur = agg.get(sku) || { stock: 0, next_arrival: null };
+    if (s.availableDate) cur.next_arrival = cur.next_arrival && cur.next_arrival < s.availableDate ? cur.next_arrival : s.availableDate.slice(0, 10);
+    else cur.stock += num(s.quantity);
+    agg.set(sku, cur);
+  }
+  const { data } = await db().rpc('apply_stock', { payload: [...agg].map(([sku, v]) => ({ sku, ...v })) });
+  return { stock: data ?? agg.size };
 }
 
 export default async (req) => {
-  // Llamada programada (sin cuerpo) o manual protegida por clave
-  const manual = req?.headers?.get?.('x-sync-key');
-  if (manual !== null && manual !== undefined && manual !== process.env.SYNC_SECRET) return new Response('Forbidden', { status: 403 });
-  const full = manual !== null && manual !== undefined ? true : new Date().getUTCHours() === 2; // 03:15 en Madrid (invierno)
+  const key = req?.headers?.get?.('x-sync-key');
+  if (key != null && key !== process.env.SYNC_SECRET) return new Response('Forbidden', { status: 403 });
+  const full = key != null || new Date().getUTCHours() === 2;
   const out = {};
   try {
     if (full) Object.assign(out, await syncCatalog(), await syncPrices(), await syncPrint());
     Object.assign(out, await syncStock());
     console.log('makito-sync', out);
-    return new Response(JSON.stringify({ ok: true, ...out }), { headers: { 'content-type': 'application/json' } });
+    return Response.json({ ok: true, full, ...out });
   } catch (e) {
-    console.error('makito-sync error', e);
-    return new Response(JSON.stringify({ ok: false, error: e.message }), { status: 500 });
+    console.error('makito-sync', e);
+    return Response.json({ ok: false, error: e.message }, { status: 500 });
   }
 };

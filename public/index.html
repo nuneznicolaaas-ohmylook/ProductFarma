@@ -127,7 +127,7 @@ const pic = (p, v, logo, big) => (!logo && (v?.image || p.images?.[0])) ? `<img 
 
 /* ---------- Catálogo de muestra (se sustituye por /api/catalog) ---------- */
 const T = (a) => a.map(([min, price]) => ({ min, price }));
-const SER = (s, u, n = 4) => ({ technique: 'Serigrafía', maxColors: n, setup: s, unit: u });
+const SER = (s, u, n = 4) => ({ technique: 'Serigrafía', maxColors: n, setup: s, addSetup: s * .5, tiers: [{ min: 1, price: u }, { min: 500, price: u * .8 }] });
 const DEMO = [
   { ref: 'PF-3000', name: 'Taza cerámica 350 ml', category: 'Hogar', shape: 'taza', dims: 'Ø8 × 9,5 cm', material: 'Cerámica', variants: [['Blanco', '#f5f5f5', 4200], ['Negro', '#1b1b1b', 860], ['Rojo', '#c8102e', 120]], tiers: T([[36, 2.95], [100, 2.45], [250, 2.1], [500, 1.85]]), print: [{ technique: 'Tampografía', maxColors: 2, setup: 35, unit: .32 }, { technique: 'Sublimación', maxColors: 1, setup: 0, unit: .9 }] },
   { ref: 'PF-4120', name: 'Bolsa algodón 140 g asas largas', category: 'Bolsas', shape: 'bolsa', dims: '38 × 42 cm', material: 'Algodón 140 g/m²', variants: [['Natural', '#e9dfc7', 15000], ['Negro', '#1b1b1b', 5200], ['Azul royal', '#1f4fbf', 2100], ['Verde', '#2e8b57', 640]], tiers: T([[50, 1.45], [250, 1.15], [500, .98], [1000, .86]]), print: [SER(30, .35), { technique: 'Transfer DTF', maxColors: 1, setup: 0, unit: 1.2 }] },
@@ -147,13 +147,17 @@ const save = () => { try { localStorage.setItem('pf-cart', JSON.stringify(S.cart
 const shapeOf = (p) => p.shape || (Object.keys(SHAPES).find((k) => (p.name + ' ' + p.category).toLowerCase().includes(k.slice(0, 4))) ?? 'taza');
 
 /* ---------- Precio (espejo del cálculo del servidor; el servidor manda) ---------- */
+const tierFor = (tiers, qty) => { const t = [...(tiers || [])].sort((a, b) => a.min - b.min); return t.filter((x) => qty >= x.min).pop() || t[0]; };
+const optId = (o) => String(o.id ?? o.technique);
+const findOpt = (p, id) => (p.print || []).find((o) => optId(o) === String(id));
 function price(p, qty, tech, colors) {
-  const tiers = [...p.tiers].sort((a, b) => a.min - b.min);
-  const tier = tiers.filter((t) => qty >= t.min).pop() || tiers[0];
-  const o = p.print?.find((x) => x.technique === tech);
-  const n = o ? Math.min(Math.max(1, colors), o.maxColors) : 0;
-  const unit = tier.price + (o ? o.unit * n : 0), setup = o ? o.setup * n : 0;
-  return { tier, unit, setup, total: unit * qty + setup, min: tiers[0].min };
+  const tiers = [...p.tiers].sort((a, b) => a.min - b.min), tier = tierFor(tiers, qty), o = tech ? findOpt(p, tech) : null;
+  let n = 0, pu = 0, setup = 0;
+  if (o) { n = o.fullColor ? 1 : Math.min(Math.max(1, colors || 1), o.maxColors || 1);
+    pu = (o.tiers?.length ? tierFor(o.tiers, qty).price : o.unit || 0) * n;
+    setup = (o.setup || 0) + (o.addSetup ?? o.setup ?? 0) * (n - 1); }
+  const unit = Math.round((tier.price + pu) * 100) / 100;
+  return { tier, unit, pu, n, o, setup, total: unit * qty + setup, min: tiers[0].min };
 }
 
 /* ---------- Vistas ---------- */
@@ -197,8 +201,9 @@ function vProduct(ref) {
           <p class="note" id="vinfo"></p></fieldset>
         <fieldset><legend>Marcaje</legend><div class="seg">
           <label><input type="radio" name="tech" value="none"><span>Sin marcar</span></label>
-          ${(p.print || []).map((o, i) => `<label><input type="radio" name="tech" value="${esc(o.technique)}" ${i ? '' : 'checked'}><span>${esc(o.technique)}</span></label>`).join('')}</div></fieldset>
-        <fieldset id="colfs"><legend>Colores del logo</legend><select name="colors" id="colors" aria-label="Número de colores"></select></fieldset>
+          ${(p.print || []).map((o, i) => `<label><input type="radio" name="tech" value="${esc(optId(o))}" ${i ? '' : 'checked'}><span>${esc(o.technique)}${o.area ? ` · ${esc(o.area)}` : ''}</span></label>`).join('')}</div></fieldset>
+        <fieldset id="colfs"><legend>Colores del logo</legend><select name="colors" id="colors" aria-label="Número de colores"></select>
+          <input class="in" name="pantones" id="pantones" placeholder="Pantones (opcional), p. ej. 485 C, Black C" style="margin-top:8px" maxlength="60"></fieldset>
         <fieldset><legend>Tu logo</legend><label class="drop"><img id="lgprev" alt="" hidden><span id="lgname">Sube PNG, JPG o SVG para verlo aplicado (AI/PDF en el presupuesto)</span>
           <input type="file" id="lg" accept="image/png,image/jpeg,image/svg+xml" hidden></label></fieldset>
         <fieldset><legend><label for="qty">Cantidad</label></legend><div class="row"><input class="qty" id="qty" type="number" inputmode="numeric" min="${t0[0].min}" step="1" value="${Math.max(t0[0].min, 100)}"><span class="note">Mínimo ${t0[0].min} uds</span></div></fieldset>
@@ -215,20 +220,21 @@ function bindProduct(ref) {
   const f = $('#cfg'); let logo = null;
   const val = () => {
     const sku = f.elements.sku.value, v = p.variants.find((x) => x.sku === sku), tech = f.elements.tech.value;
-    const o = p.print?.find((x) => x.technique === tech);
-    $('#colfs').hidden = !o || o.maxColors < 2;
+    const o = tech === 'none' ? null : findOpt(p, tech);
+    $('#colfs').hidden = !o || o.fullColor;
     const cs = $('#colors'), cur = +cs.value || 1;
+    cs.hidden = !o || o.maxColors < 2;
     if (o) cs.innerHTML = Array.from({ length: o.maxColors }, (_, i) => `<option value="${i + 1}" ${i + 1 === Math.min(cur, o.maxColors) ? 'selected' : ''}>${i + 1} color${i ? 'es' : ''}</option>`).join('');
-    const qty = Math.floor(+$('#qty').value || 0), r = price(p, Math.max(qty, 1), tech, +cs.value || 1);
+    const qty = Math.floor(+$('#qty').value || 0), r = price(p, Math.max(qty, 1), tech === 'none' ? null : tech, +cs.value || 1);
     $('#stage').innerHTML = art({ ...p, shape: shapeOf(p) }, v, tech === 'none' ? null : (logo || LOGO_DEMO), true);
-    $('#vinfo').innerHTML = `${esc(v.color)} · <span class="stock ${v.stock < qty ? 'low' : ''}">${v.stock.toLocaleString('es-ES')} uds en stock</span>${v.stock < qty ? ' — se pedirá a fábrica, consulta plazo' : ''}`;
+    $('#vinfo').innerHTML = `${esc(v.color)} · <span class="stock ${v.stock < qty ? 'low' : ''}">${v.stock.toLocaleString('es-ES')} uds en stock</span>${v.stock < qty ? (v.next ? ` — reposición prevista ${new Date(v.next).toLocaleDateString('es-ES')}` : ' — consulta plazo') : ''}`;
     $('#tiers').innerHTML = [...p.tiers].sort((a, b) => a.min - b.min).map((t) => `<tr class="${t === r.tier ? 'on' : ''}"><td>desde ${t.min.toLocaleString('es-ES')}</td><td class="n">${eur(t.price)}</td></tr>`).join('');
     const ok = qty >= r.min;
-    $('#sum').innerHTML = `<p class="note" style="margin:12px 0 0">${o ? `Marcaje ${esc(o.technique)}: ${eur(o.unit * (+cs.value || 1))}/ud${r.setup ? ` + ${eur(r.setup)} de preparación (una vez)` : ''}` : 'Producto sin marcar'}</p>
+    $('#sum').innerHTML = `<p class="note" style="margin:12px 0 0">${o ? `Producto ${eur(r.tier.price)} + marcaje ${esc(o.technique)}${r.n > 1 ? ` (${r.n} colores)` : ''} ${eur(r.pu)}/ud${r.setup ? ` + ${eur(r.setup)} de preparación (una vez)` : ''}` : 'Producto sin marcar'}</p>
       <div class="total"><span>${ok ? `${qty.toLocaleString('es-ES')} uds · ${eur(r.unit)}/ud` : `Mínimo ${r.min} uds`}</span><b>${ok ? eur(r.total) : '—'}</b></div>
       <p class="note" style="margin:0">Sin IVA. ${ok && r.total > CFG.quoteOver ? 'Para este importe te recomendamos pedir presupuesto: suele salir mejor.' : ''}</p>`;
     $('#add').disabled = !ok;
-    return { sku, tech, colors: o ? +cs.value || 1 : 0, qty };
+    return { sku, tech, colors: o ? (o.fullColor ? 1 : +cs.value || 1) : 0, qty, pantones: $('#pantones').value.trim(), area: o?.area };
   };
   f.addEventListener('input', val); f.addEventListener('change', val);
   $('#lg').addEventListener('change', (e) => {
@@ -241,7 +247,7 @@ function bindProduct(ref) {
   f.addEventListener('submit', (e) => {
     e.preventDefault(); const c = val(); if (c.qty < price(p, 1, 'none', 0).min) return;
     const id = Date.now().toString(36);
-    S.cart.push({ id, ref: p.ref, sku: c.sku, qty: c.qty, technique: c.tech === 'none' ? null : c.tech, colors: c.colors });
+    S.cart.push({ id, ref: p.ref, sku: c.sku, qty: c.qty, technique: c.tech === 'none' ? null : c.tech, colors: c.colors, pantones: c.pantones });
     if (logo) S.logos[id] = logo;
     save();
     $('#pmsg').innerHTML = `<div class="msg">Añadido al carrito. <a href="#carrito">Ir al carrito</a> o <a href="#catalogo">seguir comprando</a>.</div>`;
@@ -259,7 +265,7 @@ function vCart() {
   const big = sub > CFG.quoteOver;
   return `<section class="band"><div class="wrap"><h2>Carrito</h2><div class="cart">
     <div>${rows.map(({ l, p, v, r }) => `<div class="line"><div class="ph">${art({ ...p, shape: shapeOf(p) }, v, S.logos[l.id])}</div>
-      <div><span class="nm">${esc(p.name)}</span><br><span class="note">${esc(v?.color)} · ${l.technique ? `${esc(l.technique)}${l.colors > 1 ? ` ${l.colors} col.` : ''}` : 'sin marcar'} · ${l.qty.toLocaleString('es-ES')} uds × ${eur(r.unit)}${r.setup ? ` + ${eur(r.setup)} prep.` : ''}</span>
+      <div><span class="nm">${esc(p.name)}</span><br><span class="note">${esc(v?.color)} · ${r.o ? `${esc(r.o.technique)}${r.n > 1 ? ` ${r.n} col.` : ''}` : 'sin marcar'} · ${l.qty.toLocaleString('es-ES')} uds × ${eur(r.unit)}${r.setup ? ` + ${eur(r.setup)} prep.` : ''}</span>
       ${l.technique && !S.logos[l.id] ? '<br><span class="note">Logo pendiente: adjúntalo en el formulario.</span>' : ''}</div>
       <div style="text-align:right"><b style="white-space:nowrap">${eur(r.total)}</b><br><button class="x" data-del="${l.id}">Quitar</button></div></div>`).join('')}
       <table style="margin-top:12px"><tbody><tr><td>Subtotal</td><td class="n">${eur(sub)}</td></tr><tr><td>IVA 21 %</td><td class="n">${eur(vat)}</td></tr></tbody></table>
@@ -272,7 +278,9 @@ function vCart() {
       <label for="c-vat">CIF / NIF</label><input class="in" id="c-vat" name="vat_id">
       <label for="c-em">Email *</label><input class="in" id="c-em" name="email" type="email" required autocomplete="email">
       <label for="c-ph">Teléfono</label><input class="in" id="c-ph" name="phone" type="tel" autocomplete="tel">
-      <label for="c-ad">Dirección de entrega</label><input class="in" id="c-ad" name="address" autocomplete="street-address">
+      <label for="c-st">Dirección de entrega</label><input class="in" id="c-st" name="street" autocomplete="street-address" maxlength="60">
+      <div class="row" style="flex-wrap:nowrap"><div style="flex:0 0 38%"><label for="c-cp">Código postal</label><input class="in" id="c-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5"></div>
+      <div style="flex:1"><label for="c-ci">Población</label><input class="in" id="c-ci" name="city" autocomplete="address-level2" maxlength="40"></div></div>
       <label for="c-nt">Notas (fecha límite, ubicación del logo…)</label><textarea class="in" id="c-nt" name="notes"></textarea>
       <label for="c-lg">Logos en vector (AI, PDF, SVG)</label><input class="in" id="c-lg" type="file" multiple accept=".ai,.pdf,.svg,.eps,image/*" style="padding-top:10px">
       <button class="btn p" type="submit" name="act" value="pay" ${big ? 'disabled title="Importe alto: pide presupuesto"' : ''}>Pagar con tarjeta ${eur(sub + vat)}</button>
@@ -287,8 +295,9 @@ function bindCart() {
   f.addEventListener('submit', async (e) => {
     e.preventDefault();
     const act = e.submitter?.value || 'quote', m = $('#comsg');
-    const customer = Object.fromEntries(['name', 'company', 'vat_id', 'email', 'phone', 'address', 'notes'].map((k) => [k, f.elements[k].value]));
-    const items = S.cart.map(({ ref, sku, qty, technique, colors }) => ({ ref, sku, qty, technique, colors }));
+    const customer = Object.fromEntries(['name', 'company', 'vat_id', 'email', 'phone', 'street', 'postalCode', 'city', 'notes'].map((k) => [k, f.elements[k].value]));
+    const items = S.cart.map(({ ref, sku, qty, technique, colors, pantones }) => ({ ref, sku, qty, technique, colors, pantones }));
+    if (act === 'pay' && !(customer.street && /^\d{5}$/.test(customer.postalCode) && customer.city)) { m.innerHTML = '<div class="msg err">Para pagar necesitamos la dirección de entrega completa.</div>'; return; }
     if (demo) { m.innerHTML = `<div class="msg">Modo muestra: en la web publicada esto ${act === 'pay' ? 'abre el pago seguro con Stripe' : 'envía la solicitud de presupuesto con tus logos'}.</div>`; return; }
     [...f.querySelectorAll('button')].forEach((b) => (b.disabled = true));
     try {
